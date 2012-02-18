@@ -27,9 +27,10 @@
   <parent>
     <groupId>org.xwiki.platform</groupId>
     <artifactId>xwiki-platform-core</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>3.5-milestone-1</version>
   </parent>
   <artifactId>xwiki-platform-github</artifactId>
+  <version>4.0-20120218-1</version>
   <name>XWiki Platform - GitHub</name>
   <packaging>xar</packaging>
   <description>GitHub application for XWiki</description>
