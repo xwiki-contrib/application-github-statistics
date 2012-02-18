@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xwikidoc>
+<web>GitHubCode</web>
+<name>HallOfFame</name>
+<language></language>
+<defaultLanguage>en</defaultLanguage>
+<translation>0</translation>
+<parent></parent>
+<creator>XWiki.Admin</creator>
+<author>XWiki.Admin</author>
+<customClass></customClass>
+<contentAuthor>XWiki.Admin</contentAuthor>
+<creationDate>1329488033000</creationDate>
+<date>1329562084000</date>
+<contentUpdateDate>1329562084000</contentUpdateDate>
+<version>1.1</version>
+<title>Hall of Fame</title>
+<template></template>
+<defaultTemplate></defaultTemplate>
+<validationScript></validationScript>
+<comment></comment>
+<minorEdit>false</minorEdit>
+<syntaxId>xwiki/2.1</syntaxId>
+<hidden>false</hidden>
+<content>{{groovy}}
+import org.apache.commons.io.*
+import org.eclipse.jgit.api.*
+import org.eclipse.jgit.lib.*
+import org.eclipse.jgit.revwalk.*
+import org.eclipse.jgit.storage.file.*
+import org.gitective.core.*
+import org.gitective.core.filter.commit.*
+import groovy.json.*
+import org.gitective.core.stat.*
+
+def service = services.get("git") 
+
+// Get all repositories for the xwiki organization
+def repos = []
+def repoData = xwiki.queryManager.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where doc.object(GitHubCode.RepositoryClass).organization = 'xwiki'").execute()
+repoData.each() {
+  // For each repo, clone it locally to get stats for it
+  def repo = service.getRepository(it[0], it[1])
+  repos.add(repo)
+}
+
+def finder = new CommitFinder(repos)
+//def dateFilter = new CommitterDateFilter(System.currentTimeMillis() - 365*24*60*60*1000L)
+def countFilter = new CommitCountFilter()
+def histogramFilter = new CommitterHistogramFilter()
+def committerFilter = new CommitterSetFilter()
+def filters = new AndCommitFilter()
+filters.add(countFilter, committerFilter, histogramFilter)
+//finder.setFilter(dateFilter)
+finder.setMatcher(filters)
+finder.find()
+
+println "There have been ${countFilter.count} commits in the past year!"
+println ""
+println "The following persons have participated in those commits:"
+
+// Get all committers in the wiki, find all their aliases and save them so that we can later associate aliases with GitHub ids
+def committerAliases = [:]
+def committerAvatars = [:]
+def committerNames = [:]
+xwiki.queryManager.xwql("select distinct committer.id, committer.aliases, committer.avatar, committer.name from Document doc, doc.object(GitHubCode.CommitterClass) as committer").execute().each() {
+  // Get all aliases
+  it[1].tokenize('|').each() { alias -&gt;
+    committerAliases.put(alias, it[0])
+  }
+  committerAliases.put(it[0], it[0])
+  committerAvatars.put(it[0], it[2])
+  committerNames.put(it[0], it[3])
+}
+
+def stats = [:]
+histogramFilter.getHistogram().getUserActivity(new CommitCountComparator()).each() {
+  def computedName = committerAliases.get(it.name) ?: it.name
+  def total = stats.get(computedName) ?: 0
+  total = total + it.count
+  stats.put(computedName, total)
+}
+
+def committerCount = 0
+def contribCount = 0
+println "|=Avatar|=User Id|=# Commits|=Committer?"
+stats.each() { userid, count -&gt;
+  def avatar = committerAvatars.get(userid)
+  def name = committerNames.get(userid) ?: userid
+  def isCommitter
+  if (committerNames.get(userid) == null) {
+    isCommitter =  "(x)"
+    contribCount++
+  } else {
+    isCommitter = "(/)"
+    committerCount++
+  }
+  if (avatar != null) {
+    println "|[[image:${avatar}]]|${name}|${count}|${isCommitter}"
+  } else {
+    println "||${name}|${count}|${isCommitter}"
+  }
+}
+
+println ""
+println "Total committers on the period: ${committerCount}"
+println "Total contributors on the period: ${contribCount}"
+{{/groovy}}</content></xwikidoc>

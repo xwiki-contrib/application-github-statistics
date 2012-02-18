@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xwikidoc>
+<web>GitHubCode</web>
+<name>CommittersMacro</name>
+<language></language>
+<defaultLanguage>en</defaultLanguage>
+<translation>0</translation>
+<parent></parent>
+<creator>XWiki.Admin</creator>
+<author>XWiki.Admin</author>
+<customClass></customClass>
+<contentAuthor>XWiki.Admin</contentAuthor>
+<creationDate>1329567752000</creationDate>
+<date>1329570361000</date>
+<contentUpdateDate>1329570361000</contentUpdateDate>
+<version>1.1</version>
+<title>Committers Macro</title>
+<template></template>
+<defaultTemplate></defaultTemplate>
+<validationScript></validationScript>
+<comment></comment>
+<minorEdit>false</minorEdit>
+<syntaxId>xwiki/2.1</syntaxId>
+<hidden>false</hidden>
+<object>
+<class>
+<name>XWiki.WikiMacroClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<code>
+<disabled>0</disabled>
+<name>code</name>
+<number>9</number>
+<prettyName>Macro code</prettyName>
+<rows>20</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</code>
+<contentDescription>
+<disabled>0</disabled>
+<name>contentDescription</name>
+<number>8</number>
+<prettyName>Content description (Not applicable for "No content" type)</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</contentDescription>
+<contentType>
+<cache>0</cache>
+<disabled>0</disabled>
+<displayType>select</displayType>
+<multiSelect>0</multiSelect>
+<name>contentType</name>
+<number>7</number>
+<prettyName>Macro content type</prettyName>
+<relationalStorage>0</relationalStorage>
+<separator>|</separator>
+<separators>|</separators>
+<size>1</size>
+<unmodifiable>0</unmodifiable>
+<values>Optional|Mandatory|No content</values>
+<classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+</contentType>
+<defaultCategory>
+<disabled>0</disabled>
+<name>defaultCategory</name>
+<number>4</number>
+<prettyName>Default category</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultCategory>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>3</number>
+<prettyName>Macro description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<id>
+<disabled>0</disabled>
+<name>id</name>
+<number>1</number>
+<prettyName>Macro id</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</id>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>2</number>
+<prettyName>Macro name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+<supportsInlineMode>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>supportsInlineMode</name>
+<number>5</number>
+<prettyName>Supports inline mode</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</supportsInlineMode>
+<visibility>
+<cache>0</cache>
+<disabled>0</disabled>
+<displayType>select</displayType>
+<multiSelect>0</multiSelect>
+<name>visibility</name>
+<number>6</number>
+<prettyName>Macro visibility</prettyName>
+<relationalStorage>0</relationalStorage>
+<separator>|</separator>
+<separators>|</separators>
+<size>1</size>
+<unmodifiable>0</unmodifiable>
+<values>Current User|Current Wiki|Global</values>
+<classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+</visibility>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>0</number>
+<className>XWiki.WikiMacroClass</className>
+<guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
+<property>
+<code>{{groovy}}
+import org.apache.commons.io.*
+import org.eclipse.jgit.api.*
+import org.eclipse.jgit.lib.*
+import org.eclipse.jgit.revwalk.*
+import org.eclipse.jgit.storage.file.*
+import org.gitective.core.*
+import org.gitective.core.filter.commit.*
+import groovy.json.*
+import org.gitective.core.stat.*
+
+def service = services.get("git") 
+
+// Get all repositories for the xwiki organization
+def repos = []
+def repoData = xwiki.queryManager.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where doc.object(GitHubCode.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
+repoData.each() {
+  // For each repo, clone it locally to get stats for it
+  def repo = service.getRepository(it[0], it[1])
+  repos.add(repo)
+}
+
+if (repos.size() == 0) {
+  println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] some repositories for this organization first.{{/error}}"
+  return
+}
+
+def finder = new CommitFinder(repos)
+def countFilter = new CommitCountFilter()
+def histogramFilter = new CommitterHistogramFilter()
+def committerFilter = new CommitterSetFilter()
+def filters = new AndCommitFilter()
+filters.add(countFilter, committerFilter, histogramFilter)
+
+def sinceDays = xcontext.macro.params.since.toInteger()
+if (sinceDays &gt; 0) {
+  def dateFilter = new CommitterDateFilter(new Date() - sinceDays)
+  finder.setFilter(dateFilter)
+}
+
+finder.setMatcher(filters)
+finder.find()
+
+// Get all committers in the wiki, find all their aliases and save them so that we can later associate aliases with GitHub ids
+def committerAliases = [:]
+def committerAvatars = [:]
+def committerNames = [:]
+xwiki.queryManager.xwql("select distinct committer.id, committer.aliases, committer.avatar, committer.name from Document doc, doc.object(GitHubCode.CommitterClass) as committer").execute().each() {
+  // Get all aliases
+  it[1].tokenize('|').each() { alias -&gt;
+    committerAliases.put(alias, it[0])
+  }
+  committerAliases.put(it[0], it[0])
+  committerAvatars.put(it[0], it[2])
+  committerNames.put(it[0], it[3])
+}
+
+def listContributors = xcontext.macro.params.contributors == "true"
+
+def stats = [:]
+histogramFilter.getHistogram().getUserActivity(new CommitCountComparator()).each() {
+  if (committerAliases.get(it.name) != null || listContributors) {
+    def computedName = committerAliases.get(it.name) ?: it.name
+    def total = stats.get(computedName) ?: 0
+    total = total + it.count
+    stats.put(computedName, total)
+  }
+}
+
+print "|=Avatar|=User Id|=# Commits"
+println listContributors ? "|=Committer?" : ""
+
+stats.each() { userid, count -&gt;
+  def avatar = committerAvatars.get(userid)
+  def name = committerNames.get(userid) ?: userid
+  def isCommitter = committerNames.get(userid) == null ? "(x)" : "(/)"
+  if (avatar != null) {
+    print "|[[image:${avatar}]]|${name}|${count}"
+  } else {
+    print "||${name}|${count}"
+  }
+  println listContributors ? "|${isCommitter}" : ""
+}
+{{/groovy}}</code>
+</property>
+<property>
+<contentDescription></contentDescription>
+</property>
+<property>
+<contentType>No content</contentType>
+</property>
+<property>
+<defaultCategory>content</defaultCategory>
+</property>
+<property>
+<description>List committers and their activity in a table</description>
+</property>
+<property>
+<id>committers</id>
+</property>
+<property>
+<name>Committers</name>
+</property>
+<property>
+<supportsInlineMode>0</supportsInlineMode>
+</property>
+<property>
+<visibility>Current Wiki</visibility>
+</property>
+</object>
+<object>
+<class>
+<name>XWiki.WikiMacroParameterClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<defaultValue>
+<disabled>0</disabled>
+<name>defaultValue</name>
+<number>4</number>
+<prettyName>Parameter default value</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultValue>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>2</number>
+<prettyName>Parameter description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<mandatory>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>mandatory</name>
+<number>3</number>
+<prettyName>Parameter mandatory</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</mandatory>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>1</number>
+<prettyName>Parameter name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>0</number>
+<className>XWiki.WikiMacroParameterClass</className>
+<guid>fd5e191f-08a6-47b0-a87a-f2584bb4eecd</guid>
+<property>
+<defaultValue></defaultValue>
+</property>
+<property>
+<description>List committers only for the specified GitHub organization</description>
+</property>
+<property>
+<mandatory>1</mandatory>
+</property>
+<property>
+<name>organization</name>
+</property>
+</object>
+<object>
+<class>
+<name>XWiki.WikiMacroParameterClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<defaultValue>
+<disabled>0</disabled>
+<name>defaultValue</name>
+<number>4</number>
+<prettyName>Parameter default value</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultValue>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>2</number>
+<prettyName>Parameter description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<mandatory>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>mandatory</name>
+<number>3</number>
+<prettyName>Parameter mandatory</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</mandatory>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>1</number>
+<prettyName>Parameter name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>1</number>
+<className>XWiki.WikiMacroParameterClass</className>
+<guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
+<property>
+<defaultValue></defaultValue>
+</property>
+<property>
+<description>If "true" then also lists contributors who've committed through pull requests</description>
+</property>
+<property>
+<mandatory>0</mandatory>
+</property>
+<property>
+<name>contributors</name>
+</property>
+</object>
+<object>
+<class>
+<name>XWiki.WikiMacroParameterClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<defaultValue>
+<disabled>0</disabled>
+<name>defaultValue</name>
+<number>4</number>
+<prettyName>Parameter default value</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultValue>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>2</number>
+<prettyName>Parameter description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<mandatory>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>mandatory</name>
+<number>3</number>
+<prettyName>Parameter mandatory</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</mandatory>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>1</number>
+<prettyName>Parameter name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>2</number>
+<className>XWiki.WikiMacroParameterClass</className>
+<guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
+<property>
+<defaultValue>0</defaultValue>
+</property>
+<property>
+<description>Number of days in the past for which we count commits, by default goes back till the beginning</description>
+</property>
+<property>
+<mandatory>0</mandatory>
+</property>
+<property>
+<name>since</name>
+</property>
+</object>
+<content>Example:
+
+List all committers (excluding contributors) who've done commits for the ##xwiki## organization for the past 365 days:
+
+{{box}}{{{
+{{committers organization="xwiki" since="365"/}}
+}}}{{/box}}
+
+Result:
+
+{{committers  organization="xwiki" since="365"/}}</content></xwikidoc>
