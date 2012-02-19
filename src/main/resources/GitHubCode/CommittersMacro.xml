@@ -11,8 +11,8 @@
 <customClass></customClass>
 <contentAuthor>XWiki.Admin</contentAuthor>
 <creationDate>1329567752000</creationDate>
-<date>1329570361000</date>
-<contentUpdateDate>1329570361000</contentUpdateDate>
+<date>1329680757000</date>
+<contentUpdateDate>1329680757000</contentUpdateDate>
 <version>1.1</version>
 <title>Committers Macro</title>
 <template></template>
@@ -150,18 +150,36 @@ import org.gitective.core.stat.*
 
 def service = services.get("git") 
 
-// Get all repositories for the xwiki organization
+// Get the list of repositories to display data for
 def repos = []
-def repoData = xwiki.queryManager.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where doc.object(GitHubCode.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
-repoData.each() {
-  // For each repo, clone it locally to get stats for it
-  def repo = service.getRepository(it[0], it[1])
-  repos.add(repo)
-}
+def repoNames = []
+if (xcontext.macro.params.repositories != null) {
+  xcontext.macro.params.repositories.tokenize(",").each() { repoName -&gt;
+    // Find the Git URL for that repo
+    def repoData = xwiki.queryManager.xwql("select distinct repo.giturl from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where repo.organization = '${xcontext.macro.params.organization}' and repo.name = '${repoName}'").execute()
+    if (repoData.size() == 1) {
+      def repo = service.getRepository(repoData[0], repoName)
+      repos.add(repo)
+      repoNames.add(repoName)
+    } else {
+      println "{{error}}No GitHub Repository defined in this wiki for the '${it}' repository name. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] this repository first.{{/error}}"
+      return
+    }
+  }
+} else {
+  // Get all repositories for the xwiki organization
+  def repoData = xwiki.queryManager.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where doc.object(GitHubCode.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
+  repoData.each() {
+    // For each repo, clone it locally to get stats for it
+    def repo = service.getRepository(it[0], it[1])
+    repos.add(repo)
+    repoNames.add(it[1])
+  }
 
-if (repos.size() == 0) {
-  println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] some repositories for this organization first.{{/error}}"
-  return
+  if (repos.size() == 0) {
+    println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] some repositories for this organization first.{{/error}}"
+    return
+  }
 }
 
 def finder = new CommitFinder(repos)
@@ -180,11 +198,12 @@ if (sinceDays &gt; 0) {
 finder.setMatcher(filters)
 finder.find()
 
-// Get all committers in the wiki, find all their aliases and save them so that we can later associate aliases with GitHub ids
+// Get all committers in the wiki for the defined repos, find all their aliases and save them so that we can later associate aliases with GitHub ids
 def committerAliases = [:]
 def committerAvatars = [:]
 def committerNames = [:]
-xwiki.queryManager.xwql("select distinct committer.id, committer.aliases, committer.avatar, committer.name from Document doc, doc.object(GitHubCode.CommitterClass) as committer").execute().each() {
+def memberOfClause = repoNames.collect { "'${it}' member of committer.repositories" }.join(" or ")
+xwiki.queryManager.xwql("select distinct committer.id, committer.aliases, committer.avatar, committer.name from Document doc, doc.object(GitHubCode.CommitterClass) as committer where (${memberOfClause})").execute().each() {
   // Get all aliases
   it[1].tokenize('|').each() { alias -&gt;
     committerAliases.put(alias, it[0])
@@ -214,11 +233,22 @@ stats.each() { userid, count -&gt;
   def name = committerNames.get(userid) ?: userid
   def isCommitter = committerNames.get(userid) == null ? "(x)" : "(/)"
   if (avatar != null) {
-    print "|[[image:${avatar}]]|${name}|${count}"
+    print "|[[image:${avatar}]]|${name}|(% style='background-color: #D1F0E0' %)${count}"
   } else {
-    print "||${name}|${count}"
+    print "||${name}|(% style='background-color: #D1F0E0' %)${count}"
   }
   println listContributors ? "|${isCommitter}" : ""
+}
+
+// Add all committers who've not already been listed
+if (xcontext.macro.params.inactives == "true") {
+  committerNames.each() { userid, name -&gt;
+    if (stats.get(userid) == null) {
+      def avatar = committerAvatars.get(userid)
+      print "|[[image:${avatar}]]|${name}|(% style='background-color: #F0D1D6' %)0"
+      println listContributors ? "|(/)" : ""
+    }
+  }
 }
 {{/groovy}}</code>
 </property>
@@ -445,14 +475,136 @@ stats.each() { userid, count -&gt;
 <name>since</name>
 </property>
 </object>
-<content>Example:
-
-List all committers (excluding contributors) who've done commits for the ##xwiki## organization for the past 365 days:
-
-{{box}}{{{
-{{committers organization="xwiki" since="365"/}}
-}}}{{/box}}
-
-Result:
-
-{{committers  organization="xwiki" since="365"/}}</content></xwikidoc>
+<object>
+<class>
+<name>XWiki.WikiMacroParameterClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<defaultValue>
+<disabled>0</disabled>
+<name>defaultValue</name>
+<number>4</number>
+<prettyName>Parameter default value</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultValue>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>2</number>
+<prettyName>Parameter description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<mandatory>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>mandatory</name>
+<number>3</number>
+<prettyName>Parameter mandatory</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</mandatory>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>1</number>
+<prettyName>Parameter name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>3</number>
+<className>XWiki.WikiMacroParameterClass</className>
+<guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
+<property>
+<defaultValue></defaultValue>
+</property>
+<property>
+<description>Explicit list of repositories to get data for</description>
+</property>
+<property>
+<mandatory>0</mandatory>
+</property>
+<property>
+<name>repositories</name>
+</property>
+</object>
+<object>
+<class>
+<name>XWiki.WikiMacroParameterClass</name>
+<customClass></customClass>
+<customMapping></customMapping>
+<defaultViewSheet></defaultViewSheet>
+<defaultEditSheet></defaultEditSheet>
+<defaultWeb></defaultWeb>
+<nameField></nameField>
+<validationScript></validationScript>
+<defaultValue>
+<disabled>0</disabled>
+<name>defaultValue</name>
+<number>4</number>
+<prettyName>Parameter default value</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</defaultValue>
+<description>
+<disabled>0</disabled>
+<name>description</name>
+<number>2</number>
+<prettyName>Parameter description</prettyName>
+<rows>5</rows>
+<size>40</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+</description>
+<mandatory>
+<disabled>0</disabled>
+<displayFormType>select</displayFormType>
+<displayType>yesno</displayType>
+<name>mandatory</name>
+<number>3</number>
+<prettyName>Parameter mandatory</prettyName>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+</mandatory>
+<name>
+<disabled>0</disabled>
+<name>name</name>
+<number>1</number>
+<prettyName>Parameter name</prettyName>
+<size>30</size>
+<unmodifiable>0</unmodifiable>
+<classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+</name>
+</class>
+<name>GitHubCode.CommittersMacro</name>
+<number>4</number>
+<className>XWiki.WikiMacroParameterClass</className>
+<guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
+<property>
+<defaultValue>false</defaultValue>
+</property>
+<property>
+<description>If "true" then also displays inactive committers, ie committers who've done 0 commits on the period</description>
+</property>
+<property>
+<mandatory>0</mandatory>
+</property>
+<property>
+<name>inactives</name>
+</property>
+</object>
+<content></content></xwikidoc>
