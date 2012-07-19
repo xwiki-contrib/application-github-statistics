@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <xwikidoc>
-<web>GitHubCode</web>
-<name>ImportRepositories</name>
-<language></language>
-<defaultLanguage>en</defaultLanguage>
-<translation>0</translation>
-<parent>GitHubCode.WebHome</parent>
-<creator>XWiki.Admin</creator>
-<author>XWiki.Admin</author>
-<customClass></customClass>
-<contentAuthor>XWiki.Admin</contentAuthor>
-<creationDate>1329502417000</creationDate>
-<date>1329508313000</date>
-<contentUpdateDate>1329508313000</contentUpdateDate>
-<version>1.1</version>
-<title>Import Repositories</title>
-<template></template>
-<defaultTemplate></defaultTemplate>
-<validationScript></validationScript>
-<comment></comment>
-<minorEdit>false</minorEdit>
-<syntaxId>xwiki/2.1</syntaxId>
-<hidden>false</hidden>
-<content>Import repositories from GitHub into this wiki.
+  <web>GitHubCode</web>
+  <name>ImportRepositories</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <parent>GitHubCode.WebHome</parent>
+  <creator>xwiki:XWiki.Admin</creator>
+  <author>xwiki:XWiki.Admin</author>
+  <customClass/>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <creationDate>1329502417000</creationDate>
+  <date>1329508313000</date>
+  <contentUpdateDate>1329508313000</contentUpdateDate>
+  <version>1.1</version>
+  <title>Import Repositories</title>
+  <template/>
+  <defaultTemplate/>
+  <validationScript/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>Import repositories from GitHub into this wiki.
 
 {{groovy}}
 import groovy.json.*
@@ -63,15 +64,10 @@ if (request.organization != null) {
   println "  &lt;input type='submit' value='Import' /&gt;"
   println "&lt;/form&gt;"
   println "{{/html}}"
-}
-
-def repoData = xwiki.queryManager.xwql("select distinct repo.organization, repo.id, repo.name, repo.giturl, repo.htmlurl from Document doc, doc.object(GitHubCode.RepositoryClass) as repo").execute()
-if (repoData.size() &gt; 0) {
-  println "|=Organization|=Id|=Name|=Git URL|=HTML URL"
-  repoData.each() {
-    println "|${it[0]}|${it[1]}|${it[2]}|${it[3]}|${it[4]}"
-  }
   println ""
   println "[[Delete all repositories&gt;&gt;||queryString='delete=1']]"
 }
-{{/groovy}}</content></xwikidoc>
+{{/groovy}}
+
+{{include reference="GitHubCode.ListRepositories"/}}</content>
+</xwikidoc>

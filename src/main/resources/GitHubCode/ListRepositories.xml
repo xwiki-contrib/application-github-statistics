@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xwikidoc>
+  <web>GitHubCode</web>
+  <name>ListRepositories</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <parent>GitHubCode.WebHome</parent>
+  <creator>xwiki:XWiki.Admin</creator>
+  <author>xwiki:XWiki.Admin</author>
+  <customClass/>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <creationDate>1342613951000</creationDate>
+  <date>1342614272000</date>
+  <contentUpdateDate>1342614272000</contentUpdateDate>
+  <version>1.1</version>
+  <title>All Repositories</title>
+  <template/>
+  <defaultTemplate/>
+  <validationScript/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>{{groovy}}
+def repoDocs = services.query.xwql("from doc.object(GitHubCode.RepositoryClass) as repo").execute()
+if (repoDocs.size() &gt; 0) {
+  println "|=Organization|=Id|=Name|=Git URL|=HTML URL"
+  repoDocs.each() { docName -&gt;
+    def repoDoc = xwiki.getDocument(docName)
+    def repoObject = repoDoc.getObject("GitHubCode.RepositoryClass")
+    def organization = repoObject.getProperty("organization").value
+    def id = repoObject.getProperty("id").value
+    def name = repoObject.getProperty("name").value
+    def giturl = repoObject.getProperty("giturl").value
+    def htmlurl = repoObject.getProperty("htmlurl").value
+    println "|${organization}|[[${id}&gt;&gt;${docName}]]|${name}|${giturl}|${htmlurl}"
+  }
+}
+{{/groovy}}</content>
+</xwikidoc>
