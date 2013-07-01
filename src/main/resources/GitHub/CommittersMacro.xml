@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHubCode</web>
+  <web>GitHubStats</web>
   <name>CommittersMacro</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubCode.WebHome</parent>
+  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
@@ -22,7 +22,7 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <object>
     <class>
       <name>XWiki.WikiMacroClass</name>
@@ -133,7 +133,7 @@
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </visibility>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>0</number>
     <className>XWiki.WikiMacroClass</className>
     <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
@@ -157,19 +157,19 @@ def repoNames = []
 if (xcontext.macro.params.repositories != null) {
   xcontext.macro.params.repositories.tokenize(",").each() { repoName -&gt;
     // Find the Git URL for that repo
-    def repoData = services.query.xwql("select distinct repo.giturl from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where repo.organization = '${xcontext.macro.params.organization}' and repo.name = '${repoName}'").execute()
+    def repoData = services.query.xwql("select distinct repo.giturl from Document doc, doc.object(GitHubStats.RepositoryClass) as repo where repo.organization = '${xcontext.macro.params.organization}' and repo.name = '${repoName}'").execute()
     if (repoData.size() == 1) {
       def repo = service.getRepository(repoData[0], repoName)
       repos.add(repo)
       repoNames.add(repoName)
     } else {
-      println "{{error}}No GitHub Repository defined in this wiki for the '${it}' repository name. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] this repository first.{{/error}}"
+      println "{{error}}No GitHub Repository defined in this wiki for the '${it}' repository name. You need to [[Import&gt;&gt;GitHubStats.ImportRepositories]] this repository first.{{/error}}"
       return
     }
   }
 } else {
   // Get all repositories for the xwiki organization
-  def repoData = services.query.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubCode.RepositoryClass) as repo where doc.object(GitHubCode.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
+  def repoData = services.query.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubStats.RepositoryClass) as repo where doc.object(GitHubStats.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
   repoData.each() {
     // For each repo, clone it locally to get stats for it
     def repo = service.getRepository(it[0], it[1])
@@ -178,7 +178,7 @@ if (xcontext.macro.params.repositories != null) {
   }
 
   if (repos.size() == 0) {
-    println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubCode.ImportRepositories]] some repositories for this organization first.{{/error}}"
+    println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubStats.ImportRepositories]] some repositories for this organization first.{{/error}}"
     return
   }
 }
@@ -204,9 +204,9 @@ def committerAliases = [:]
 def committerAvatars = [:]
 def committerNames = [:]
 def memberOfClause = repoNames.collect { "'${it}' member of committer.repositories" }.join(" or ")
-services.query.xwql("from doc.object(GitHubCode.CommitterClass) as committer where (${memberOfClause})").execute().each() { docName -&gt;
+services.query.xwql("from doc.object(GitHubStats.CommitterClass) as committer where (${memberOfClause})").execute().each() { docName -&gt;
     def committerDoc = xwiki.getDocument(docName)
-    def committerObject = committerDoc.getObject("GitHubCode.CommitterClass")
+    def committerObject = committerDoc.getObject("GitHubStats.CommitterClass")
     def avatar = committerObject.getProperty("avatar").value
     def id = committerObject.getProperty("id").value
     def aliases = committerObject.getProperty("aliases").value
@@ -334,7 +334,7 @@ if (xcontext.macro.params.inactives == "true") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>0</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>fd5e191f-08a6-47b0-a87a-f2584bb4eecd</guid>
@@ -400,7 +400,7 @@ if (xcontext.macro.params.inactives == "true") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>1</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
@@ -466,7 +466,7 @@ if (xcontext.macro.params.inactives == "true") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>2</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
@@ -532,7 +532,7 @@ if (xcontext.macro.params.inactives == "true") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>3</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
@@ -598,7 +598,7 @@ if (xcontext.macro.params.inactives == "true") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubCode.CommittersMacro</name>
+    <name>GitHubStats.CommittersMacro</name>
     <number>4</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>

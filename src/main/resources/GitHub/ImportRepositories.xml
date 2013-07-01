@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHubCode</web>
+  <web>GitHubStats</web>
   <name>ImportRepositories</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubCode.WebHome</parent>
+  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
@@ -22,7 +22,7 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <content>Import repositories from GitHub into this wiki.
 
 {{groovy}}
@@ -35,11 +35,11 @@ if (request.organization != null) {
 
   reposJSON.each() {
     // Create new page to represent the imported Repository
-    def repoDoc = xwiki.getDocument("GitHub", "${it.name} Repository")
+    def repoDoc = xwiki.getDocument("GitHubStats", "${it.name} Repository")
     if (repoDoc.isNew()) {
       repoDoc.setTitle("Repository for [${it.name}]")
-      repoDoc.setParent("GitHub.WebHome")
-      def repoObject = repoDoc.newObject("GitHubCode.RepositoryClass")
+      repoDoc.setParent("GitHubStats.WebHome")
+      def repoObject = repoDoc.newObject("GitHubStats.RepositoryClass")
       repoObject.set("id", it.name)
       repoObject.set("giturl", it.git_url)
       repoObject.set("htmlurl", it.html_url)
@@ -52,7 +52,7 @@ if (request.organization != null) {
     }
   }
 } else if (request.delete == "1") {
-  def repoData = xwiki.queryManager.xwql("from doc.object(GitHubCode.RepositoryClass) as repo").execute()
+  def repoData = xwiki.queryManager.xwql("from doc.object(GitHubStats.RepositoryClass) as repo").execute()
   repoData.each() {
     xwiki.getDocument(it).deleteDocument()
     println "* Repository [${it}] deleted"
@@ -69,5 +69,5 @@ if (request.organization != null) {
 }
 {{/groovy}}
 
-{{include reference="GitHubCode.ListRepositories"/}}</content>
+{{include reference="GitHubStats.ListRepositories"/}}</content>
 </xwikidoc>

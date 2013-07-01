@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHub</web>
+  <web>GitHubStats</web>
   <name>WebHome</name>
   <language/>
   <defaultLanguage/>
@@ -31,19 +31,19 @@
 
 {{velocity}}
 #if ($hasAdmin)
-  [[Import Repositories&gt;&gt;GitHubCode.ImportRepositories]]
+  [[Import Repositories&gt;&gt;GitHubStats.ImportRepositories]]
 #end
 {{/velocity}}
 
-{{include reference="GitHubCode.ListRepositories"/}}
+{{include reference="GitHubStats.ListRepositories"/}}
 
 = Imported Committers =
 
 {{velocity}}
 #if ($hasAdmin)
-  [[Import Committers&gt;&gt;GitHubCode.ImportCommitters]]
+  [[Import Committers&gt;&gt;GitHubStats.ImportCommitters]]
 #end
 {{/velocity}}
 
-{{include reference="GitHubCode.ListCommitters"/}}</content>
+{{include reference="GitHubStats.ListCommitters"/}}</content>
 </xwikidoc>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHubCode</web>
+  <web>GitHubStats</web>
   <name>CommitterClass</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubCode.WebHome</parent>
+  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
@@ -22,9 +22,9 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <class>
-    <name>GitHubCode.CommitterClass</name>
+    <name>GitHubStats.CommitterClass</name>
     <customClass/>
     <customMapping/>
     <defaultViewSheet/>

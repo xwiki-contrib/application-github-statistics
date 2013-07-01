@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHubCode</web>
+  <web>GitHubStats</web>
   <name>ListRepositories</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubCode.WebHome</parent>
+  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
@@ -22,14 +22,14 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <content>{{groovy}}
-def repoDocs = services.query.xwql("from doc.object(GitHubCode.RepositoryClass) as repo").execute()
+def repoDocs = services.query.xwql("from doc.object(GitHubStats.RepositoryClass) as repo").execute()
 if (repoDocs.size() &gt; 0) {
   println "|=Organization|=Id|=Name|=Git URL|=HTML URL"
   repoDocs.each() { docName -&gt;
     def repoDoc = xwiki.getDocument(docName)
-    def repoObject = repoDoc.getObject("GitHubCode.RepositoryClass")
+    def repoObject = repoDoc.getObject("GitHubStats.RepositoryClass")
     def organization = repoObject.getProperty("organization").value
     def id = repoObject.getProperty("id").value
     def name = repoObject.getProperty("name").value

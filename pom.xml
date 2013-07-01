@@ -25,24 +25,63 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.xwiki.platform</groupId>
-    <artifactId>xwiki-platform-core</artifactId>
-    <version>4.2-SNAPSHOT</version>
+    <groupId>org.xwiki.commons</groupId>
+    <artifactId>xwiki-commons-pom</artifactId>
+    <version>4.5</version>
   </parent>
-  <artifactId>xwiki-platform-github</artifactId>
-  <name>XWiki Platform - GitHub</name>
+  <groupId>org.xwiki.contrib</groupId>
+  <artifactId>application-github-statistics</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>GitHub Statistics Application</name>
   <packaging>xar</packaging>
-  <description>GitHub application for XWiki</description>
+  <description>Provides Committer Statistics for repositories defined on GitHub</description>
+  <scm>
+    <connection>scm:git:git://github.com/xwiki-contrib/application-github-statistics.git</connection>
+    <developerConnection>scm:git:git@github.com:xwiki-contrib/application-github-statistics.git</developerConnection>
+    <url>https://github.com/xwiki-contrib/application-github-statistics</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>vmassol</id>
+      <name>Vincent Massol</name>
+    </developer>
+  </developers>
   <properties>
     <!-- Don't run CLIRR here since there's no Java code. -->
     <xwiki.clirr.skip>true</xwiki.clirr.skip>
+    <platform.version>${commons.version}</platform.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-git</artifactId>
-      <version>${project.version}</version>
+      <version>${platform.version}</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
+  <build>
+    <!-- Needed to add support for the XAR packaging -->
+    <extensions>
+      <extension>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-xar-handlers</artifactId>
+        <version>${commons.version}</version>
+      </extension>
+    </extensions>
+    <plugins>
+      <!-- The XAR packaging uses the XAR plugin and thus we need to define what version to use -->
+      <plugin>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
+        <version>${commons.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>xwiki-staging</id>
+      <name>XWiki Staging Repository</name>
+      <url>http://nexus.xwiki.org/nexus/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 </project>

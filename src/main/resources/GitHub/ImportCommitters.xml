@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xwikidoc>
-  <web>GitHubCode</web>
+  <web>GitHubStats</web>
   <name>ImportCommitters</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubCode.WebHome</parent>
+  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
@@ -22,7 +22,7 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <content>Import committers from GitHub into this wiki.
 
 {{groovy}}
@@ -32,7 +32,7 @@ if (request.import == "1") {
   // Perform the import
   // Start by getting all committer ids with dups
   def committerIds = [:] as Map
-  def repoData = xwiki.queryManager.xwql("select distinct repo.organization, repo.id from Document doc, doc.object(GitHubCode.RepositoryClass) as repo").execute()
+  def repoData = xwiki.queryManager.xwql("select distinct repo.organization, repo.id from Document doc, doc.object(GitHubStats.RepositoryClass) as repo").execute()
   repoData.each() { repo -&gt;
     // Find all committers for a repository
     def collaboratorsJSON = new JsonSlurper().parseText("https://api.github.com/repos/${repo[0]}/${repo[1]}/collaborators".toURL().text)
@@ -49,11 +49,11 @@ if (request.import == "1") {
   committerIds.each() { id, repos -&gt;
     // Find data for a collaborator
     def userJSON = new JsonSlurper().parseText("https://api.github.com/users/${java.net.URLEncoder.encode(id)}".toURL().text)
-    def committerDoc = xwiki.getDocument("GitHub", "${id} Committer")
+    def committerDoc = xwiki.getDocument("GitHubStats", "${id} Committer")
     if (committerDoc.isNew()) {
       committerDoc.setTitle("Committer [${id}]")
-      committerDoc.setParent("GitHub.WebHome")
-      def committerObject = committerDoc.newObject("GitHubCode.CommitterClass")
+      committerDoc.setParent("GitHubStats.WebHome")
+      def committerObject = committerDoc.newObject("GitHubStats.CommitterClass")
       committerDoc.set("id", id)
       committerDoc.set("avatar", userJSON.avatar_url)
       committerDoc.set("repositories", repos)
@@ -66,7 +66,7 @@ if (request.import == "1") {
     }
   }
 } else if (request.delete == "1") {
-  def committerData = xwiki.queryManager.xwql("from doc.object(GitHubCode.CommitterClass) as repo").execute()
+  def committerData = xwiki.queryManager.xwql("from doc.object(GitHubStats.CommitterClass) as repo").execute()
   committerData.each() {
     xwiki.getDocument(it).deleteDocument()
     println "* Committer [${it}] deleted"
@@ -77,7 +77,7 @@ if (request.import == "1") {
 }
 {{/groovy}}
 
-{{include reference="GitHubCode.ListCommitters"/}}
+{{include reference="GitHubStats.ListCommitters"/}}
 
 </content>
 </xwikidoc>
