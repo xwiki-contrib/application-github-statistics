@@ -11,12 +11,11 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1342613690000</creationDate>
-  <date>1342613720000</date>
-  <contentUpdateDate>1342613720000</contentUpdateDate>
+  <creationDate>1373287536000</creationDate>
+  <date>1373292740000</date>
+  <contentUpdateDate>1373292740000</contentUpdateDate>
   <version>1.1</version>
   <title>All Committers</title>
-  <template/>
   <defaultTemplate/>
   <validationScript/>
   <comment/>
@@ -34,8 +33,9 @@ if (committerDocs.size() &gt; 0) {
     def id = committerObject.getProperty("id").value
     def repositories = committerObject.getProperty("repositories").value
     def aliases = committerObject.getProperty("aliases").value
-    println "|[[image:${avatar}]]|[[${id}&gt;&gt;${docName}]]|${repositories.join(', ')}|${aliases.join(', ')}"
+    println "|[[image:${avatar}||width='80' height='80']]|[[${id}&gt;&gt;${docName}]]|${repositories.join(', ')}|${aliases.join(', ')}"
   }
 }
-{{/groovy}}</content>
+{{/groovy}}
+</content>
 </xwikidoc>

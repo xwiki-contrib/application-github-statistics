@@ -11,12 +11,11 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1329505527000</creationDate>
-  <date>1329556590000</date>
-  <contentUpdateDate>1329556590000</contentUpdateDate>
+  <creationDate>1373287536000</creationDate>
+  <date>1373292488000</date>
+  <contentUpdateDate>1373292488000</contentUpdateDate>
   <version>1.1</version>
   <title>Import Committers</title>
-  <template/>
   <defaultTemplate/>
   <validationScript/>
   <comment/>
@@ -50,20 +49,22 @@ if (request.import == "1") {
     // Find data for a collaborator
     def userJSON = new JsonSlurper().parseText("https://api.github.com/users/${java.net.URLEncoder.encode(id)}".toURL().text)
     def committerDoc = xwiki.getDocument("GitHubStats", "${id} Committer")
-    if (committerDoc.isNew()) {
-      committerDoc.setTitle("Committer [${id}]")
-      committerDoc.setParent("GitHubStats.WebHome")
-      def committerObject = committerDoc.newObject("GitHubStats.CommitterClass")
-      committerDoc.set("id", id)
-      committerDoc.set("avatar", userJSON.avatar_url)
-      committerDoc.set("repositories", repos)
-      committerDoc.set("aliases", [])
-      committerDoc.set("name", userJSON.name)
-      committerDoc.save("Imported Committer [${id}]", true)
-      println "* Committer [${id}] imported"
-    } else {
-      println "* Committer [${id}] already exists, not imported"
+    committerDoc.setTitle("Committer [${id}]")
+    committerDoc.setParent("GitHubStats.WebHome")
+    // If there's an existing CommitterClass xobject then reuse it
+    def committerObject = committerDoc.getObject("GitHubStats.CommitterClass", true)
+    committerDoc.use("GitHubStats.CommitterClass")
+    committerDoc.set("id", id)
+    committerDoc.set("avatar", userJSON.avatar_url)
+    committerDoc.set("repositories", repos)
+    committerDoc.set("name", userJSON.name)
+    committerDoc.set("profileurl", userJSON.html_url) 
+    def aliases = committerDoc.getValue('aliases')
+    if (!aliases) {
+      committerDoc.set("aliases", []) 
     }
+    committerDoc.save("Imported Committer [${id}]", true)
+    println "* Committer [${id}] imported"
   }
 } else if (request.delete == "1") {
   def committerData = xwiki.queryManager.xwql("from doc.object(GitHubStats.CommitterClass) as repo").execute()
@@ -77,7 +78,5 @@ if (request.import == "1") {
 }
 {{/groovy}}
 
-{{include reference="GitHubStats.ListCommitters"/}}
-
-</content>
+{{include reference="GitHubStats.ListCommitters"/}}</content>
 </xwikidoc>
