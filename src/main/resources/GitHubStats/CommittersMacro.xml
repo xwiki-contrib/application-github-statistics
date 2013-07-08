@@ -12,7 +12,7 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1373287536000</creationDate>
-  <date>1373293003000</date>
+  <date>1373293364000</date>
   <contentUpdateDate>1373290665000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
@@ -297,7 +297,7 @@ if (type == "list") {
     def profileURL = committerProfileURLs.get(userid)
     if (avatar != null) {
       def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-      print "|[[image:${avatar}]]|${nameDisplay}|(% style='background-color: #D1F0E0' %)${count}"
+      print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='background-color: #D1F0E0' %)${count}"
     } else {
       print "||${name}|(% style='background-color: #D1F0E0' %)${count}"
     }
@@ -311,7 +311,7 @@ if (type == "list") {
         def avatar = committerAvatars.get(userid)
         def profileURL = committerProfileURLs.get(userid)
         def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-        print "|[[image:${avatar}]]|${nameDisplay}|(% style='background-color: #F0D1D6' %)0"
+        print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='background-color: #F0D1D6' %)0"
         println listContributors ? "|(/)" : ""
       }
     }
