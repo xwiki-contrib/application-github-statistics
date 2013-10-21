@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1373287536000</creationDate>
-  <date>1373292488000</date>
-  <contentUpdateDate>1373292488000</contentUpdateDate>
+  <creationDate>1382361556000</creationDate>
+  <date>1382372102000</date>
+  <contentUpdateDate>1382372102000</contentUpdateDate>
   <version>1.1</version>
   <title>Import Committers</title>
   <defaultTemplate/>
@@ -27,6 +27,21 @@
 {{groovy}}
 import groovy.json.*
 
+/**
+  * Allow calling GitHub API and passing a userid/password
+  * See https://help.github.com/articles/creating-an-access-token-for-command-line-use to generate a personal token
+  * Then pass the following in the URL for this page: ?auth=&lt;userid&gt;:&lt;token or password&gt;
+  */
+def parseJSON(String url)
+{
+    def conn = url.toURL().openConnection()
+    if (request.auth) {
+      def authString = request.auth.getBytes().encodeBase64().toString()
+      conn.setRequestProperty( "Authorization", "Basic ${authString}" )
+    }
+    return new JsonSlurper().parseText(conn.content.text)
+}
+
 if (request.import == "1") {
   // Perform the import
   // Start by getting all committer ids with dups
@@ -34,7 +49,7 @@ if (request.import == "1") {
   def repoData = xwiki.queryManager.xwql("select distinct repo.organization, repo.id from Document doc, doc.object(GitHubStats.RepositoryClass) as repo").execute()
   repoData.each() { repo -&gt;
     // Find all committers for a repository
-    def collaboratorsJSON = new JsonSlurper().parseText("https://api.github.com/repos/${repo[0]}/${repo[1]}/collaborators".toURL().text)
+    def collaboratorsJSON = parseJSON("https://api.github.com/repos/${repo[0]}/${repo[1]}/collaborators")
     collaboratorsJSON.each() { collaborator -&gt;
       def repos = committerIds.get(collaborator.login)
       if (repos == null) {
@@ -47,24 +62,27 @@ if (request.import == "1") {
   // For all Committer id, find committer data
   committerIds.each() { id, repos -&gt;
     // Find data for a collaborator
-    def userJSON = new JsonSlurper().parseText("https://api.github.com/users/${java.net.URLEncoder.encode(id)}".toURL().text)
+    // Only add data if the user isn't already imported (we do this to save Requests to GitHub since there's a limit of 60/hour)
     def committerDoc = xwiki.getDocument("GitHubStats", "${id} Committer")
-    committerDoc.setTitle("Committer [${id}]")
-    committerDoc.setParent("GitHubStats.WebHome")
-    // If there's an existing CommitterClass xobject then reuse it
-    def committerObject = committerDoc.getObject("GitHubStats.CommitterClass", true)
-    committerDoc.use("GitHubStats.CommitterClass")
-    committerDoc.set("id", id)
-    committerDoc.set("avatar", userJSON.avatar_url)
-    committerDoc.set("repositories", repos)
-    committerDoc.set("name", userJSON.name)
-    committerDoc.set("profileurl", userJSON.html_url) 
-    def aliases = committerDoc.getValue('aliases')
-    if (!aliases) {
-      committerDoc.set("aliases", []) 
+    if (committerDoc.isNew() || request.overwrite) {
+      def userJSON = parseJSON("https://api.github.com/users/${java.net.URLEncoder.encode(id)}")
+      committerDoc.setTitle("Committer [${id}]")
+      committerDoc.setParent("GitHubStats.WebHome")
+      // If there's an existing CommitterClass xobject then reuse it
+      def committerObject = committerDoc.getObject("GitHubStats.CommitterClass", true)
+      committerDoc.use("GitHubStats.CommitterClass")
+      committerDoc.set("id", id)
+      committerDoc.set("avatar", userJSON.avatar_url)
+      committerDoc.set("repositories", repos)
+      committerDoc.set("name", userJSON.name)
+      committerDoc.set("profileurl", userJSON.html_url) 
+      def aliases = committerDoc.getValue('aliases')
+      if (!aliases) {
+        committerDoc.set("aliases", []) 
+      }
+      committerDoc.save("Imported Committer [${id}]", true)
+      println "* Committer [${id}] imported"
     }
-    committerDoc.save("Imported Committer [${id}]", true)
-    println "* Committer [${id}] imported"
   }
 } else if (request.delete == "1") {
   def committerData = xwiki.queryManager.xwql("from doc.object(GitHubStats.CommitterClass) as repo").execute()
@@ -73,8 +91,14 @@ if (request.import == "1") {
     println "* Committer [${it}] deleted"
   }
 } else {
-  println "[[Import all Committers&gt;&gt;||queryString='import=1']] for all Repositories defined in this wiki."
+  println "[[Import all Committers&gt;&gt;||queryString='import=1']] for all Repositories defined in this wiki (Committers already imported are skipped unless you pass the ##overwrite## parameter in the URL)."
   println "[[Delete all committers&gt;&gt;||queryString='delete=1']]."
+  println ""
+  println """\
+{{info}}
+[[GitHub API supports 60 requests per hour&gt;&gt;http://developer.github.com/v3/#rate-limiting]]. If you get an error you'll need to authenticate yourself by [[creating a personal access token&gt;&gt;https://help.github.com/articles/creating-an-access-token-for-command-line-use]] and then pass it in the URL as a parameter using the format ##auth=&lt;userid&gt;:&lt;token or password&gt;##
+{{/info}}
+"""
 }
 {{/groovy}}
 
