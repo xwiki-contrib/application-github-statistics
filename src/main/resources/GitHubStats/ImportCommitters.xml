@@ -75,8 +75,11 @@ if (request.import == "1") {
       committerDoc.set("avatar", userJSON.avatar_url)
       committerDoc.set("repositories", repos)
       committerDoc.set("name", userJSON.name)
-      committerDoc.set("profileurl", userJSON.html_url) 
-      committerDoc.set("company", userJSON. company) 
+      committerDoc.set("profileurl", userJSON.html_url)
+      def company = committerDoc.getValue('company')
+      if (!company) {
+        committerDoc.set("company", userJSON. company)
+      }
       def aliases = committerDoc.getValue('aliases')
       if (!aliases) {
         committerDoc.set("aliases", []) 
