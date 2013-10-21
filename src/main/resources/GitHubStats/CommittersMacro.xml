@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1373287536000</creationDate>
-  <date>1373293364000</date>
-  <contentUpdateDate>1373290665000</contentUpdateDate>
+  <creationDate>1382361556000</creationDate>
+  <date>1382374465000</date>
+  <contentUpdateDate>1382373893000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
   <defaultTemplate/>
@@ -26,7 +26,7 @@
     <filename>unknown.png</filename>
     <filesize>2056</filesize>
     <author>XWiki.Admin</author>
-    <date>1373287535000</date>
+    <date>1382361556000</date>
     <version>1.1</version>
     <comment/>
     <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
@@ -249,6 +249,7 @@ def committerAliases = [:]
 def committerAvatars = [:]
 def committerNames = [:]
 def committerProfileURLs = [:]
+def committerCompanies = [:]
 def memberOfClause = repoNames.collect { "'${it}' member of committer.repositories" }.join(" or ")
 services.query.xwql("from doc.object(GitHubStats.CommitterClass) as committer where (${memberOfClause})").execute().each() { docName -&gt;
     def committerDoc = xwiki.getDocument(docName)
@@ -258,6 +259,7 @@ services.query.xwql("from doc.object(GitHubStats.CommitterClass) as committer wh
     def aliases = committerObject.getProperty("aliases").value
     def name = committerObject.getProperty("name").value
     def profileURL = committerObject.getProperty("profileurl").value
+    def company = committerObject.getProperty("company").value
     // Get all aliases
     aliases.each() { alias -&gt;
       committerAliases.put(alias, id)
@@ -267,6 +269,7 @@ services.query.xwql("from doc.object(GitHubStats.CommitterClass) as committer wh
     committerAvatars.put(id, avatar)
     committerNames.put(id, name)
     committerProfileURLs.put(id, profileURL)
+    committerCompanies.put(id, company)
 }
 
 def listContributors = xcontext.macro.params.contributors == "true"
@@ -295,11 +298,13 @@ if (type == "list") {
     def name = committerNames.get(userid) ?: userid
     def isCommitter = committerNames.get(userid) == null ? "(x)" : "(/)"
     def profileURL = committerProfileURLs.get(userid)
+    def company = committerCompanies.get(userid)
+    def companyDisplay = company ? "\n//${company}//" : ""
+    def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
     if (avatar != null) {
-      def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-      print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='background-color: #D1F0E0' %)${count}"
+      print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #D1F0E0' %)${count}"
     } else {
-      print "||${name}|(% style='background-color: #D1F0E0' %)${count}"
+      print "|[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #D1F0E0' %)${count}"
     }
     println listContributors ? "|${isCommitter}" : ""
   }
@@ -310,8 +315,10 @@ if (type == "list") {
       if (stats.get(userid) == null) {
         def avatar = committerAvatars.get(userid)
         def profileURL = committerProfileURLs.get(userid)
+        def company = committerCompanies.get(userid)
+        def companyDisplay = company ? "\n//${company}//" : ""
         def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-        print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='background-color: #F0D1D6' %)0"
+        print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #F0D1D6' %)0"
         println listContributors ? "|(/)" : ""
       }
     }
@@ -324,11 +331,13 @@ if (type == "list") {
     def avatar = committerAvatars.get(userid)
     def name = committerNames.get(userid) ?: userid
     def profileURL = committerProfileURLs.get(userid)
+    def company = committerCompanies.get(userid)
+    def companyDisplay = company ? "\n//${company}//" : ""
     def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
     if (committerNames.get(userid) == null) {
-      nameDisplay = "(% style='background-color: #F7F2E1' %)${nameDisplay}"
+      nameDisplay = "(% style='background-color: #F7F2E1' %)(((${nameDisplay}${companyDisplay})))"
     } else {
-      nameDisplay = "(% style='background-color: #E1F7ED' %)${nameDisplay}"
+      nameDisplay = "(% style='background-color: #E1F7ED' %)(((${nameDisplay}${companyDisplay})))"
     }
     println "(% style='width:100%' %)"
     if (avatar != null) {
@@ -352,8 +361,10 @@ if (type == "list") {
         print "|((("
         def avatar = committerAvatars.get(userid)
         def profileURL = committerProfileURLs.get(userid)
+        def company = committerCompanies.get(userid)
+        def companyDisplay = company ? "\n//${company}//" : ""
         def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-        nameDisplay = "(% style='background-color: #F0D1D6' %)${nameDisplay}"
+        nameDisplay = "(% style='background-color: #F0D1D6' %)(((${nameDisplay}${companyDisplay})))"
         println "(% style='width:100%' %)"
         if (avatar != null) {
           println "|(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='width:30px' %)0"

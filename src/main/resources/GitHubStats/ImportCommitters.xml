@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1382361556000</creationDate>
-  <date>1382372102000</date>
-  <contentUpdateDate>1382372102000</contentUpdateDate>
+  <date>1382373540000</date>
+  <contentUpdateDate>1382373540000</contentUpdateDate>
   <version>1.1</version>
   <title>Import Committers</title>
   <defaultTemplate/>
@@ -76,6 +76,7 @@ if (request.import == "1") {
       committerDoc.set("repositories", repos)
       committerDoc.set("name", userJSON.name)
       committerDoc.set("profileurl", userJSON.html_url) 
+      committerDoc.set("company", userJSON. company) 
       def aliases = committerDoc.getValue('aliases')
       if (!aliases) {
         committerDoc.set("aliases", []) 
