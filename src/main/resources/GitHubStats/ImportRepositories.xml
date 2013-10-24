@@ -29,8 +29,8 @@
 import groovy.json.*
 
 if (request.organization != null) {
-  // Perform the import
-  def url = "https://api.github.com/users/${request.organization}/repos".toURL().text
+  // Perform the import (by default the API will only import 30 repos which is why we need use per_page)
+  def url = "https://api.github.com/users/${request.organization}/repos?per_page=1000".toURL().text
   def reposJSON = new JsonSlurper().parseText(url)
 
   reposJSON.each() {
