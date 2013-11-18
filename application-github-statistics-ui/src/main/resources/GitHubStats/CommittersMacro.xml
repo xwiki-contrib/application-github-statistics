@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xwikidoc>
+<xwikidoc version="1.1">
   <web>GitHubStats</web>
   <name>CommittersMacro</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
+  <creationDate>1384526315000</creationDate>
+  <parent>GitHubStats.WebHome</parent>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1382361556000</creationDate>
-  <date>1382374465000</date>
-  <contentUpdateDate>1382373893000</contentUpdateDate>
+  <date>1384799561000</date>
+  <contentUpdateDate>1384695827000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
   <defaultTemplate/>
@@ -22,53 +22,21 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
+  <content>{{committers repositories="xwiki/xwiki-commons"/}}</content>
   <attachment>
     <filename>unknown.png</filename>
-    <filesize>2056</filesize>
     <author>XWiki.Admin</author>
     <date>1382361556000</date>
     <version>1.1</version>
     <comment/>
-    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
-bWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp
-bj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6
-eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEz
-NDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo
-dHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw
-dGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv
-IiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS
-ZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD
-cmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNl
-SUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3Vt
-ZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06
-RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMy
-OEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUx
-ODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1w
-bWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P//
-/8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7Sw
-YTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrAS
-JngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtx
-GIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbc
-CXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp
-1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92A
-qzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVx
-CwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3
-Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQ
-MG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h
-5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyD
-yZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8
-SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JF
-f4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1
-psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO4
-1zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf
-6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJ
-A+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWH
-g4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PN
-b+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5E
-rkJggg==
-</content>
+    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P///8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7SwYTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrASJngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtxGIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbcCXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92AqzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVxCwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQMG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyDyZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JFf4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO41zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJA+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWHg4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PNb+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5ErkJggg==</content>
+    <filesize>2056</filesize>
   </attachment>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroClass</className>
+    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <class>
       <name>XWiki.WikiMacroClass</name>
       <customClass/>
@@ -178,210 +146,61 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </visibility>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>0</number>
-    <className>XWiki.WikiMacroClass</className>
-    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <property>
-      <code>{{groovy}}
-import org.apache.commons.io.*
-import org.eclipse.jgit.api.*
-import org.eclipse.jgit.lib.*
-import org.eclipse.jgit.revwalk.*
-import org.eclipse.jgit.storage.file.*
-import org.gitective.core.*
-import org.gitective.core.filter.commit.*
-import groovy.json.*
-import org.gitective.core.stat.*
+      <code>{{velocity}}
+##============================
+## Get all commits for the specifiec parameters
+##============================
+#set ($repositories = $services.githubstats.getRepositories($xcontext.macro.params.repositories))
+#set ($since = 0)
+#set ($since = $since.parseInt($xcontext.macro.params.since))
+#set ($userCommitActivity = $services.git.countAuthorCommits($since, $repositories))
+##================================
+## Get all imported users and their aliases in the wiki
+##================================
+#set ($authors = $services.githubstats.getAuthorsForRepositories($xcontext.macro.params.repositories))
+##==============================
+## Aggregate commits taking into account aliases
+##==============================
+#set ($commits = $services.githubstats.aggregateCommitsPerAuthor($userCommitActivity, $authors))
+##=====================
+## Display results in a List or Table
+##=====================
+#set ($displayCounter = 1)
+#foreach ($data in $commits.entrySet())
+  #set ($authorName = $data.key)
+  #set ($authorData = $data.value)
+  #set ($avatar = $authorData.avatar)
+  #if ("$!avatar" == '')
+    #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
+  #else
+    #set ($avatarDisplay = "(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]")
+  #end
+  #set ($company = $authorData.company)
+  #if ("$!company" != '')
+    #set ($companyDisplay = "\\//${company}//")
+  #else
+    #set ($companyDisplay = '')
+  #end
+  #set ($isCommitter = $authorData.committer == 'true')
+  #if ($isCommitter)
+    #set ($nameDisplay = "(% style='background-color: #E1F7ED' %)(((${authorName}$!companyDisplay)))")
+  #else
+    #set ($nameDisplay = "(% style='background-color: #F7F2E1' %)(((${authorName}$!companyDisplay)))")
+  #end
+  #set($count = $authorData.count)
+  #if ("$!xcontext.macro.params.type" == 'wall')
+    |(((
+      (% style='width:100%' %)
+      |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
+    )))#if ($displayCounter % 4 == 0)
 
-def service = services.get("git") 
-
-// Get the list of repositories to display data for
-def repos = []
-def repoNames = []
-if (xcontext.macro.params.repositories != null) {
-  xcontext.macro.params.repositories.tokenize(",").each() { repoName -&gt;
-    // Find the Git URL for that repo
-    def repoData = services.query.xwql("select distinct repo.giturl from Document doc, doc.object(GitHubStats.RepositoryClass) as repo where repo.organization = '${xcontext.macro.params.organization}' and repo.name = '${repoName}'").execute()
-    if (repoData.size() == 1) {
-      def repo = service.getRepository(repoData[0], repoName)
-      repos.add(repo)
-      repoNames.add(repoName)
-    } else {
-      println "{{error}}No GitHub Repository defined in this wiki for the '${it}' repository name. You need to [[Import&gt;&gt;GitHubStats.ImportRepositories]] this repository first.{{/error}}"
-      return
-    }
-  }
-} else {
-  // Get all repositories for the xwiki organization
-  def repoData = services.query.xwql("select distinct repo.giturl, repo.name from Document doc, doc.object(GitHubStats.RepositoryClass) as repo where doc.object(GitHubStats.RepositoryClass).organization = '${xcontext.macro.params.organization}'").execute()
-  repoData.each() {
-    // For each repo, clone it locally to get stats for it
-    def repo = service.getRepository(it[0], it[1])
-    repos.add(repo)
-    repoNames.add(it[1])
-  }
-
-  if (repos.size() == 0) {
-    println "{{error}}There are no GitHub Repositories defined in this wiki for the '${xcontext.macro.params.organization}' organization. You need to [[Import&gt;&gt;GitHubStats.ImportRepositories]] some repositories for this organization first.{{/error}}"
-    return
-  }
-}
-
-def finder = new CommitFinder(repos)
-def countFilter = new CommitCountFilter()
-def histogramFilter = new CommitterHistogramFilter()
-def committerFilter = new CommitterSetFilter()
-def filters = new AndCommitFilter()
-filters.add(countFilter, committerFilter, histogramFilter)
-
-def sinceDays = xcontext.macro.params.since.toInteger()
-if (sinceDays &gt; 0) {
-  def dateFilter = new CommitterDateFilter(new Date() - sinceDays)
-  finder.setFilter(dateFilter)
-}
-
-finder.setMatcher(filters)
-finder.find()
-
-// Get all committers in the wiki for the defined repos, find all their aliases and save them so that we can later associate aliases with GitHub ids
-def committerAliases = [:]
-def committerAvatars = [:]
-def committerNames = [:]
-def committerProfileURLs = [:]
-def committerCompanies = [:]
-def memberOfClause = repoNames.collect { "'${it}' member of committer.repositories" }.join(" or ")
-services.query.xwql("from doc.object(GitHubStats.CommitterClass) as committer where (${memberOfClause})").execute().each() { docName -&gt;
-    def committerDoc = xwiki.getDocument(docName)
-    def committerObject = committerDoc.getObject("GitHubStats.CommitterClass")
-    def avatar = committerObject.getProperty("avatar").value
-    def id = committerObject.getProperty("id").value
-    def aliases = committerObject.getProperty("aliases").value
-    def name = committerObject.getProperty("name").value
-    def profileURL = committerObject.getProperty("profileurl").value
-    def company = committerObject.getProperty("company").value
-    // Get all aliases
-    aliases.each() { alias -&gt;
-      committerAliases.put(alias, id)
-    }
-    committerAliases.put(name, id)
-    committerAliases.put(id, id)
-    committerAvatars.put(id, avatar)
-    committerNames.put(id, name)
-    committerProfileURLs.put(id, profileURL)
-    committerCompanies.put(id, company)
-}
-
-def listContributors = xcontext.macro.params.contributors == "true"
-
-def stats = [:]
-histogramFilter.getHistogram().getUserActivity(new CommitCountComparator()).each() {
-  if (committerAliases.get(it.name) != null || listContributors) {
-    def computedName = committerAliases.get(it.name) ?: it.name
-    def total = stats.get(computedName) ?: 0
-    total = total + it.count
-    stats.put(computedName, total)
-  }
-}
-
-// Sort stats
-stats = stats.sort {a, b -&gt; b.value &lt;=&gt; a.value}
-
-def type = xcontext.macro.params.type
-
-if (type == "list") {
-  print "|=Avatar|=User Id|=# Commits"
-  println listContributors ? "|=Committer?" : ""
-
-  stats.each() { userid, count -&gt;
-    def avatar = committerAvatars.get(userid)
-    def name = committerNames.get(userid) ?: userid
-    def isCommitter = committerNames.get(userid) == null ? "(x)" : "(/)"
-    def profileURL = committerProfileURLs.get(userid)
-    def company = committerCompanies.get(userid)
-    def companyDisplay = company ? "\n//${company}//" : ""
-    def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-    if (avatar != null) {
-      print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #D1F0E0' %)${count}"
-    } else {
-      print "|[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #D1F0E0' %)${count}"
-    }
-    println listContributors ? "|${isCommitter}" : ""
-  }
-
-  // Add all committers who've not already been listed
-  if (xcontext.macro.params.inactives == "true") {
-    committerNames.each() { userid, name -&gt;
-      if (stats.get(userid) == null) {
-        def avatar = committerAvatars.get(userid)
-        def profileURL = committerProfileURLs.get(userid)
-        def company = committerCompanies.get(userid)
-        def companyDisplay = company ? "\n//${company}//" : ""
-        def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-        print "|[[image:${avatar}||width='80' height='80']]|${nameDisplay}${companyDisplay}|(% style='background-color: #F0D1D6' %)0"
-        println listContributors ? "|(/)" : ""
-      }
-    }
-  }
-} else {
-  def displayCounter = 1
-  stats.each() { userid, count -&gt;
-    print "|((("
-
-    def avatar = committerAvatars.get(userid)
-    def name = committerNames.get(userid) ?: userid
-    def profileURL = committerProfileURLs.get(userid)
-    def company = committerCompanies.get(userid)
-    def companyDisplay = company ? "\n//${company}//" : ""
-    def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-    if (committerNames.get(userid) == null) {
-      nameDisplay = "(% style='background-color: #F7F2E1' %)(((${nameDisplay}${companyDisplay})))"
-    } else {
-      nameDisplay = "(% style='background-color: #E1F7ED' %)(((${nameDisplay}${companyDisplay})))"
-    }
-    println "(% style='width:100%' %)"
-    if (avatar != null) {
-      println "|(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='width:30px' %)${count}"
-    } else {
-      println "|(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]|${nameDisplay}|(% style='width:30px' %)${count}"
-    }
-
-    print ")))"
-
-    if (displayCounter % 4 == 0) {
-      println ""
-    }
-    displayCounter++
-  }
-
-  // Add all committers who've not already been listed
-  if (xcontext.macro.params.inactives == "true") {
-    committerNames.each() { userid, name -&gt;
-      if (stats.get(userid) == null) {
-        print "|((("
-        def avatar = committerAvatars.get(userid)
-        def profileURL = committerProfileURLs.get(userid)
-        def company = committerCompanies.get(userid)
-        def companyDisplay = company ? "\n//${company}//" : ""
-        def nameDisplay = profileURL ? "[[${name}&gt;&gt;${profileURL}]]" : "${name}"
-        nameDisplay = "(% style='background-color: #F0D1D6' %)(((${nameDisplay}${companyDisplay})))"
-        println "(% style='width:100%' %)"
-        if (avatar != null) {
-          println "|(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]|${nameDisplay}|(% style='width:30px' %)0"
-        } else {
-          println "|(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]|${nameDisplay}|(% style='width:30px' %)0"
-        }
-        print ")))"
-
-        if (displayCounter % 4 == 0) {
-          println ""
-        }
-        displayCounter++
-      }
-    }
-  }
-} 
-{{/groovy}}</code>
+    #end
+    #set ($displayCounter = $displayCounter + 1)
+  #else
+  #end
+#end
+{{/velocity}}</code>
     </property>
     <property>
       <contentDescription/>
@@ -393,7 +212,7 @@ if (type == "list") {
       <defaultCategory>content</defaultCategory>
     </property>
     <property>
-      <description>List committers and their activity in a table</description>
+      <description>List committers and their activity in a list or as a wall</description>
     </property>
     <property>
       <id>committers</id>
@@ -409,124 +228,58 @@ if (type == "list") {
     </property>
   </object>
   <object>
-    <class>
-      <name>XWiki.WikiMacroParameterClass</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <defaultValue>
-        <disabled>0</disabled>
-        <name>defaultValue</name>
-        <number>4</number>
-        <prettyName>Parameter default value</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </defaultValue>
-      <description>
-        <disabled>0</disabled>
-        <name>description</name>
-        <number>2</number>
-        <prettyName>Parameter description</prettyName>
-        <rows>5</rows>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </description>
-      <mandatory>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>mandatory</name>
-        <number>3</number>
-        <prettyName>Parameter mandatory</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </mandatory>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Parameter name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-    </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>0</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>fd5e191f-08a6-47b0-a87a-f2584bb4eecd</guid>
-    <property>
-      <defaultValue/>
-    </property>
-    <property>
-      <description>List committers only for the specified GitHub organization</description>
-    </property>
-    <property>
-      <mandatory>1</mandatory>
-    </property>
-    <property>
-      <name>organization</name>
-    </property>
-  </object>
-  <object>
-    <class>
-      <name>XWiki.WikiMacroParameterClass</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <defaultValue>
-        <disabled>0</disabled>
-        <name>defaultValue</name>
-        <number>4</number>
-        <prettyName>Parameter default value</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </defaultValue>
-      <description>
-        <disabled>0</disabled>
-        <name>description</name>
-        <number>2</number>
-        <prettyName>Parameter description</prettyName>
-        <rows>5</rows>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </description>
-      <mandatory>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>mandatory</name>
-        <number>3</number>
-        <prettyName>Parameter mandatory</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </mandatory>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Parameter name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-    </class>
     <name>GitHubStats.CommittersMacro</name>
     <number>1</number>
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
+    <class>
+      <name>XWiki.WikiMacroParameterClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <defaultValue>
+        <disabled>0</disabled>
+        <name>defaultValue</name>
+        <number>4</number>
+        <prettyName>Parameter default value</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultValue>
+      <description>
+        <disabled>0</disabled>
+        <name>description</name>
+        <number>2</number>
+        <prettyName>Parameter description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <mandatory>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>mandatory</name>
+        <number>3</number>
+        <prettyName>Parameter mandatory</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </mandatory>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Parameter name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+    </class>
     <property>
       <defaultValue/>
     </property>
@@ -541,6 +294,10 @@ if (type == "list") {
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>2</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -589,10 +346,6 @@ if (type == "list") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>2</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <property>
       <defaultValue>0</defaultValue>
     </property>
@@ -607,6 +360,10 @@ if (type == "list") {
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>3</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -655,10 +412,6 @@ if (type == "list") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>3</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <property>
       <defaultValue/>
     </property>
@@ -673,6 +426,10 @@ if (type == "list") {
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>4</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -721,10 +478,6 @@ if (type == "list") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>4</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <property>
       <defaultValue>false</defaultValue>
     </property>
@@ -739,6 +492,10 @@ if (type == "list") {
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>5</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -787,10 +544,6 @@ if (type == "list") {
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>5</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <property>
       <defaultValue>wall</defaultValue>
     </property>
@@ -804,5 +557,4 @@ if (type == "list") {
       <name>type</name>
     </property>
   </object>
-  <content/>
 </xwikidoc>

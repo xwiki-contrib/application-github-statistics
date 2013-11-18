@@ -27,14 +27,22 @@
   <parent>
     <groupId>org.xwiki.commons</groupId>
     <artifactId>xwiki-commons-pom</artifactId>
-    <version>4.5</version>
+    <version>5.3-SNAPSHOT</version>
   </parent>
   <groupId>org.xwiki.contrib</groupId>
   <artifactId>application-github-statistics</artifactId>
   <version>2.0-SNAPSHOT</version>
-  <name>GitHub Statistics Application</name>
-  <packaging>xar</packaging>
+  <name>GitHub Statistics Application - Parent POM</name>
+  <packaging>pom</packaging>
   <description>Provides Committer Statistics for repositories defined on GitHub</description>
+  <properties>
+    <platform.version>${commons.version}</platform.version>
+    <rendering.version>${commons.version}</rendering.version>
+  </properties>
+  <modules>
+    <module>application-github-statistics-api</module>
+    <module>application-github-statistics-ui</module>
+  </modules>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-github-statistics.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-github-statistics.git</developerConnection>
@@ -47,37 +55,6 @@
       <name>Vincent Massol</name>
     </developer>
   </developers>
-  <properties>
-    <!-- Don't run CLIRR here since there's no Java code. -->
-    <xwiki.clirr.skip>true</xwiki.clirr.skip>
-    <platform.version>${commons.version}</platform.version>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-git</artifactId>
-      <version>${platform.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <!-- Needed to add support for the XAR packaging -->
-    <extensions>
-      <extension>
-        <groupId>org.xwiki.commons</groupId>
-        <artifactId>xwiki-commons-tool-xar-handlers</artifactId>
-        <version>${commons.version}</version>
-      </extension>
-    </extensions>
-    <plugins>
-      <!-- The XAR packaging uses the XAR plugin and thus we need to define what version to use -->
-      <plugin>
-        <groupId>org.xwiki.commons</groupId>
-        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
-        <version>${commons.version}</version>
-      </plugin>
-    </plugins>
-  </build>
   <distributionManagement>
     <repository>
       <id>xwiki-staging</id>
@@ -85,4 +62,12 @@
       <url>http://nexus.xwiki.org/nexus/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
+  <profiles>
+    <profile>
+      <id>integration-tests</id>
+      <modules>
+        <module>application-github-statistics-test</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

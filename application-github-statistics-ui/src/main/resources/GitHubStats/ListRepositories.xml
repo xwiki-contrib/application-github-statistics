@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xwikidoc>
+  <web>GitHubStats</web>
+  <name>ListRepositories</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <parent>GitHubStats.WebHome</parent>
+  <creator>xwiki:XWiki.Admin</creator>
+  <author>xwiki:XWiki.Admin</author>
+  <customClass/>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <creationDate>1383561877000</creationDate>
+  <date>1383653366000</date>
+  <contentUpdateDate>1383653366000</contentUpdateDate>
+  <version>1.1</version>
+  <title>All Repositories</title>
+  <defaultTemplate/>
+  <validationScript/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set($columns = ["organization", "id", "giturl", "htmlurl"])
+#set($columnsProperties = {
+   "organization" : { "type" : "text" },
+   "id" : { "type" : "text", "link" : "view" },
+   "giturl" : { "type" : "text" },
+   "htmlurl" : { "type" : "text" }
+})
+#set($options = { 
+  "className" : "GitHubStats.RepositoryClass",
+  "translationPrefix" : "githubstats.repository.",
+  "rowCount" : 15
+})
+#livetable("repositories" $columns $columnsProperties $options)
+{{/velocity}}
+</content>
+</xwikidoc>

@@ -1,0 +1,3 @@
+org.xwiki.contrib.githubstats.internal.DefaultGitHubStatsManager
+org.xwiki.contrib.githubstats.internal.DefaultGitHubFactory
+org.xwiki.contrib.githubstats.script.GitHubStatsScriptService

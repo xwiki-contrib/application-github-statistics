@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xwikidoc version="1.1">
+  <web>GitHubStats</web>
+  <name>ImportAuthors</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <creationDate>1384526315000</creationDate>
+  <parent>GitHubStats.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <customClass/>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <date>1384798292000</date>
+  <contentUpdateDate>1384798292000</contentUpdateDate>
+  <version>1.1</version>
+  <title>Import Authors</title>
+  <defaultTemplate/>
+  <validationScript/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden/>
+  <content>{{velocity}}
+#if (!$hasAdmin)
+  {{error}}You need Administration rights to import Authors!{{/error}}
+
+#end
+{{html}}
+&lt;form id='importAuthors' method='post' class='xform half'&gt;
+  &lt;dl&gt;
+    &lt;dt&gt;
+      &lt;label&gt;Authentication (Optional)&lt;/label&gt;
+      &lt;span class='xHint'&gt;&lt;a href='https://help.github.com/articles/creating-an-access-token-for-command-line-use'&gt;GitHub authentication token&lt;/a&gt; in the format: "[user name]:[token]". If not specified, anonymous access will be used and is &lt;a href='https://api.github.com/rate_limit'&gt;limited by GitHub to 60 requests per hour&lt;/a&gt;.&lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;
+      &lt;input id='authentication' name='authentication' type='text' value="$!request.authentication" /&gt;
+    &lt;/dd&gt;
+    &lt;dt&gt;
+      &lt;label&gt;Overwrite&lt;/label&gt;
+      &lt;span class='xHint'&gt;Whether to re-import data from GitHub for already existing Repositories found in this wiki&lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;
+      &lt;input id='overwrite' name='overwrite' type='checkbox' value='overwrite' /&gt;
+    &lt;/dd&gt;
+    &lt;dt&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Import all Authors from Git' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+      &lt;br /&gt;&lt;br /&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Import all Authors from GitHub' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+      &lt;br /&gt;&lt;br /&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Import all Committers from GitHub' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+      &lt;br /&gt;&lt;br /&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Link Authors' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+      &lt;br /&gt;&lt;br /&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Delete all Authors' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dt&gt;
+      &lt;label&gt;GitHub User Id&lt;/label&gt;
+      &lt;span class='xHint'&gt;Id of a specific GitHub user to import.&lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;
+      &lt;input id='githubid' name='githubid' type='text' value="$!request.githubid" /&gt;
+    &lt;/dd&gt;
+    &lt;dt&gt;
+      &lt;label&gt;GitHub User Email&lt;/label&gt;
+      &lt;span class='xHint'&gt;Email of the specific GitHub user to import in case the email is not set in GitHub.&lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;
+      &lt;input id='githubemail' name='githubemail' type='text' value="$!request.githubemail" /&gt;
+    &lt;/dd&gt;
+    &lt;dt&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Import specific Authors from GitHub' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+    &lt;/dt&gt;
+    &lt;dt&gt;
+  &lt;/dl&gt;
+&lt;/form&gt;
+{{/html}}
+
+#macro(printResults $result)
+  #if (!$result)
+    {{error}}
+      An error occurred:
+
+      $services.githubstats.lastError
+  {{/error}}
+  #elseif (!$result.isEmpty())
+    {{info}}
+    The following author entries were updated:
+    #foreach ($author in $result)
+      * $author
+    #end
+    {{/info}}
+  #else
+    {{info}}No author record was updated.{{/info}}
+  #end
+#end
+#set ($overwrite = ($!request.overwrite == 'overwrite'))
+#if ($request.action == 'Import all Authors from Git')
+    #set ($result = $services.githubstats.importAllAuthors($overwrite))
+    #printResults($result)
+#elseif ($request.action == 'Import all Authors from GitHub')
+  #if ("$!request.authentication" != "")
+    #set ($authTokens = $stringtool.split($request.authentication, ':'))
+    #set ($result = $services.githubstats.importAllAuthorsFromGitHub($authTokens[0], $authTokens[1], $overwrite))
+  #else
+    #set ($result = $services.githubstats.importAllAuthorsFromGitHub($overwrite))
+  #end
+  #printResults($result)
+#elseif ($request.action == 'Import all Committers from GitHub')
+  #if ("$!request.authentication" != "")
+    #set ($authTokens = $stringtool.split($request.authentication, ':'))
+    #set ($result = $services.githubstats.importAllCommittersFromGitHub($authTokens[0], $authTokens[1]))
+  #else
+    #set ($result = $services.githubstats.importAllCommittersFromGitHub())
+  #end
+  #printResults($result)
+#elseif ($request.action == 'Link Authors')
+  #set ($result = $services.githubstats.linkAuthors())
+  #printResults($result)
+#elseif ($request.action == 'Delete all Authors')
+  #set ($authors = $services.query.xwql('from doc.object(GitHubStats.AuthorClass) as repos').execute())
+  {{info}}
+  The following author pages will be deleted:
+  #foreach ($author in $authors)
+    * $author
+  #end
+
+  Type 'ok' to confirm deletion of these authors
+
+  {{html}}
+  &lt;form id='deleteAuthors' method='post' class='xform half'&gt;
+     &lt;input id='confirmDelete' name='confirmDelete' type='text' /&gt;
+      &lt;span class='buttonwrapper'&gt;
+        &lt;input value='Really delete all Authors' class='button' type='submit' name='action'&gt;
+      &lt;/span&gt;
+  &lt;/form&gt;
+#elseif ($request.action == 'Really delete all Authors' &amp;&amp; $!request.confirmDelete == 'ok')
+  #set ($result = $services.githubstats.deleteAuthors())
+  #if (!$result)
+    {{error}}An error occurred.{{/error}}
+  #elseif (!$result.isEmpty())
+    {{info}}
+    The following authors were deleted:
+    #foreach ($author in $result)
+      * $author
+    #end
+    {{/info}}
+  #else
+    {{info}}No author was deleted.{{/info}}
+  #end
+#elseif ($request.action == 'Import specific Authors from GitHub')
+  #if ("$!request.githubid" == '' || "$!request.githubemail" == '')
+    {{error}}You must specify both a GitHub user id and email to import a specific GitHub author.{{/error}}
+  #else
+    #if ("$!request.authentication" != "")
+      #set ($authTokens = $stringtool.split($request.authentication, ':'))
+      #set ($result = $services.githubstats.createAuthorFromGitHub($authTokens[0], $authTokens[1], $request.githubid, $request.githubemail, $overwrite))
+    #else
+      #set ($result = $services.githubstats.createAuthorFromGitHub($request.githubid, $request.githubemail, $overwrite))
+    #end
+    #printResults($result)
+  #end
+#end
+{{/velocity}}
+
+= Imported Authors =
+
+{{include reference="GitHubStats.ListAuthors"/}}</content>
+</xwikidoc>

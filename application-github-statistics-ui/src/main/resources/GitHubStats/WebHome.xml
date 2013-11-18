@@ -15,7 +15,7 @@
   <date>1329558448000</date>
   <contentUpdateDate>1329558448000</contentUpdateDate>
   <version>1.1</version>
-  <title>GitHub Repositories &amp; Committers</title>
+  <title>GitHub Repositories &amp; Git Authors</title>
   <template/>
   <defaultTemplate/>
   <validationScript/>
@@ -37,13 +37,13 @@
 
 {{include reference="GitHubStats.ListRepositories"/}}
 
-= Imported Committers =
+= Imported Authors =
 
 {{velocity}}
 #if ($hasAdmin)
-  [[Import Committers&gt;&gt;GitHubStats.ImportCommitters]]
+  [[Import Authors&gt;&gt;GitHubStats.ImportAuthors]]
 #end
 {{/velocity}}
 
-{{include reference="GitHubStats.ListCommitters"/}}</content>
+{{include reference="GitHubStats.ListAuthors"/}}</content>
 </xwikidoc>

@@ -11,12 +11,11 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1329502310000</creationDate>
-  <date>1329508205000</date>
-  <contentUpdateDate>1329508205000</contentUpdateDate>
+  <creationDate>1383513115000</creationDate>
+  <date>1383514053000</date>
+  <contentUpdateDate>1383513115000</contentUpdateDate>
   <version>1.1</version>
-  <title/>
-  <template/>
+  <title>Repository Class</title>
   <defaultTemplate/>
   <validationScript/>
   <comment/>
@@ -71,19 +70,6 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </id>
-    <name>
-      <customDisplay/>
-      <disabled>0</disabled>
-      <name>name</name>
-      <number>3</number>
-      <picker>0</picker>
-      <prettyName>Name</prettyName>
-      <size>30</size>
-      <unmodifiable>0</unmodifiable>
-      <validationMessage/>
-      <validationRegExp/>
-      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-    </name>
     <organization>
       <customDisplay/>
       <disabled>0</disabled>
@@ -98,5 +84,14 @@
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </organization>
   </class>
+  <object>
+    <name>GitHubStats.RepositoryClass</name>
+    <number>0</number>
+    <className>XWiki.DocumentSheetBinding</className>
+    <guid>cd52271a-9d88-4174-9d08-a63e3d831d3f</guid>
+    <property>
+      <sheet>XWiki.ClassSheet</sheet>
+    </property>
+  </object>
   <content/>
 </xwikidoc>
