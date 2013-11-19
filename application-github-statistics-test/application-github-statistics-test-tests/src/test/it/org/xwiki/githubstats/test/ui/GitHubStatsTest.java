@@ -20,7 +20,15 @@
 package org.xwiki.githubstats.test.ui;
 
 import org.junit.*;
+import org.xwiki.contrib.GitHubStatsHomePage;
+import org.xwiki.contrib.ImportAuthorsPage;
+import org.xwiki.contrib.ImportRepositoriesPage;
 import org.xwiki.test.ui.AbstractTest;
+import org.xwiki.test.ui.SuperAdminAuthenticationRule;
+import org.xwiki.test.ui.po.LiveTableElement;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * UI tests for the GitHubStats application.
@@ -30,15 +38,36 @@ import org.xwiki.test.ui.AbstractTest;
  */
 public class GitHubStatsTest extends AbstractTest
 {
-    @Before
-    public void setUpGitRepository()
-    {
-
-    }
+    @Rule
+    public SuperAdminAuthenticationRule authenticationRule = new SuperAdminAuthenticationRule(getUtil(), getDriver());
 
     @Test
-    public void testXXX()
+    public void testImports()
     {
+        GitHubStatsHomePage home = GitHubStatsHomePage.gotoPage();
 
+        // Import Repositories
+        ImportRepositoriesPage importRepositoriesPage = home.clickImportRepositories();
+        importRepositoriesPage = importRepositoriesPage.importOrganization("organization1");
+        LiveTableElement livetable = importRepositoriesPage.getRepositoriesLiveTable();
+        assertEquals(6, livetable.getRowCount());
+        importRepositoriesPage = importRepositoriesPage.deleteAllRepositories();
+        livetable = importRepositoriesPage.getRepositoriesLiveTable();
+        assertEquals(0, livetable.getRowCount());
+        importRepositoriesPage = importRepositoriesPage.importOrganization("organization1");
+
+        // Navigate back to the home page using the breadcrumb
+        importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
+        home = new GitHubStatsHomePage();
+
+        // Import Authors
+        ImportAuthorsPage importAuthorsPage = home.clickImportAuthors();
+        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
+        livetable = importAuthorsPage.getAuthorsLiveTable();
+        assertEquals(3, livetable.getRowCount());
+        assertTrue(livetable.hasRow("Git Id", "author1"));
+        assertTrue(livetable.hasRow("Git Id", "author2"));
+        assertTrue(livetable.hasRow("Git Email", "author1@doe.com"));
+        assertTrue(livetable.hasRow("Git Email", "author2@doe.com"));
     }
 }

@@ -1,0 +1,2 @@
+500:org.xwiki.contrib.githubstats.StubGitManager
+500:org.xwiki.contrib.githubstats.StubGitHubFactory

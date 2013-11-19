@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -372,6 +373,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                             if (repository.getOrganizationId().equals(baseObject.getStringValue("organizationId"))
                                 && repository.getRepositoryId().equals(baseObject.getStringValue("repositoryId")))
                             {
+                                foundRepositoryObject = baseObject;
                                 break;
                             }
                         }
@@ -402,53 +404,65 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> linkAuthors() throws GitHubStatsException
     {
-        List<String> linkedUsers = new ArrayList<String>();
+        Set<String> modifiedUsers = new LinkedHashSet<String>();
 
-        // For each author that has its user avatar field set and which doesn't have a linkedid set (i.e. it's a main
-        // id), try to guess other related authors and copy the data to their profiles. We use the following strategies:
+        // For each author that has its user avatar field set look for similar authors and fill mutually missing fields
+        // using the following strategies:
         // - A - find other authors with the same id (but different emails)
         // - B - find other authors having an id matching the author name
         // - C - find other authors having the same name
         // - D - find other authors having the same email
         try {
-            String authorClassReference = this.defaultSerializer.serialize(AUTHOR_CLASS);
-            // Note that the query is made to work with Oracle which treats empty strings as null.
-            List<BaseObject> fullAuthorObjects = getAuthorObjectsForQuery(String.format(
-                ", doc.object(%s) author where (author.avatar <> '' or (author.avatar is not null and '' is null))",
-                authorClassReference));
-            for (BaseObject fullAuthorObject : fullAuthorObjects) {
-                String gitId = fullAuthorObject.getStringValue("id");
-                String gitName = fullAuthorObject.getStringValue("name");
-                String gitEmail = fullAuthorObject.getStringValue("email");
+            List<String> linkedUsers = new ArrayList<String>();
+            do {
+                linkedUsers.clear();
+                String authorClassReference = this.defaultSerializer.serialize(AUTHOR_CLASS);
+                // Note that the query is made to work with Oracle which treats empty strings as null.
+                List<BaseObject> fullAuthorObjects = getAuthorObjectsForQuery(String.format(
+                    ", doc.object(%s) author where (author.avatar <> '' or (author.avatar is not null and '' is null))",
+                    authorClassReference));
+                for (BaseObject fullAuthorObject : fullAuthorObjects) {
+                    String gitId = fullAuthorObject.getStringValue("id");
+                    String gitName = fullAuthorObject.getStringValue("name");
+                    String gitEmail = fullAuthorObject.getStringValue("email");
 
-                // Strategy A
-                List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
-                    ", doc.object(%s) author where author.id = '%s' and author.email <> '%s'",
-                    authorClassReference, gitId, gitEmail));
-                linkedUsers.addAll(setLinkedId(fullAuthorObject, authorObjects));
+                    // Strategy A
+                    List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
+                        ", doc.object(%s) author where author.id = '%s' and author.email <> '%s'",
+                        authorClassReference, gitId, gitEmail));
+                    List<String> results = linkUser(fullAuthorObject, authorObjects);
+                    linkedUsers.addAll(results);
+                    modifiedUsers.addAll(results);
 
-                // Strategy B
-                authorObjects = getAuthorObjectsForQuery(String.format(
-                    "where doc.object(%s).id = '%s'", authorClassReference, gitName));
-                linkedUsers.addAll(setLinkedId(fullAuthorObject, authorObjects));
+                    // Strategy B
+                    authorObjects = getAuthorObjectsForQuery(String.format(
+                        "where doc.object(%s).id = '%s'", authorClassReference, gitName));
+                    results = linkUser(fullAuthorObject, authorObjects);
+                    linkedUsers.addAll(results);
+                    modifiedUsers.addAll(results);
 
-                // Strategy C
-                authorObjects = getAuthorObjectsForQuery(String.format(
-                    ", doc.object(%s) author where author.name = '%s' and author.id <> '%s' and author.email <> '%s'",
-                    this.defaultSerializer.serialize(AUTHOR_CLASS), gitName, gitId, gitEmail));
-                linkedUsers.addAll(setLinkedId(fullAuthorObject, authorObjects));
+                    // Strategy C
+                    authorObjects = getAuthorObjectsForQuery(String.format(
+                        ", doc.object(%s) author where author.name = '%s' and author.id <> '%s' and author.email <> '%s'",
+                        this.defaultSerializer.serialize(AUTHOR_CLASS), gitName, gitId, gitEmail));
+                    results = linkUser(fullAuthorObject, authorObjects);
+                    linkedUsers.addAll(results);
+                    modifiedUsers.addAll(results);
 
-                // Strategy D
-                authorObjects = getAuthorObjectsForQuery(String.format(
-                    ", doc.object(%s) author where author.email = '%s' and author.id <> '%s'",
-                    authorClassReference, gitEmail, gitId));
-                linkedUsers.addAll(setLinkedId(fullAuthorObject, authorObjects));
-            }
+                    // Strategy D
+                    authorObjects = getAuthorObjectsForQuery(String.format(
+                        ", doc.object(%s) author where author.email = '%s' and author.id <> '%s'",
+                        authorClassReference, gitEmail, gitId));
+                    results = linkUser(fullAuthorObject, authorObjects);
+                    linkedUsers.addAll(results);
+                    modifiedUsers.addAll(results);
+                }
+            } while (!linkedUsers.isEmpty());
         } catch (Exception e) {
             throw new GitHubStatsException("Failed to link authors", e);
         }
 
-        return linkedUsers;
+        return new ArrayList<String>(modifiedUsers);
     }
 
     @Override
@@ -699,7 +713,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         return deletedItems;
     }
 
-    private List<String> setLinkedId(BaseObject fullAuthorObject, List<BaseObject> authorObjects)
+    private List<String> linkUser(BaseObject fullAuthorObject, List<BaseObject> authorObjects)
         throws XWikiException
     {
         List<String> linkedUsers = new ArrayList<String>();
@@ -725,12 +739,8 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     }
                 }
             }
-            // Set the linked id if we have made any modification & they are not linked already
             if (modified) {
                 String fullId = fullAuthorObject.getStringValue("id");
-                if (StringUtils.isEmpty(authorObject.getStringValue("linkedid"))) {
-                    authorObject.setStringValue("linkedid", fullId);
-                }
                 // Save modifications
                 xcontext.getWiki().saveDocument(authorObject.getOwnerDocument(),
                     String.format("Linked author with [%s]", fullId), true, xcontext);

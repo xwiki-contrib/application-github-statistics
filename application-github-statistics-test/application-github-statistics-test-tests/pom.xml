@@ -46,7 +46,35 @@
       <scope>runtime</scope>
       <version>${project.version}</version>
     </dependency>
+    <!-- Dependencies to set up some stubbed Git repo and stubbed GitHub Factory -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>application-github-statistics-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- Get some Git Helper for tests to create some test Git repo -->
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-git</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-git</artifactId>
+      <version>${platform.version}</version>
+      <type>test-jar</type>
+    </dependency>
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>application-github-statistics-test-pageobjects</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-test</artifactId>
@@ -57,17 +85,6 @@
   <build>
     <testSourceDirectory>src/test/it</testSourceDirectory>
     <plugins>
-      <!-- Make sure we only run AllTests since that test runs all the other ones, thus starting/stopping XWiki only
-           once -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>**/AllTests.java</include>
-          </includes>
-        </configuration>
-      </plugin>
       <!-- TODO: Remove when the following issue is fixed: http://jira.xwiki.org/jira/browse/XWIKI-7683 -->
       <plugin>
         <groupId>org.xwiki.platform</groupId>
