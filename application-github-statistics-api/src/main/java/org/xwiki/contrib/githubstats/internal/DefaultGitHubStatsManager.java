@@ -334,7 +334,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> importAllCommittersFromGitHub(GitHub gitHub) throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        Set<String> importedUsers = new LinkedHashSet<String>();
 
         // Find all Git repositories defined in the current wiki.
         Map<GitHubRepository, String> repositories = getAllRepositoryURLs();
@@ -342,7 +342,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             importedUsers.addAll(importCommittersFromGitHub(gitHub, entry.getKey()));
         }
 
-        return importedUsers;
+        return new ArrayList<String>(importedUsers);
     }
 
     @Override

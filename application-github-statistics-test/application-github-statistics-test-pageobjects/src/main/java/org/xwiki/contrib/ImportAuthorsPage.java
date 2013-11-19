@@ -29,9 +29,55 @@ public class ImportAuthorsPage extends ViewPage
     @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Authors from Git']")
     private WebElement importAllAuthorsFromGitSubmit;
 
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Authors from GitHub']")
+    private WebElement importAllAuthorsFromGitHubSubmit;
+
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Committers from GitHub']")
+    private WebElement importAllCommittersFromGitHubSubmit;
+
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Link Authors']")
+    private WebElement linkAuthorsSubmit;
+
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Delete all Authors']")
+    private WebElement deleteAllAuthorsSubmit;
+
+    @FindBy(id = "confirmDelete")
+    private WebElement confirmDeleteTextInput;
+
+    @FindBy(xpath = "//*[@id='deleteAuthors']//input[@type='submit' and @value='Really delete all Authors']")
+    private WebElement confirmDeleteAllAuthorsSubmit;
+
     public ImportAuthorsPage importAllAuthorsFromGit()
     {
         this.importAllAuthorsFromGitSubmit.click();
+        return new ImportAuthorsPage();
+    }
+
+    public ImportAuthorsPage importAllAuthorsFromGitHub()
+    {
+        this.importAllAuthorsFromGitHubSubmit.click();
+        return new ImportAuthorsPage();
+    }
+
+    public ImportAuthorsPage importAllCommittersFromGitHub()
+    {
+        this.importAllCommittersFromGitHubSubmit.click();
+        return new ImportAuthorsPage();
+    }
+
+    public ImportAuthorsPage linkAuthors()
+    {
+        this.linkAuthorsSubmit.click();
+        return new ImportAuthorsPage();
+    }
+
+    public ImportAuthorsPage deleteAllAuthors()
+    {
+        this.deleteAllAuthorsSubmit.click();
+        ImportAuthorsPage currentPage = new ImportAuthorsPage();
+        currentPage.confirmDeleteTextInput.clear();
+        currentPage.confirmDeleteTextInput.sendKeys("ok");
+        currentPage.confirmDeleteAllAuthorsSubmit.click();
         return new ImportAuthorsPage();
     }
 

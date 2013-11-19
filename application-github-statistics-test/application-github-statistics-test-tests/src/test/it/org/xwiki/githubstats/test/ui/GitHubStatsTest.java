@@ -62,6 +62,7 @@ public class GitHubStatsTest extends AbstractTest
 
         // Import Authors
         ImportAuthorsPage importAuthorsPage = home.clickImportAuthors();
+        // Import from Git
         importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
         livetable = importAuthorsPage.getAuthorsLiveTable();
         assertEquals(3, livetable.getRowCount());
@@ -69,5 +70,25 @@ public class GitHubStatsTest extends AbstractTest
         assertTrue(livetable.hasRow("Git Id", "author2"));
         assertTrue(livetable.hasRow("Git Email", "author1@doe.com"));
         assertTrue(livetable.hasRow("Git Email", "author2@doe.com"));
+        assertTrue(livetable.hasRow("Name", "Not defined"));
+        assertTrue(livetable.hasRow("Company", "Not defined"));
+        importAuthorsPage = importAuthorsPage.deleteAllAuthors();
+        livetable = importAuthorsPage.getAuthorsLiveTable();
+        assertEquals(0, livetable.getRowCount());
+        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
+        // Import from GitHub
+        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGitHub();
+        livetable = importAuthorsPage.getAuthorsLiveTable();
+        assertEquals(3, livetable.getRowCount());
+        assertTrue(livetable.hasRow("Name", "author1"));
+        assertTrue(livetable.hasRow("Company", "Company"));
+        assertTrue(livetable.hasRow("Name", "Not defined"));
+        assertTrue(livetable.hasRow("Company", "Not defined"));
+        // Import Committers from GitHub
+        importAuthorsPage = importAuthorsPage.importAllCommittersFromGitHub();
+        // Link authors
+        importAuthorsPage = importAuthorsPage.linkAuthors();
+        // Now navigate to each author page to verify its data
+        // TODO...
     }
 }

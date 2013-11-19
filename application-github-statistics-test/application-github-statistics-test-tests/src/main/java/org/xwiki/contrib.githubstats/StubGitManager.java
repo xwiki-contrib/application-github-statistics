@@ -46,38 +46,41 @@ public class StubGitManager extends DefaultGitManager
             // Initialize a Git Repository with some test data in it.
             GitHelper gitHelper = new GitHelper(this.environment);
 
+            boolean exists = gitHelper.exists(localDirectoryName);
+
             gitRepository = gitHelper.createGitTestRepository(localDirectoryName);
 
-            // Add test data
-
-            // Scenario 1:
-            // - 3 authors representing the same user
-            // - 2 different ids
-            // - 2 different emails
-            // - 6 repos
-            if (localDirectoryName.equals("organization1/repository1")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-                addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
-            }
-            if (localDirectoryName.equals("organization1/repository2")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-                addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
-            }
-            if (localDirectoryName.equals("organization1/repository3")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-            }
-            if (localDirectoryName.equals("organization1/repository4")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-                addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
-            }
-            if (localDirectoryName.equals("organization1/repository5")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-                addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
-            }
-            if (localDirectoryName.equals("organization1/repository6")) {
-                addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
-                addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
-                addCommit("author2", "author2@doe.com", "test3.txt", gitRepository, gitHelper);
+            // Add test data but only if the repo doesn't already exist
+            if (!exists) {
+                // Scenario 1:
+                // - 3 authors representing the same user
+                // - 2 different ids
+                // - 2 different emails
+                // - 6 repos
+                if (localDirectoryName.equals("organization1/repository1")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                }
+                if (localDirectoryName.equals("organization1/repository2")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                }
+                if (localDirectoryName.equals("organization1/repository3")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                }
+                if (localDirectoryName.equals("organization1/repository4")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                }
+                if (localDirectoryName.equals("organization1/repository5")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                }
+                if (localDirectoryName.equals("organization1/repository6")) {
+                    addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                    addCommit("author2", "author2@doe.com", "test3.txt", gitRepository, gitHelper);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(String.format("Failed to setup Git test repository for [%s] in [%s]",
