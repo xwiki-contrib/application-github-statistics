@@ -21,6 +21,7 @@ package org.xwiki.contrib;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.xwiki.test.ui.po.LiveTableElement;
 import org.xwiki.test.ui.po.ViewPage;
 
 /**
@@ -66,5 +67,19 @@ public class GitHubStatsHomePage extends ViewPage
     {
         this.importAuthorsLink.click();
         return new ImportAuthorsPage();
+    }
+
+    public LiveTableElement getRepositoriesLiveTable()
+    {
+        LiveTableElement lt = new LiveTableElement("repositories");
+        lt.waitUntilReady();
+        return lt;
+    }
+
+    public LiveTableElement getAuthorsLiveTable()
+    {
+        LiveTableElement lt = new LiveTableElement("authors");
+        lt.waitUntilReady();
+        return lt;
     }
 }

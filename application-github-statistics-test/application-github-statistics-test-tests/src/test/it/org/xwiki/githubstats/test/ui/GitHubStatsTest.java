@@ -20,6 +20,7 @@
 package org.xwiki.githubstats.test.ui;
 
 import org.junit.*;
+import org.xwiki.contrib.AuthorSheetPage;
 import org.xwiki.contrib.GitHubStatsHomePage;
 import org.xwiki.contrib.ImportAuthorsPage;
 import org.xwiki.contrib.ImportRepositoriesPage;
@@ -66,16 +67,16 @@ public class GitHubStatsTest extends AbstractTest
         importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
         livetable = importAuthorsPage.getAuthorsLiveTable();
         assertEquals(3, livetable.getRowCount());
+        importAuthorsPage = importAuthorsPage.deleteAllAuthors();
+        livetable = importAuthorsPage.getAuthorsLiveTable();
+        assertEquals(0, livetable.getRowCount());
+        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
         assertTrue(livetable.hasRow("Git Id", "author1"));
         assertTrue(livetable.hasRow("Git Id", "author2"));
         assertTrue(livetable.hasRow("Git Email", "author1@doe.com"));
         assertTrue(livetable.hasRow("Git Email", "author2@doe.com"));
         assertTrue(livetable.hasRow("Name", "Not defined"));
         assertTrue(livetable.hasRow("Company", "Not defined"));
-        importAuthorsPage = importAuthorsPage.deleteAllAuthors();
-        livetable = importAuthorsPage.getAuthorsLiveTable();
-        assertEquals(0, livetable.getRowCount());
-        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
         // Import from GitHub
         importAuthorsPage = importAuthorsPage.importAllAuthorsFromGitHub();
         livetable = importAuthorsPage.getAuthorsLiveTable();
@@ -87,8 +88,53 @@ public class GitHubStatsTest extends AbstractTest
         // Import Committers from GitHub
         importAuthorsPage = importAuthorsPage.importAllCommittersFromGitHub();
         // Link authors
-        importAuthorsPage = importAuthorsPage.linkAuthors();
+        importAuthorsPage.linkAuthors();
+
         // Now navigate to each author page to verify its data
-        // TODO...
+        livetable.clickCell(1, 2);
+        AuthorSheetPage authorSheetPage = new AuthorSheetPage();
+        assertEquals("Id\nauthor2\n"
+            + "Email\nauthor1@doe.com\n"
+            + "Name\nauthor1\n"
+            + "Company\nCompany\n"
+            + "Repositories\n"
+            + "organization1 / repository2 (Committer)\n"
+            + "organization1 / repository1 (Committer)\n"
+            + "organization1 / repository6 (Committer)\n"
+            + "organization1 / repository5 (Committer)\n"
+            + "organization1 / repository4 (Committer)\n"
+            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
+        importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
+        home = new GitHubStatsHomePage();
+        livetable = home.getAuthorsLiveTable();
+        livetable.clickCell(2, 2);
+        authorSheetPage = new AuthorSheetPage();
+        assertEquals("Id\nauthor2\n"
+            + "Email\nauthor2@doe.com\n"
+            + "Name\nauthor1\n"
+            + "Company\nCompany\n"
+            + "Repositories\n"
+            + "organization1 / repository6 (Committer)\n"
+            + "organization1 / repository2 (Committer)\n"
+            + "organization1 / repository1 (Committer)\n"
+            + "organization1 / repository5 (Committer)\n"
+            + "organization1 / repository4 (Committer)\n"
+            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
+        importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
+        home = new GitHubStatsHomePage();
+        livetable = home.getAuthorsLiveTable();
+        livetable.clickCell(3, 2);
+        authorSheetPage = new AuthorSheetPage();
+        assertEquals("Id\nauthor1\n"
+            + "Email\nauthor1@doe.com\n"
+            + "Name\nauthor1\n"
+            + "Company\nCompany\n"
+            + "Repositories\n"
+            + "organization1 / repository2 (Committer)\n"
+            + "organization1 / repository1 (Committer)\n"
+            + "organization1 / repository6 (Committer)\n"
+            + "organization1 / repository5 (Committer)\n"
+            + "organization1 / repository4 (Committer)\n"
+            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
     }
 }
