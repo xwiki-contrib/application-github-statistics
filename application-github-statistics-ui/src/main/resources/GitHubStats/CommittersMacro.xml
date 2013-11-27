@@ -152,6 +152,9 @@
 ## Get all commits for the specifiec parameters
 ##============================
 #set ($repositories = $services.githubstats.getRepositories($xcontext.macro.params.repositories))
+#if ($repositories.isEmpty())
+  {{error}}Invalid 'repositories' parameter value. Make sure the format is '&lt;organization1&gt;/&lt;repository1&gt;,...,&lt;organizationN&gt;/&lt;repositoryN&gt;' and that the organization and repositories specified exist.{{/error}}
+#end
 #set ($since = 0)
 #set ($since = $since.parseInt($xcontext.macro.params.since))
 #set ($userCommitActivity = $services.git.countAuthorCommits($since, $repositories))

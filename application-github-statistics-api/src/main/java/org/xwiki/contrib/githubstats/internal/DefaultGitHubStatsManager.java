@@ -482,7 +482,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             }
             List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
                 ", doc.object(%s) authorRepo where %s", authorRepositoryClassReference,
-                StringUtils.join(whereConditions, "AND")));
+                StringUtils.join(whereConditions, " OR ")));
 
             // For each author return some author data
             for (BaseObject authorObject : authorObjects) {
@@ -662,7 +662,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                 authorResult.put("committer", false);
             }
             // Increase counter and store aggregated result
-            Integer counter = (Integer) authorData.get("count");
+            Integer counter = (Integer) authorResult.get("count");
             if (counter == null) {
                 counter = 0;
             }

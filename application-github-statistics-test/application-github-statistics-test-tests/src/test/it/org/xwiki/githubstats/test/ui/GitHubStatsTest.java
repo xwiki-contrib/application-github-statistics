@@ -27,6 +27,7 @@ import org.xwiki.contrib.ImportRepositoriesPage;
 import org.xwiki.test.ui.AbstractTest;
 import org.xwiki.test.ui.SuperAdminAuthenticationRule;
 import org.xwiki.test.ui.po.LiveTableElement;
+import org.xwiki.test.ui.po.ViewPage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -136,5 +137,12 @@ public class GitHubStatsTest extends AbstractTest
             + "organization1 / repository5 (Committer)\n"
             + "organization1 / repository4 (Committer)\n"
             + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
+
+        // Now create a new page using the committers macro to verify it works
+        ViewPage vp = getUtil().createPage(getTestClassName(), getTestMethodName(),
+            "{{committers repositories='organization1/repository1,organization1/repository2,"
+            + "organization1/repository3,organization1/repository4,organization1/repository5,"
+            + "organization1/repository6'/}}", "Committers", "xwiki/2.1");
+        assertEquals("author1\nCompany\n12", vp.getContent());
     }
 }
