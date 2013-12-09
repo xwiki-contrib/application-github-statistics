@@ -73,6 +73,6 @@ public interface GitHubStatsManager
 
     List<Repository> getRepositories(Map<GitHubRepository, String> repositories);
 
-    Map<String, Map<String, ?>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity, Map<Author,
-        Map<String, ?>> authors);
+    Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity, Map<Author,
+        Map<String, Object>> authors);
 }

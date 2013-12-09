@@ -398,8 +398,8 @@ public class GitHubStatsScriptService implements ScriptService
         }
     }
 
-    public Map<String, Map<String, ?>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity, Map<Author,
-        Map<String, ?>> authors)
+    public Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity, Map<Author,
+        Map<String, Object>> authors)
     {
         return this.manager.aggregateCommitsPerAuthor(userCommitActivity, authors);
     }

@@ -28,6 +28,7 @@ import org.xwiki.test.ui.AbstractTest;
 import org.xwiki.test.ui.SuperAdminAuthenticationRule;
 import org.xwiki.test.ui.po.LiveTableElement;
 import org.xwiki.test.ui.po.ViewPage;
+import org.xwiki.test.ui.po.editor.WikiEditPage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -67,7 +68,7 @@ public class GitHubStatsTest extends AbstractTest
         // Import from Git
         importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
         livetable = importAuthorsPage.getAuthorsLiveTable();
-        assertEquals(3, livetable.getRowCount());
+        assertEquals(4, livetable.getRowCount());
         importAuthorsPage = importAuthorsPage.deleteAllAuthors();
         livetable = importAuthorsPage.getAuthorsLiveTable();
         assertEquals(0, livetable.getRowCount());
@@ -81,7 +82,7 @@ public class GitHubStatsTest extends AbstractTest
         // Import from GitHub
         importAuthorsPage = importAuthorsPage.importAllAuthorsFromGitHub();
         livetable = importAuthorsPage.getAuthorsLiveTable();
-        assertEquals(3, livetable.getRowCount());
+        assertEquals(4, livetable.getRowCount());
         assertTrue(livetable.hasRow("Name", "author1"));
         assertTrue(livetable.hasRow("Company", "Company"));
         assertTrue(livetable.hasRow("Name", "Not defined"));
@@ -94,6 +95,17 @@ public class GitHubStatsTest extends AbstractTest
         // Now navigate to each author page to verify its data
         livetable.clickCell(1, 2);
         AuthorSheetPage authorSheetPage = new AuthorSheetPage();
+        assertEquals("Id\nauthor3\n"
+            + "Email\nauthor3@doe.com\n"
+            + "Name\n\n"
+            + "Company\n\n"
+            + "Repositories\n"
+            + "organization1 / repository1", authorSheetPage.getContent());
+        importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
+        home = new GitHubStatsHomePage();
+        livetable = home.getAuthorsLiveTable();
+        livetable.clickCell(2, 2);
+        authorSheetPage = new AuthorSheetPage();
         assertEquals("Id\nauthor2\n"
             + "Email\nauthor1@doe.com\n"
             + "Name\nauthor1\n"
@@ -108,7 +120,7 @@ public class GitHubStatsTest extends AbstractTest
         importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
         home = new GitHubStatsHomePage();
         livetable = home.getAuthorsLiveTable();
-        livetable.clickCell(2, 2);
+        livetable.clickCell(3, 2);
         authorSheetPage = new AuthorSheetPage();
         assertEquals("Id\nauthor2\n"
             + "Email\nauthor2@doe.com\n"
@@ -124,7 +136,7 @@ public class GitHubStatsTest extends AbstractTest
         importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
         home = new GitHubStatsHomePage();
         livetable = home.getAuthorsLiveTable();
-        livetable.clickCell(3, 2);
+        livetable.clickCell(4, 2);
         authorSheetPage = new AuthorSheetPage();
         assertEquals("Id\nauthor1\n"
             + "Email\nauthor1@doe.com\n"
@@ -143,6 +155,10 @@ public class GitHubStatsTest extends AbstractTest
             "{{committers repositories='organization1/repository1,organization1/repository2,"
             + "organization1/repository3,organization1/repository4,organization1/repository5,"
             + "organization1/repository6'/}}", "Committers", "xwiki/2.1");
-        assertEquals("author1\nCompany\n12", vp.getContent());
+        assertEquals("author1\nCompany\n12\nauthor3\n1", vp.getContent());
+        WikiEditPage wep = vp.editWiki();
+        wep.setContent("{{committers since='1' repositories='organization1/repository1'/}}");
+        wep.clickSaveAndView();
+        assertEquals("author1\nCompany\n2", vp.getContent());
     }
 }

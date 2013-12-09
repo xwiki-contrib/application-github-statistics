@@ -60,6 +60,10 @@ public class StubGitManager extends DefaultGitManager
                 if (localDirectoryName.equals("organization1/repository1")) {
                     addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
                     addCommit("author2", "author1@doe.com", "test2.txt", gitRepository, gitHelper);
+                    // Add another author with a commit from 3 days ago so that we can test the since parameter of
+                    // the committers macro + test inactive committers.
+                    long threeDaysAgo = System.currentTimeMillis() - 3*24*60*60*1000L;
+                    addCommit("author3", "author3@doe.com", threeDaysAgo, "test3.txt", gitRepository, gitHelper);
                 }
                 if (localDirectoryName.equals("organization1/repository2")) {
                     addCommit("author1", "author1@doe.com", "test1.txt", gitRepository, gitHelper);
@@ -93,7 +97,19 @@ public class StubGitManager extends DefaultGitManager
     private void addCommit(String authorId, String emailId, String file, Repository gitRepository, GitHelper gitHelper)
         throws Exception
     {
-        gitHelper.add(gitRepository.getDirectory(), file, "test content",
-            new PersonIdent(authorId, emailId), new PersonIdent(authorId, emailId), "commit");
+        addCommit(authorId, emailId, 0, file, gitRepository, gitHelper);
+    }
+
+    private void addCommit(String authorId, String emailId, long commitDate, String file, Repository gitRepository,
+        GitHelper gitHelper) throws Exception
+    {
+        PersonIdent author;
+        if (commitDate == 0) {
+            author = new PersonIdent(authorId, emailId);
+        } else {
+            author = new PersonIdent(authorId, emailId, commitDate, 0);
+        }
+
+        gitHelper.add(gitRepository.getDirectory(), file, "test content", author, author, "commit");
     }
 }

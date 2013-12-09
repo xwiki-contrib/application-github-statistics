@@ -24,16 +24,18 @@
   <hidden>false</hidden>
   <content>{{velocity}}
 #set ($discard = $doc.use('GitHubStats.AuthorClass'))
+#if ("$!doc.getValue('avatar')" != '')
 [[image:url:$doc.getValue('avatar')||width='80']]
+#end
 
 ; Id
 : $doc.getValue('id')
 ; Email
 : $doc.getValue('email')
 ; Name
-: $doc.getValue('name')
+: $!doc.getValue('name')
 ; Company
-: $doc.getValue('company')
+: $!doc.getValue('company')
 ; Repositories
 : (((
   #set ($objects = $doc.getObjects('GitHubStats.AuthorRepositoryClass'))
@@ -43,7 +45,7 @@
     #else
       #set ($committer = false)
     #end
-    * $object.getProperty('organizationId').value / $object.getProperty('repositoryId').value #if ($committer)(Committer)#end
+    * $object.getProperty('organizationId').value / $object.getProperty('repositoryId').value#if ($committer) (Committer)#end
 
   #end
 )))

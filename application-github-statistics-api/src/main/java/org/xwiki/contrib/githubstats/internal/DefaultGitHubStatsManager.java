@@ -629,45 +629,66 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     }
 
     @Override
-    public Map<String, Map<String, ?>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity,
-        Map<Author, Map<String, ?>> authors)
+    public Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity,
+        Map<Author, Map<String, Object>> authors)
     {
         Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+        Map<String, List<Map<String, Object>>> authorsByEmail = extractAuthorsByEmail(authors);
         for (UserCommitActivity userCommit : userCommitActivity) {
-            Author author = new Author(userCommit.getName(), userCommit.getEmail());
-            Map<String, ?> authorData = authors.get(author);
-            String authorName = (String) authorData.get("name");
-            if (StringUtils.isEmpty(authorName)) {
-                authorName = userCommit.getName();
+            // The userCommitActivity array will have actually aggregated all commits done by author having the same
+            // email address (this is the way Gitective does the aggregation). It uses the id of the first author and
+            // thus the other author ids are lost. Thus to reflect this we need to find all authors having the same
+            // email address and iterative over them to fill the data!
+            String email = userCommit.getEmail();
+            List<Map<String, Object>> authorByEmail = authorsByEmail.get(email);
+            if (authorByEmail != null) {
+                // Use the name from the first author found as our result index key
+                String authorName = (String) authorByEmail.get(0).get("name");
+                if (StringUtils.isEmpty(authorName)) {
+                    authorName = userCommit.getName();
+                }
+                // Create a result entry of none exist for the name already
+                Map<String, Object> authorResult = result.get(authorName);
+                if (authorResult == null) {
+                    authorResult = new HashMap<String, Object>();
+                    result.put(authorName, authorResult);
+                }
+                // Fill the other author data for the result
+                for (Map<String, ?> authorData : authorByEmail) {
+                    Author author = new Author((String) authorData.get("id"), email);
+                    List<Author> contributingAuthors = (List<Author>) authorResult.get("authors");
+                    if (contributingAuthors == null) {
+                        contributingAuthors = new ArrayList<Author>();
+                        authorResult.put("authors", contributingAuthors);
+                    }
+                    if (!contributingAuthors.contains(author)) {
+                        contributingAuthors.add(author);
+                    }
+                    // If the avatar or company fields are not set already, set them!
+                    String avatar = (String) authorResult.get("avatar");
+                    if (StringUtils.isEmpty(avatar)) {
+                        authorResult.put("avatar", authorData.get("avatar"));
+                    }
+                    String company = (String) authorResult.get("company");
+                    if (StringUtils.isEmpty(company)) {
+                        authorResult.put("company", authorData.get("company"));
+                    }
+                    // Overwrite committer info if true
+                    if ((Boolean) authorData.get("committer")) {
+                        authorResult.put("committer", true);
+                    } else {
+                        authorResult.put("committer", false);
+                    }
+                }
+                // Increase counter and store aggregated result
+                Integer counter = (Integer) authorResult.get("count");
+                if (counter == null) {
+                    counter = 0;
+                }
+                counter += userCommit.getCount();
+                authorResult.put("count", counter);
             }
-            // Create a result entry of none exist for the name already
-            Map<String, Object> authorResult = result.get(authorName);
-            if (authorResult == null) {
-                authorResult = new HashMap<String, Object>();
-                result.put(authorName, authorResult);
-            }
-            // If the avatar or company fields are not set already, set them!
-            String avatar = (String) authorResult.get("avatar");
-            if (StringUtils.isEmpty(avatar)) {
-                authorResult.put("avatar", authorData.get("avatar"));
-            }
-            String company = (String) authorResult.get("company");
-            if (StringUtils.isEmpty(company)) {
-                authorResult.put("company", authorData.get("company"));
-            }
-            // Overwrite committer info if true
-            if ((Boolean) authorData.get("committer")) {
-                authorResult.put("committer", true);
-            } else {
-                authorResult.put("committer", false);
-            }
-            // Increase counter and store aggregated result
-            Integer counter = (Integer) authorResult.get("count");
-            if (counter == null) {
-                counter = 0;
-            }
-            counter += userCommit.getCount();
-            authorResult.put("count", counter);
         }
 
         // Sort Map
@@ -681,12 +702,31 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                 return count2.compareTo(count1);
             }
         });
-        Map<String, Map<String, ?>> sortedResult = new LinkedHashMap<String, Map<String, ?>>();
+        Map<String, Map<String, Object>> sortedResult = new LinkedHashMap<String, Map<String, Object>>();
         for (Map.Entry<String, Map<String, Object>> entry : list) {
             sortedResult.put(entry.getKey(), entry.getValue());
         }
 
         return sortedResult;
+    }
+
+    private Map<String, List<Map<String, Object>>> extractAuthorsByEmail(Map<Author, Map<String, Object>> authors)
+    {
+        Map<String, List<Map<String, Object>>> authorsByEmail = new HashMap<String, List<Map<String, Object>>>();
+        for (Map.Entry<Author, Map<String, Object>> entry : authors.entrySet()) {
+            Author author = entry.getKey();
+            // Add the author name to the map of properties to not loose it!
+            Map<String, Object> authorData = entry.getValue();
+            authorData.put("id", author.getId());
+            List<Map<String, Object>> authorByEmail = authorsByEmail.get(author.getEmail());
+            if (authorByEmail == null) {
+                authorByEmail = new ArrayList<Map<String, Object>>();
+                authorsByEmail.put(author.getEmail(), authorByEmail);
+            }
+            authorByEmail.add(authorData);
+        }
+
+        return authorsByEmail;
     }
 
     private List<String> deleteItems(EntityReference xclassReference, String exceptionMessage)

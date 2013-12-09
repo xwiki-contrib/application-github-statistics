@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xwikidoc version="1.1">
+<xwikidoc>
   <web>GitHubStats</web>
   <name>CommittersMacro</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <creator>xwiki:XWiki.Admin</creator>
-  <creationDate>1384526315000</creationDate>
   <parent>GitHubStats.WebHome</parent>
+  <creator>xwiki:XWiki.Admin</creator>
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <date>1384799561000</date>
-  <contentUpdateDate>1384695827000</contentUpdateDate>
+  <creationDate>1386608252000</creationDate>
+  <date>1386609360000</date>
+  <contentUpdateDate>1386608252000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
   <defaultTemplate/>
@@ -22,21 +22,53 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content/>
   <attachment>
     <filename>unknown.png</filename>
+    <filesize>2056</filesize>
     <author>XWiki.Admin</author>
     <date>1382361556000</date>
     <version>1.1</version>
     <comment/>
-    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P///8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7SwYTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrASJngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtxGIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbcCXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92AqzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVxCwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQMG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyDyZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JFf4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO41zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJA+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWHg4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PNb+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5ErkJggg==</content>
-    <filesize>2056</filesize>
+    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp
+bj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6
+eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEz
+NDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo
+dHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw
+dGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv
+IiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS
+ZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD
+cmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNl
+SUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3Vt
+ZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06
+RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMy
+OEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUx
+ODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1w
+bWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P//
+/8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7Sw
+YTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrAS
+JngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtx
+GIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbc
+CXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp
+1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92A
+qzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVx
+CwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3
+Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQ
+MG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h
+5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyD
+yZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8
+SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JF
+f4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1
+psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO4
+1zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf
+6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJ
+A+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWH
+g4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PN
+b+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5E
+rkJggg==
+</content>
   </attachment>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>0</number>
-    <className>XWiki.WikiMacroClass</className>
-    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <class>
       <name>XWiki.WikiMacroClass</name>
       <customClass/>
@@ -146,10 +178,14 @@
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </visibility>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroClass</className>
+    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <property>
       <code>{{velocity}}
 ##============================
-## Get all commits for the specifiec parameters
+## Get all commits for the specified parameters
 ##============================
 #set ($repositories = $services.githubstats.getRepositories($xcontext.macro.params.repositories))
 #if ($repositories.isEmpty())
@@ -166,13 +202,10 @@
 ## Aggregate commits taking into account aliases
 ##==============================
 #set ($commits = $services.githubstats.aggregateCommitsPerAuthor($userCommitActivity, $authors))
-##=====================
-## Display results in a List or Table
-##=====================
-#set ($displayCounter = 1)
-#foreach ($data in $commits.entrySet())
-  #set ($authorName = $data.key)
-  #set ($authorData = $data.value)
+##=================
+## Macro to display an author
+##=================
+#macro (displayAuthor $authorName $authorData $displayCounter)
   #set ($avatar = $authorData.avatar)
   #if ("$!avatar" == '')
     #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
@@ -185,13 +218,21 @@
   #else
     #set ($companyDisplay = '')
   #end
-  #set ($isCommitter = $authorData.committer == 'true')
-  #if ($isCommitter)
-    #set ($nameDisplay = "(% style='background-color: #E1F7ED' %)(((${authorName}$!companyDisplay)))")
-  #else
-    #set ($nameDisplay = "(% style='background-color: #F7F2E1' %)(((${authorName}$!companyDisplay)))")
+  #set ($count = $authorData.count)
+  #if ("$!count" == '')
+    #set ($count = 0)
   #end
-  #set($count = $authorData.count)
+  #set ($isCommitter = $authorData.committer == 'true')
+  #if ($count == 0)
+    #set ($backgroundColor = '#F0D1D6')
+  #else
+    #if ($isCommitter)
+      #set ($backgroundColor = '#E1F7ED')
+    #else
+      #set ($backgroundColor = '#F7F2E1')
+    #end
+  #end
+  #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)(((${authorName}$!companyDisplay)))")
   #if ("$!xcontext.macro.params.type" == 'wall')
     |(((
       (% style='width:100%' %)
@@ -199,8 +240,35 @@
     )))#if ($displayCounter % 4 == 0)
 
     #end
-    #set ($displayCounter = $displayCounter + 1)
   #else
+  #end
+#end
+##=====================
+## Display results in a List or Table
+##=====================
+#set ($displayCounter = 1)
+#foreach ($data in $commits.entrySet())
+  #set ($authorName = $data.key)
+  #set ($authorData = $data.value)
+  #displayAuthor($authorName, $authorData, $displayCounter)
+  #set ($displayCounter = $displayCounter + 1)
+  ## Remove the authors used to display the current count from the authors map so that once the loop is over inactive authors will remain
+  #foreach ($contributingAuthor in $authorData.authors)
+    #set ($discard = $authors.remove($contributingAuthor))
+  #end
+#end
+##=================
+## Display inactive committers
+##=================
+#if ("$!xcontext.macro.params.inactives" == "true")
+  #foreach ($data in $authors.entrySet())
+    #set ($authorData = $data.value)
+    ## Only display inactive committers
+    #if ("$!authorData.committer" == "true")
+      #set ($authorName = $authorData.name)
+      #displayAuthor($authorName, $authorData, $displayCounter)
+      #set ($displayCounter = $displayCounter + 1)
+    #end
   #end
 #end
 {{/velocity}}</code>
@@ -231,10 +299,6 @@
     </property>
   </object>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>1</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -283,6 +347,10 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>1</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
     <property>
       <defaultValue/>
     </property>
@@ -297,10 +365,6 @@
     </property>
   </object>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>2</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -349,6 +413,10 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>2</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <property>
       <defaultValue>0</defaultValue>
     </property>
@@ -363,10 +431,6 @@
     </property>
   </object>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>3</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -415,6 +479,10 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>3</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <property>
       <defaultValue/>
     </property>
@@ -429,10 +497,6 @@
     </property>
   </object>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>4</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -481,6 +545,10 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>4</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <property>
       <defaultValue>false</defaultValue>
     </property>
@@ -495,10 +563,6 @@
     </property>
   </object>
   <object>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>5</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -547,6 +611,10 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>5</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <property>
       <defaultValue>wall</defaultValue>
     </property>
@@ -560,4 +628,5 @@
       <name>type</name>
     </property>
   </object>
+  <content/>
 </xwikidoc>
