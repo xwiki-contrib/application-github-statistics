@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1386608252000</creationDate>
-  <date>1386609360000</date>
-  <contentUpdateDate>1386608252000</contentUpdateDate>
+  <creationDate>1386610098000</creationDate>
+  <date>1386612006000</date>
+  <contentUpdateDate>1386611283000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
   <defaultTemplate/>
@@ -206,41 +206,44 @@ rkJggg==
 ## Macro to display an author
 ##=================
 #macro (displayAuthor $authorName $authorData $displayCounter)
-  #set ($avatar = $authorData.avatar)
-  #if ("$!avatar" == '')
-    #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
-  #else
-    #set ($avatarDisplay = "(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]")
-  #end
-  #set ($company = $authorData.company)
-  #if ("$!company" != '')
-    #set ($companyDisplay = "\\//${company}//")
-  #else
-    #set ($companyDisplay = '')
-  #end
-  #set ($count = $authorData.count)
-  #if ("$!count" == '')
-    #set ($count = 0)
-  #end
   #set ($isCommitter = $authorData.committer == 'true')
-  #if ($count == 0)
-    #set ($backgroundColor = '#F0D1D6')
-  #else
-    #if ($isCommitter)
-      #set ($backgroundColor = '#E1F7ED')
+  #if ($isCommitter || (!$isCommitter &amp;&amp; "$!xcontext.macro.params.contributors" == "true"))
+    #set ($avatar = $authorData.avatar)
+    #if ("$!avatar" == '')
+      #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
     #else
-      #set ($backgroundColor = '#F7F2E1')
+      #set ($avatarDisplay = "(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]")
     #end
-  #end
-  #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)(((${authorName}$!companyDisplay)))")
-  #if ("$!xcontext.macro.params.type" == 'wall')
-    |(((
-      (% style='width:100%' %)
-      |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
-    )))#if ($displayCounter % 4 == 0)
+    #set ($company = $authorData.company)
+    #if ("$!company" != '')
+      #set ($companyDisplay = "\\//${company}//")
+    #else
+      #set ($companyDisplay = '')
+    #end
+    #set ($count = $authorData.count)
+    #if ("$!count" == '')
+      #set ($count = 0)
+    #end
+    #if ($count == 0)
+      #set ($backgroundColor = '#F0D1D6')
+    #else
+      #if ($isCommitter)
+        #set ($backgroundColor = '#E1F7ED')
+      #else
+        #set ($backgroundColor = '#F7F2E1')
+      #end
+    #end
+    #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)(((${authorName}$!companyDisplay)))")
+    #if ("$!xcontext.macro.params.type" == 'wall')
+      |(((
+        (% style='width:100%' %)
+        |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
+      )))#if ($displayCounter % 4 == 0)
 
+      #end
+    #else
+      |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
     #end
-  #else
   #end
 #end
 ##=====================
@@ -352,7 +355,7 @@ rkJggg==
     <className>XWiki.WikiMacroParameterClass</className>
     <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
     <property>
-      <defaultValue/>
+      <defaultValue>true</defaultValue>
     </property>
     <property>
       <description>If "true" then also lists contributors who've committed through pull requests</description>
