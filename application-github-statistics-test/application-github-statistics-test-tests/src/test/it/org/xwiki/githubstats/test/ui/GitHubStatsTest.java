@@ -19,6 +19,8 @@
  */
 package org.xwiki.githubstats.test.ui;
 
+import java.util.regex.Pattern;
+
 import org.junit.*;
 import org.xwiki.contrib.AuthorSheetPage;
 import org.xwiki.contrib.GitHubStatsHomePage;
@@ -28,7 +30,6 @@ import org.xwiki.test.ui.AbstractTest;
 import org.xwiki.test.ui.SuperAdminAuthenticationRule;
 import org.xwiki.test.ui.po.LiveTableElement;
 import org.xwiki.test.ui.po.ViewPage;
-import org.xwiki.test.ui.po.editor.WikiEditPage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -150,15 +151,21 @@ public class GitHubStatsTest extends AbstractTest
             + "organization1 / repository4 (Committer)\n"
             + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
 
-        // Now create a new page using the committers macro to verify it works
+        // Now create a new page using the committers and firstCommits macro to verify they work fine
         ViewPage vp = getUtil().createPage(getTestClassName(), getTestMethodName(),
             "{{committers repositories='organization1/repository1,organization1/repository2,"
             + "organization1/repository3,organization1/repository4,organization1/repository5,"
-            + "organization1/repository6'/}}", "Committers", "xwiki/2.1");
-        assertEquals("author1\nCompany\n12\nauthor3\n1", vp.getContent());
-        WikiEditPage wep = vp.editWiki();
-        wep.setContent("{{committers since='1' repositories='organization1/repository1'/}}");
-        wep.clickSaveAndView();
-        assertEquals("author1\nCompany\n2", vp.getContent());
+            + "organization1/repository6'/}}\n\n"
+            + "{{committers since='1' repositories='organization1/repository1'/}}\n\n"
+            + "{{firstCommits repositories='organization1/repository1,organization1/repository2,"
+            + "organization1/repository3,organization1/repository4,organization1/repository5,"
+            + "organization1/repository6'/}}", "Macro Tests", "xwiki/2.1");
+        String expectedRegex = "author1\nCompany\n12\n"
+            + "author3\n1\n"
+            + "author1\nCompany\n2\n"
+            + "author1\nCompany\n.*\n0 years, 0 months, 0 days\n"
+            + "author1\nCompany\n.*\n0 years, 0 months, 0 days\n"
+            + "author3\n.*\n0 years, 0 months, 3 days";
+        assertTrue(Pattern.compile(expectedRegex).matcher(vp.getContent()).matches());
     }
 }

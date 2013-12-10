@@ -37,6 +37,15 @@
   <description>Tests for the GitHub Stats Application</description>
   <properties>
     <xwikiCfgSuperadminPassword>pass</xwikiCfgSuperadminPassword>
+    <!-- Override in order to add the JODA Time Plugin -->
+    <xwikiCfgPlugins>\
+      com.xpn.xwiki.plugin.skinx.JsSkinExtensionPlugin,\
+      com.xpn.xwiki.plugin.skinx.JsSkinFileExtensionPlugin,\
+      com.xpn.xwiki.plugin.skinx.CssSkinExtensionPlugin,\
+      com.xpn.xwiki.plugin.skinx.CssSkinFileExtensionPlugin,\
+      com.xpn.xwiki.plugin.skinx.LinkExtensionPlugin,\
+      com.xpn.xwiki.plugin.jodatime.JodaTimePlugin
+    </xwikiCfgPlugins>
   </properties>
   <dependencies>
     <dependency>

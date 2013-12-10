@@ -404,6 +404,11 @@ public class GitHubStatsScriptService implements ScriptService
         return this.manager.aggregateCommitsPerAuthor(userCommitActivity, authors);
     }
 
+    public Author buildAuthor(String authorId, String authorEmail)
+    {
+        return new Author(authorId, authorEmail);
+    }
+
     /**
      * Get the error generated while performing the previously called action.
      *
