@@ -63,6 +63,13 @@
       <artifactId>github-api</artifactId>
       <version>1.44</version>
     </dependency>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-test</artifactId>
+      <version>${platform.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <!-- Needed to add support for the XAR packaging -->
