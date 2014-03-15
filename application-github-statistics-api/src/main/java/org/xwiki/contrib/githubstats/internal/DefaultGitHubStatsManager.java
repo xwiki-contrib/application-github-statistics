@@ -361,36 +361,43 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                 // specify their email address on GitHub. Thus we use a different strategy:
                 // - Look for all users who have an id matching the GitHub user id and update them, hoping that no two
                 //   users have the same id...
+                // - If no matching author is found, create a new entry
                 List<BaseObject> matchingAuthorObjects = getAuthorObjectsForQuery(String.format(
                     "where doc.object(%s).id = '%s'", this.defaultSerializer.serialize(AUTHOR_CLASS), user.getLogin()));
-                for (BaseObject matchingAuthorObject : matchingAuthorObjects) {
-                    XWikiDocument authorDocument = matchingAuthorObject.getOwnerDocument();
-                    // Find the xobject representing that repository and if it doesn't exist, create it!
-                    BaseObject foundRepositoryObject = null;
-                    List<BaseObject> baseObjects = authorDocument.getXObjects(AUTHOR_REPOSITORY_CLASS);
-                    if (baseObjects != null) {
-                        for (BaseObject baseObject : baseObjects) {
-                            if (repository.getOrganizationId().equals(baseObject.getStringValue("organizationId"))
-                                && repository.getRepositoryId().equals(baseObject.getStringValue("repositoryId")))
-                            {
-                                foundRepositoryObject = baseObject;
-                                break;
+                if (matchingAuthorObjects.isEmpty()) {
+                    BaseObject authorObject =
+                        importAuthorInternal(user.getLogin(), user.getEmail(), Collections.singleton(repository), true);
+                    importedUsers.addAll(importAuthorFromGitHub(user, Collections.singletonList(authorObject), true));
+                } else {
+                    for (BaseObject matchingAuthorObject : matchingAuthorObjects) {
+                        XWikiDocument authorDocument = matchingAuthorObject.getOwnerDocument();
+                        // Find the xobject representing that repository and if it doesn't exist, create it!
+                        BaseObject foundRepositoryObject = null;
+                        List<BaseObject> baseObjects = authorDocument.getXObjects(AUTHOR_REPOSITORY_CLASS);
+                        if (baseObjects != null) {
+                            for (BaseObject baseObject : baseObjects) {
+                                if (repository.getOrganizationId().equals(baseObject.getStringValue("organizationId"))
+                                    && repository.getRepositoryId().equals(baseObject.getStringValue("repositoryId")))
+                                {
+                                    foundRepositoryObject = baseObject;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if (foundRepositoryObject == null) {
-                        // Create xobject
-                        foundRepositoryObject = authorDocument.newXObject(AUTHOR_REPOSITORY_CLASS, xcontext);
-                        foundRepositoryObject.setStringValue("organizationId", repository.getOrganizationId());
-                        foundRepositoryObject.setStringValue("repositoryId", repository.getRepositoryId());
-                    }
-                    int currentCommitterValue = foundRepositoryObject.getIntValue("committer");
-                    if (currentCommitterValue != 1) {
-                        foundRepositoryObject.setIntValue("committer", 1);
-                        // Save modifications
-                        xcontext.getWiki().saveDocument(authorDocument, "Imported committer status from GitHub",
-                            true, xcontext);
-                        importedUsers.add(authorDocument.getDocumentReference().getName());
+                        if (foundRepositoryObject == null) {
+                            // Create xobject
+                            foundRepositoryObject = authorDocument.newXObject(AUTHOR_REPOSITORY_CLASS, xcontext);
+                            foundRepositoryObject.setStringValue("organizationId", repository.getOrganizationId());
+                            foundRepositoryObject.setStringValue("repositoryId", repository.getRepositoryId());
+                        }
+                        int currentCommitterValue = foundRepositoryObject.getIntValue("committer");
+                        if (currentCommitterValue != 1) {
+                            foundRepositoryObject.setIntValue("committer", 1);
+                            // Save modifications
+                            xcontext.getWiki().saveDocument(authorDocument, "Imported committer status from GitHub",
+                                true, xcontext);
+                            importedUsers.add(authorDocument.getDocumentReference().getName());
+                        }
                     }
                 }
             }
