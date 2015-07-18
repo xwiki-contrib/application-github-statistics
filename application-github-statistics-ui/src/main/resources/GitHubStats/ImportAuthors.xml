@@ -66,15 +66,15 @@
     &lt;/dd&gt;
     &lt;dt&gt;
       &lt;span class='buttonwrapper'&gt;
-        &lt;input value='Import all Authors from Git' class='button' type='submit' name='action'&gt;
+        &lt;input value='Import Authors from Git' class='button' type='submit' name='action'&gt;
       &lt;/span&gt;
       &lt;br /&gt;&lt;br /&gt;
       &lt;span class='buttonwrapper'&gt;
-        &lt;input value='Import all Authors from GitHub' class='button' type='submit' name='action'&gt;
+        &lt;input value='Update authors with GitHub data' class='button' type='submit' name='action'&gt;
       &lt;/span&gt;
       &lt;br /&gt;&lt;br /&gt;
       &lt;span class='buttonwrapper'&gt;
-        &lt;input value='Import all Committers from GitHub' class='button' type='submit' name='action'&gt;
+        &lt;input value='Import Committers from GitHub' class='button' type='submit' name='action'&gt;
       &lt;/span&gt;
       &lt;br /&gt;&lt;br /&gt;
       &lt;span class='buttonwrapper'&gt;
@@ -128,10 +128,10 @@
   #end
 #end
 #set ($overwrite = ($!request.overwrite == 'overwrite'))
-#if ($request.action == 'Import all Authors from Git')
+#if ($request.action == 'Import Authors from Git')
     #set ($result = $services.githubstats.importAllAuthors($overwrite))
     #printResults($result)
-#elseif ($request.action == 'Import all Authors from GitHub')
+#elseif ($request.action == 'Update authors with GitHub data')
   #if ("$!request.authentication" != "")
     #set ($authTokens = $stringtool.split($request.authentication, ':'))
     #set ($result = $services.githubstats.importAllAuthorsFromGitHub($authTokens[0], $authTokens[1], $overwrite))
@@ -139,7 +139,7 @@
     #set ($result = $services.githubstats.importAllAuthorsFromGitHub($overwrite))
   #end
   #printResults($result)
-#elseif ($request.action == 'Import all Committers from GitHub')
+#elseif ($request.action == 'Import Committers from GitHub')
   #if ("$!request.authentication" != "")
     #set ($authTokens = $stringtool.split($request.authentication, ':'))
     #set ($result = $services.githubstats.importAllCommittersFromGitHub($authTokens[0], $authTokens[1]))
