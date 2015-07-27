@@ -183,7 +183,8 @@ public class GitHubStatsTest extends AbstractTest
     }
 
     /**
-     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there, see
+     * http://jira.xwiki.org/browse/XWIKI-12350
      */
     private boolean hasRow(LiveTableElement liveTableElement, String columnTitle, String columnValue)
     {
@@ -204,7 +205,8 @@ public class GitHubStatsTest extends AbstractTest
     }
 
     /**
-     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there, see
+     * http://jira.xwiki.org/browse/XWIKI-12350
      */
     private boolean hasExactRows(LiveTableElement liveTableElement, String columnTitle, List<String> columnValues)
     {
@@ -224,7 +226,8 @@ public class GitHubStatsTest extends AbstractTest
     }
 
     /**
-     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there, see
+     * http://jira.xwiki.org/browse/XWIKI-12350
      */
     private List<WebElement> getRows(LiveTableElement liveTableElement, String columnTitle)
     {
