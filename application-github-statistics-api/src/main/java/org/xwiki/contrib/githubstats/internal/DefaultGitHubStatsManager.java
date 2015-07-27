@@ -657,7 +657,28 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     }
 
     @Override
-    public Map<GitHubRepository, String> getAllRepositoryURLs() throws GitHubStatsException
+    public Map<GitHubRepository, String> getRepositoryURLs(String... repositoriesAsStrings)
+        throws GitHubStatsException
+    {
+        Map<GitHubRepository, String> result = new HashMap<GitHubRepository, String>();
+        Map<GitHubRepository, String> allRepos = getAllRepositoryURLs();
+        // For each defined repo, verify it matches the passed string. If it doesn't remove it from the list!
+        for (Map.Entry<GitHubRepository, String> repoEntry : allRepos.entrySet()) {
+            GitHubRepository repository = repoEntry.getKey();
+            for (String repositoryAsString : repositoriesAsStrings) {
+                String[] tokens = StringUtils.split(repositoryAsString, '/');
+                if (("*".equals(tokens[1]) && repository.getOrganizationId().equals(tokens[0]))
+                    || (repository.getOrganizationId().equals(tokens[0])
+                        && repository.getRepositoryId().equals(tokens[1])))
+                {
+                    result.put(repository, repoEntry.getValue());
+                }
+            }
+        }
+        return result;
+    }
+
+    private Map<GitHubRepository, String> getAllRepositoryURLs() throws GitHubStatsException
     {
         // Find all Git repositories defined in the current wiki.
         List<Object[]> results;

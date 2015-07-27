@@ -297,15 +297,11 @@ public class GitHubStatsScriptService implements ScriptService
 
     }
 
-    public Map<Author, Map<String, ?>>  getAuthorsForRepositories(String repositoriesAsString)
+    public Map<Author, Map<String, ?>> getAuthorsForRepositories(String repositoriesAsString)
     {
         try {
-            Collection<GitHubRepository> repositories;
-            if (StringUtils.isEmpty(repositoriesAsString)) {
-                repositories = this.manager.getAllRepositoryURLs().keySet();
-            } else {
-                repositories = extractRepositoriesFromSingleString(repositoriesAsString);
-            }
+            Collection<GitHubRepository> repositories =
+                this.manager.getRepositoryURLs(StringUtils.split(repositoriesAsString, ",")).keySet();
             return this.manager.getAuthorsForRepositories(repositories);
         } catch (Exception e) {
             setError(e);
@@ -376,34 +372,19 @@ public class GitHubStatsScriptService implements ScriptService
         return result;
     }
 
-    public List<Repository> getAllRepositories()
-    {
-        try {
-            return this.manager.getRepositories(this.manager.getAllRepositoryURLs());
-        } catch (Exception e) {
-            setError(e);
-            return null;
-        }
-    }
-
     public List<Repository> getRepositories(String repositoriesAsString)
     {
-        if (StringUtils.isEmpty(repositoriesAsString)) {
-            return getAllRepositories();
-        }
-
         try {
             return this.manager.getRepositories(
-                this.manager.getRepositoryURLs(
-                    extractRepositoriesFromStrings(StringUtils.split(repositoriesAsString, ','))));
+                this.manager.getRepositoryURLs(StringUtils.split(repositoriesAsString, ",")));
         } catch (Exception e) {
             setError(e);
             return null;
         }
     }
 
-    public Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity, Map<Author,
-        Map<String, Object>> authors)
+    public Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity,
+        Map<Author, Map<String, Object>> authors)
     {
         return this.manager.aggregateCommitsPerAuthor(userCommitActivity, authors);
     }
@@ -432,22 +413,6 @@ public class GitHubStatsScriptService implements ScriptService
     public Exception getLastError()
     {
         return (Exception) this.execution.getContext().getProperty(ERROR_KEY);
-    }
-
-    private List<GitHubRepository> extractRepositoriesFromStrings(String... repositoriesAsStrings)
-    {
-        List<GitHubRepository> repositories = new ArrayList<GitHubRepository>();
-        for (String repositoryAsString : repositoriesAsStrings) {
-            String[] tokens = StringUtils.split(repositoryAsString, '/');
-            GitHubRepository repository = new GitHubRepository(tokens[0], tokens[1]);
-            repositories.add(repository);
-        }
-        return repositories;
-    }
-
-    private List<GitHubRepository> extractRepositoriesFromSingleString(String repositoriesAsStrings)
-    {
-        return extractRepositoriesFromStrings(StringUtils.split(repositoriesAsStrings, ','));
     }
 
     /**

@@ -68,7 +68,15 @@ public interface GitHubStatsManager
     Map<Author, Map<String, ?>> getAuthorsForRepositories(Collection<GitHubRepository> repositories)
         throws GitHubStatsException;
 
-    Map<GitHubRepository, String> getAllRepositoryURLs() throws GitHubStatsException;
+    /**
+     * The format of the repositories is: {@code (organization name)/(repository name)} where {@code organization name}
+     * can be {@code *} to signify all repositories for this organization. For example:
+     * <ul>
+     *   <li>xwiki/*</li>
+     *   <li>xwiki-contrib/application-github-statistics</li>
+     * </ul>
+     */
+    Map<GitHubRepository, String> getRepositoryURLs(String... repositoryAsStrings) throws GitHubStatsException;
 
     Map<GitHubRepository, String> getRepositoryURLs(List<GitHubRepository> repositories) throws GitHubStatsException;
 
