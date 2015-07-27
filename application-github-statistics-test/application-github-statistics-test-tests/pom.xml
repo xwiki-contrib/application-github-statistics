@@ -66,17 +66,22 @@
       <artifactId>application-github-statistics-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- Get some Git Helper for tests to create some test Git repo -->
     <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-git</artifactId>
       <version>${platform.version}</version>
     </dependency>
+    <!-- Get some Git Helper for tests to create some test Git repo -->
     <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-git</artifactId>
       <version>${platform.version}</version>
       <type>test-jar</type>
+    </dependency>
+    <!-- Required for platform-git's test JAR -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
     <!-- Test dependencies -->
     <dependency>

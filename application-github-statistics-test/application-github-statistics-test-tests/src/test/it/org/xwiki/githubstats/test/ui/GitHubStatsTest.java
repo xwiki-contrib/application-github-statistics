@@ -19,9 +19,13 @@
  */
 package org.xwiki.githubstats.test.ui;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.junit.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.xwiki.contrib.AuthorSheetPage;
 import org.xwiki.contrib.GitHubStatsHomePage;
 import org.xwiki.contrib.ImportAuthorsPage;
@@ -67,29 +71,38 @@ public class GitHubStatsTest extends AbstractTest
         // Import Authors
         ImportAuthorsPage importAuthorsPage = home.clickImportAuthors();
         // Import from Git
-        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
+        importAuthorsPage = importAuthorsPage.importAuthorsFromGit();
         livetable = importAuthorsPage.getAuthorsLiveTable();
         assertEquals(4, livetable.getRowCount());
-        importAuthorsPage = importAuthorsPage.deleteAllAuthors();
+        importAuthorsPage = importAuthorsPage.deleteAuthors();
         livetable = importAuthorsPage.getAuthorsLiveTable();
         assertEquals(0, livetable.getRowCount());
-        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGit();
-        assertTrue(livetable.hasRow("Git Id", "author1"));
-        assertTrue(livetable.hasRow("Git Id", "author2"));
-        assertTrue(livetable.hasRow("Git Email", "author1@doe.com"));
-        assertTrue(livetable.hasRow("Git Email", "author2@doe.com"));
-        assertTrue(livetable.hasRow("Name", "Not defined"));
-        assertTrue(livetable.hasRow("Company", "Not defined"));
+        importAuthorsPage = importAuthorsPage.importAuthorsFromGit();
+        livetable.filterColumn("xwiki-livetable-authors-filter-2", "author1");
+        assertEquals(1, livetable.getRowCount());
+        assertTrue(hasRow(livetable, "Git Id", "author1"));
+        assertTrue(hasRow(livetable, "Git Email", "author1@doe.com"));
+        assertTrue(hasRow(livetable, "Name", "Not defined"));
+        assertTrue(hasRow(livetable, "Company", "Not defined"));
+        livetable.filterColumn("xwiki-livetable-authors-filter-2", "author2");
+        assertEquals(2, livetable.getRowCount());
+        assertTrue(hasExactRows(livetable, "Git Id", Arrays.asList("author2", "author2")));
+        assertTrue(hasExactRows(livetable, "Git Email", Arrays.asList("author2@doe.com", "author1@doe.com")));
+        livetable.filterColumn("xwiki-livetable-authors-filter-2", "author3");
+        assertTrue(hasRow(livetable, "Git Id", "author3"));
+        assertTrue(hasRow(livetable, "Git Email", "author3@doe.com"));
         // Import from GitHub
-        importAuthorsPage = importAuthorsPage.importAllAuthorsFromGitHub();
+        importAuthorsPage = importAuthorsPage.updateAuthorsWithGitHubData();
         livetable = importAuthorsPage.getAuthorsLiveTable();
+        // Reset the filter since it's still active even after the button click
+        livetable.filterColumn("xwiki-livetable-authors-filter-2", "");
         assertEquals(4, livetable.getRowCount());
-        assertTrue(livetable.hasRow("Name", "author1"));
-        assertTrue(livetable.hasRow("Company", "Company"));
-        assertTrue(livetable.hasRow("Name", "Not defined"));
-        assertTrue(livetable.hasRow("Company", "Not defined"));
+        assertTrue(hasRow(livetable, "Name", "author1"));
+        assertTrue(hasRow(livetable, "Company", "Company"));
+        assertTrue(hasRow(livetable, "Name", "Not defined"));
+        assertTrue(hasRow(livetable, "Company", "Not defined"));
         // Import Committers from GitHub
-        importAuthorsPage = importAuthorsPage.importAllCommittersFromGitHub();
+        importAuthorsPage = importAuthorsPage.importCommittersFromGitHub();
         // Link authors
         importAuthorsPage.linkAuthors();
 
@@ -167,5 +180,56 @@ public class GitHubStatsTest extends AbstractTest
             + "author1\nCompany\n.*\n0 years, 0 months, 0 days\n"
             + "author3\n.*\n0 years, 0 months, 3 days";
         assertTrue(Pattern.compile(expectedRegex).matcher(vp.getContent()).matches());
+    }
+
+    /**
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     */
+    private boolean hasRow(LiveTableElement liveTableElement, String columnTitle, String columnValue)
+    {
+        List<WebElement> elements = getRows(liveTableElement, columnTitle);
+
+        boolean result = elements.size() > 0;
+        boolean match = false;
+        if (result) {
+            for (WebElement element : elements) {
+                match = element.getText().equals(columnValue);
+                if (match) {
+                    break;
+                }
+            }
+        }
+
+        return result && match;
+    }
+
+    /**
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     */
+    private boolean hasExactRows(LiveTableElement liveTableElement, String columnTitle, List<String> columnValues)
+    {
+        List<WebElement> elements = getRows(liveTableElement, columnTitle);
+
+        boolean result = elements.size() == columnValues.size();
+        if (result) {
+            for (int i = 0; i < elements.size(); i++) {
+                result = result && elements.get(i).getText().equals(columnValues.get(i));
+                if (!result) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * @todo Remove this when this app depends on XWiki 7.2M2 since it's been added in there.
+     */
+    private List<WebElement> getRows(LiveTableElement liveTableElement, String columnTitle)
+    {
+        String cellXPath = String.format(".//tr/td[position() = %s]", liveTableElement.getColumnIndex(columnTitle) + 1);
+        WebElement liveTableBody = getDriver().findElement(By.id("authors-display"));
+        return liveTableBody.findElements(By.xpath(cellXPath));
     }
 }

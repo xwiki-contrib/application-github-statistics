@@ -26,13 +26,13 @@ import org.xwiki.test.ui.po.ViewPage;
 
 public class ImportAuthorsPage extends ViewPage
 {
-    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Authors from Git']")
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import Authors from Git']")
     private WebElement importAllAuthorsFromGitSubmit;
 
-    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Authors from GitHub']")
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Update authors with GitHub data']")
     private WebElement importAllAuthorsFromGitHubSubmit;
 
-    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import all Committers from GitHub']")
+    @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Import Committers from GitHub']")
     private WebElement importAllCommittersFromGitHubSubmit;
 
     @FindBy(xpath = "//*[@id='importAuthors']//input[@type='submit' and @value='Link Authors']")
@@ -47,19 +47,19 @@ public class ImportAuthorsPage extends ViewPage
     @FindBy(xpath = "//*[@id='deleteAuthors']//input[@type='submit' and @value='Really delete all Authors']")
     private WebElement confirmDeleteAllAuthorsSubmit;
 
-    public ImportAuthorsPage importAllAuthorsFromGit()
+    public ImportAuthorsPage importAuthorsFromGit()
     {
         this.importAllAuthorsFromGitSubmit.click();
         return new ImportAuthorsPage();
     }
 
-    public ImportAuthorsPage importAllAuthorsFromGitHub()
+    public ImportAuthorsPage updateAuthorsWithGitHubData()
     {
         this.importAllAuthorsFromGitHubSubmit.click();
         return new ImportAuthorsPage();
     }
 
-    public ImportAuthorsPage importAllCommittersFromGitHub()
+    public ImportAuthorsPage importCommittersFromGitHub()
     {
         this.importAllCommittersFromGitHubSubmit.click();
         return new ImportAuthorsPage();
@@ -71,7 +71,7 @@ public class ImportAuthorsPage extends ViewPage
         return new ImportAuthorsPage();
     }
 
-    public ImportAuthorsPage deleteAllAuthors()
+    public ImportAuthorsPage deleteAuthors()
     {
         this.deleteAllAuthorsSubmit.click();
         ImportAuthorsPage currentPage = new ImportAuthorsPage();

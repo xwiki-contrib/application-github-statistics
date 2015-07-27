@@ -20,6 +20,7 @@
 package org.xwiki.contrib.githubstats;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,10 @@ import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHPersonSet;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
+import org.kohsuke.github.GHUserSearchBuilder;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.PagedIterator;
+import org.kohsuke.github.PagedSearchIterable;
 
 import static org.mockito.Mockito.*;
 
@@ -59,8 +63,36 @@ public class StubGitHubFactory implements GitHubFactory
         repositories.put("repository6", repository6);
         when(organization1.getRepositories()).thenReturn(repositories);
 
+        PagedIterator<GHUser> author2PagedIterator = mock(PagedIterator.class);
+        when(author2PagedIterator.next()).thenReturn(user2);
+
+        PagedSearchIterable<GHUser> author2PagedSearchIterable = mock(PagedSearchIterable.class);
+        when(author2PagedSearchIterable.getTotalCount()).thenReturn(1);
+        when(author2PagedSearchIterable.iterator()).thenReturn(author2PagedIterator);
+
+        GHUserSearchBuilder author2SearchUserBuilder = mock(GHUserSearchBuilder.class);
+        when(author2SearchUserBuilder.type("user")).thenReturn(author2SearchUserBuilder);
+        when(author2SearchUserBuilder.in("login")).thenReturn(author2SearchUserBuilder);
+        when(author2SearchUserBuilder.list()).thenReturn(author2PagedSearchIterable);
+
+        PagedSearchIterable<GHUser> emptyPagedSearchIterable = mock(PagedSearchIterable.class);
+        when(emptyPagedSearchIterable.getTotalCount()).thenReturn(0);
+
+        GHUserSearchBuilder emptySearchUserBuilder = mock(GHUserSearchBuilder.class);
+        when(emptySearchUserBuilder.type("user")).thenReturn(emptySearchUserBuilder);
+        when(emptySearchUserBuilder.in("login")).thenReturn(emptySearchUserBuilder);
+        when(emptySearchUserBuilder.in("email")).thenReturn(emptySearchUserBuilder);
+        when(emptySearchUserBuilder.in("fullname")).thenReturn(emptySearchUserBuilder);
+        when(emptySearchUserBuilder.list()).thenReturn(emptyPagedSearchIterable);
+
+        GHUserSearchBuilder searchUserBuilder = mock(GHUserSearchBuilder.class);
+        when(searchUserBuilder.q("\"author1\"")).thenReturn(emptySearchUserBuilder);
+        when(searchUserBuilder.q("\"author1@doe.com\"")).thenReturn(emptySearchUserBuilder);
+        when(searchUserBuilder.q("\"author2\"")).thenReturn(author2SearchUserBuilder);
+        when(searchUserBuilder.q("\"author3\"")).thenReturn(emptySearchUserBuilder);
+        when(searchUserBuilder.q("\"author3@doe.com\"")).thenReturn(emptySearchUserBuilder);
+
         GitHub gitHub = mock(GitHub.class);
-        when(gitHub.getUser("author2")).thenReturn(user2);
         when(gitHub.getRepository("organization1/repository1")).thenReturn(repository1);
         when(gitHub.getRepository("organization1/repository2")).thenReturn(repository2);
         when(gitHub.getRepository("organization1/repository3")).thenReturn(repository3);
@@ -68,6 +100,7 @@ public class StubGitHubFactory implements GitHubFactory
         when(gitHub.getRepository("organization1/repository5")).thenReturn(repository5);
         when(gitHub.getRepository("organization1/repository6")).thenReturn(repository6);
         when(gitHub.getOrganization("organization1")).thenReturn(organization1);
+        when(gitHub.searchUsers()).thenReturn(searchUserBuilder);
 
         return gitHub;
     }
@@ -86,7 +119,7 @@ public class StubGitHubFactory implements GitHubFactory
         when(repository.getCollaborators()).thenReturn(personSet);
         when(repository.getName()).thenReturn("repository" + id);
         when(repository.getGitTransportUrl()).thenReturn("repository" + id + " git URL");
-        when(repository.getUrl()).thenReturn("repository" + id + " HTML URL");
+        when(repository.getUrl()).thenReturn(new URL("http://github.com/" + id));
         return repository;
     }
 
