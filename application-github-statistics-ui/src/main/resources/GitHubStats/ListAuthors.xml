@@ -47,7 +47,7 @@
 #set($columnsProperties = {
    "avatar" : { "type" : "none", "link" : "none", "html" : "true", "sortable":false },
    "id" : { "type" : "text" , "size" : 20, "link" : "view"},
-   "email" : { "type" : "text" },
+   "email" : { "type" : "text", "html" : "true" },
    "name" : { "type" : "text" },
    "company" : { "type" : "text" }
 })

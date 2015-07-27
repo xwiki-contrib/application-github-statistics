@@ -32,6 +32,8 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.lib.Repository;
 import org.gitective.core.stat.UserCommitActivity;
+import org.kohsuke.github.GHRateLimit;
+import org.kohsuke.github.GitHub;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
 import org.xwiki.contrib.githubstats.Author;
@@ -124,12 +126,13 @@ public class GitHubStatsScriptService implements ScriptService
         return result;
     }
 
-    public List<String> importAuthorFromGitHub(String authorId, boolean overwrite)
+    public List<String> importAuthorFromGitHub(String authorId, String emailAddress, boolean overwrite)
     {
         List<String> result = null;
         if (hasPermission()) {
             try {
-                result = this.manager.importAuthorFromGitHub(this.gitHubFactory.createGitHub(), authorId, overwrite);
+                result = this.manager.importAuthorFromGitHub(
+                    this.gitHubFactory.createGitHub(), authorId, emailAddress, overwrite);
             } catch (Exception e) {
                 setError(e);
             }
@@ -140,13 +143,13 @@ public class GitHubStatsScriptService implements ScriptService
     }
 
     public List<String> importAuthorFromGitHub(String gitHubLogin, String gitHubAuthToken, String authorId,
-        boolean overwrite)
+        String emailAddress, boolean overwrite)
     {
         List<String> result = null;
         if (hasPermission()) {
             try {
                 result = this.manager.importAuthorFromGitHub(
-                    this.gitHubFactory.createGitHub(gitHubLogin, gitHubAuthToken), authorId, overwrite);
+                    this.gitHubFactory.createGitHub(gitHubLogin, gitHubAuthToken), authorId, emailAddress, overwrite);
             } catch (Exception e) {
                 setError(e);
             }
@@ -161,7 +164,8 @@ public class GitHubStatsScriptService implements ScriptService
         List<String> result = null;
         if (hasPermission()) {
             try {
-                result = this.manager.createAuthorFromGitHub(this.gitHubFactory.createGitHub(), authorId,                    fallbackEmail, overwrite);
+                result = this.manager.createAuthorFromGitHub(this.gitHubFactory.createGitHub(), authorId, fallbackEmail,
+                    overwrite);
             } catch (Exception e) {
                 setError(e);
             }
@@ -407,6 +411,17 @@ public class GitHubStatsScriptService implements ScriptService
     public Author buildAuthor(String authorId, String authorEmail)
     {
         return new Author(authorId, authorEmail);
+    }
+
+    public GHRateLimit getRateLimit(String gitHubLogin, String gitHubAuthToken)
+    {
+        try {
+            GitHub gitHub = this.gitHubFactory.createGitHub(gitHubLogin, gitHubAuthToken);
+            return gitHub.getRateLimit();
+        } catch (Exception e) {
+            setError(e);
+            return null;
+        }
     }
 
     /**

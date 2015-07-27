@@ -38,12 +38,15 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.gitective.core.stat.UserCommitActivity;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.PagedSearchIterable;
+import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
 import org.xwiki.contrib.githubstats.Author;
@@ -95,6 +98,9 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
      */
     EntityReference REPOSITORY_CLASS = new EntityReference("RepositoryClass", EntityType.DOCUMENT,
         new EntityReference(SPACE, EntityType.SPACE));
+
+    @Inject
+    private Logger logger;
 
     @Inject
     private GitManager gitManager;
@@ -204,18 +210,20 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     {
         List<String> updatedUsers = new ArrayList<String>();
 
-        // Find all authors already imported
+        // Find all authors already imported so that for each of them we look for more data on GitHub.
         try {
             List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
                 ", doc.object(%s) as author", this.defaultSerializer.serialize(AUTHOR_CLASS)));
             for (BaseObject authorObject : authorObjects) {
                 try {
-                    // Only import if there are fields not set or if overwrite is true
+                    // Only import if there are fields not set or if overwrite is true. This is to improve performances
+                    // since we need to call GitHub for each author existing in XWiki.
                     String avatar = authorObject.getStringValue("avatar");
                     String name = authorObject.getStringValue("name");
-                    if (StringUtils.isEmpty(avatar) || StringUtils.isEmpty(name) || overwrite) {
-                        updatedUsers.addAll(
-                            importAuthorFromGitHub(gitHub, authorObject.getStringValue("id"), overwrite));
+                    if (overwrite || StringUtils.isEmpty(avatar) || StringUtils.isEmpty(name)) {
+                        String userId = authorObject.getStringValue("id");
+                        String emailAddress = authorObject.getStringValue("email");
+                        updatedUsers.addAll(importAuthorFromGitHub(gitHub, userId, emailAddress, overwrite));
                     }
                 } catch (GitHubStatsException e) {
                     // Failed to import the user. This is usually because the user doesn't exist but the GitHub API
@@ -236,38 +244,36 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     {
         List<String> importedUsers = new ArrayList<String>();
         try {
-            if (user != null) {
-                XWikiContext xcontext = getXWikiContext();
-                for (BaseObject authorToUpdateObject : authorToUpdateObjects) {
-                    boolean modified = false;
-                    String currentName = authorToUpdateObject.getStringValue("name");
-                    if (StringUtils.isEmpty(currentName) || overwrite) {
-                        authorToUpdateObject.setStringValue("name", user.getName());
-                        modified = true;
-                    }
-                    String currentAvatar = authorToUpdateObject.getStringValue("avatar");
-                    if (StringUtils.isEmpty(currentAvatar) || overwrite) {
-                        authorToUpdateObject.setStringValue("avatar", user.getAvatarUrl());
-                        modified = true;
-                    }
-                    String currentProfileURL = authorToUpdateObject.getStringValue("profileurl");
-                    if (StringUtils.isEmpty(currentProfileURL) || overwrite) {
-                        // TODO: There's currently no way to get the User HTML URL,
-                        // See https://github.com/kohsuke/github-api/issues/52
-                        // matchingAuthorObject.setStringValue("profileurl", user.get...);
-                        // modified = true;
-                    }
-                    String currentCompany = authorToUpdateObject.getStringValue("company");
-                    if (StringUtils.isEmpty(currentCompany) || overwrite) {
-                        authorToUpdateObject.setStringValue("company", user.getCompany());
-                        modified = true;
-                    }
-                    // Save modifications if any
-                    if (modified) {
-                        xcontext.getWiki().saveDocument(authorToUpdateObject.getOwnerDocument(),
-                            "Imported user data from GitHub", true, xcontext);
-                        importedUsers.add(authorToUpdateObject.getOwnerDocument().getDocumentReference().getName());
-                    }
+            XWikiContext xcontext = getXWikiContext();
+            for (BaseObject authorToUpdateObject : authorToUpdateObjects) {
+                boolean modified = false;
+                String currentName = authorToUpdateObject.getStringValue("name");
+                if (StringUtils.isEmpty(currentName) || overwrite) {
+                    authorToUpdateObject.setStringValue("name", user.getName());
+                    modified = true;
+                }
+                String currentAvatar = authorToUpdateObject.getStringValue("avatar");
+                if (StringUtils.isEmpty(currentAvatar) || overwrite) {
+                    authorToUpdateObject.setStringValue("avatar", user.getAvatarUrl());
+                    modified = true;
+                }
+                String currentProfileURL = authorToUpdateObject.getStringValue("profileurl");
+                if (StringUtils.isEmpty(currentProfileURL) || overwrite) {
+                    // TODO: There's currently no way to get the User HTML URL,
+                    // See https://github.com/kohsuke/github-api/issues/52
+                    // matchingAuthorObject.setStringValue("profileurl", user.get...);
+                    // modified = true;
+                }
+                String currentCompany = authorToUpdateObject.getStringValue("company");
+                if (StringUtils.isEmpty(currentCompany) || overwrite) {
+                    authorToUpdateObject.setStringValue("company", user.getCompany());
+                    modified = true;
+                }
+                // Save modifications if any
+                if (modified) {
+                    xcontext.getWiki().saveDocument(authorToUpdateObject.getOwnerDocument(),
+                        "Imported user data from GitHub", true, xcontext);
+                    importedUsers.add(authorToUpdateObject.getOwnerDocument().getDocumentReference().getName());
                 }
             }
         } catch (Exception e) {
@@ -277,25 +283,69 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         return importedUsers;
     }
 
-    private List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, List<BaseObject> authorToUpdateObjects,
-        boolean overwrite) throws GitHubStatsException
+    private List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, String emailAddress,
+        List<BaseObject> authorToUpdateObjects, boolean overwrite) throws GitHubStatsException
     {
+        List<String> result = Collections.emptyList();
+
+        // Load the XWiki page corresponding to that user and fill the data.
         try {
-            return importAuthorFromGitHub(gitHub.getUser(authorId), authorToUpdateObjects, overwrite);
+            GHUser matchinguser = locateUserInGitHub(gitHub, authorId, emailAddress);
+            if (matchinguser != null) {
+                result = importAuthorFromGitHub(matchinguser, authorToUpdateObjects, overwrite);
+            }
         } catch (Exception e) {
             throw new GitHubStatsException("Failed to import author data from GitHub", e);
         }
+
+        return result;
+    }
+
+    private GHUser locateUserInGitHub(GitHub gitHub, String authorId, String emailAddress)
+    {
+        try {
+            // Search for a user with the passed login
+            // Note: We don't use "gitHub.getUser(authorId)" because if the authorId is a simple one (like "Gabriela")
+            // then it's very likely that it'll return the wrong user. Doing a search is likely to return more than one
+            // user and thus we'll search with the email address and full name.
+            PagedSearchIterable<GHUser> matchingUsers =
+                gitHub.searchUsers().q(escapeQueryTerm(authorId)).type("user").in("login").list();
+            if (matchingUsers.getTotalCount() == 1) {
+                return matchingUsers.iterator().next();
+            }
+
+            // Search for a user with a matching email address
+            matchingUsers = gitHub.searchUsers().q(escapeQueryTerm(emailAddress)).type("user").in("email").list();
+            if (matchingUsers.getTotalCount() == 1) {
+                return matchingUsers.iterator().next();
+            }
+
+            // Search for a user with a full name matching the passed login (since on git, sometimes users set their
+            // name as their git id).
+            matchingUsers = gitHub.searchUsers().q(escapeQueryTerm(authorId)).type("user").in("fullname").list();
+            if (matchingUsers.getTotalCount() == 1) {
+                return matchingUsers.iterator().next();
+            }
+        } catch (Throwable e) {
+            // It failed to locate the user. The most likely reason is that the API rate limit has been reached.
+            // Continue so that the users for which it has worked can be saved and so that the user can reimport the
+            // rest later on.
+            this.logger.warn("Failed to locate user [{}] (email [{}]). Reason: [{}]", authorId, emailAddress,
+                ExceptionUtils.getRootCauseMessage(e));
+        }
+
+        return null;
+    }
+
+    private String escapeQueryTerm(String term)
+    {
+        return StringUtils.prependIfMissing(StringUtils.appendIfMissing(term, "\""), "\"");
     }
 
     @Override
-    public List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, boolean overwrite)
+    public List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, String emailAddress, boolean overwrite)
         throws GitHubStatsException
     {
-        // Load the XWiki page corresponding to that user and fill the data.
-        // Ideally we would get the user email from GitHub and update that record. However a lot of users don't
-        // specify their email address on GitHub. Thus we use a different strategy:
-        // - Look for all users who have an id matching the GitHub user id and update them, hoping that no two
-        //   users have the same id...
         List<BaseObject> matchingAuthorObjects;
         try {
             matchingAuthorObjects = getAuthorObjectsForQuery(String.format(
@@ -304,7 +354,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             throw new GitHubStatsException(String.format("Failed to find matching author for [%s]", authorId), e);
         }
 
-        return importAuthorFromGitHub(gitHub, authorId, matchingAuthorObjects, overwrite);
+        return importAuthorFromGitHub(gitHub, authorId, emailAddress, matchingAuthorObjects, overwrite);
     }
 
     @Override
@@ -365,9 +415,11 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                 List<BaseObject> matchingAuthorObjects = getAuthorObjectsForQuery(String.format(
                     "where doc.object(%s).id = '%s'", this.defaultSerializer.serialize(AUTHOR_CLASS), user.getLogin()));
                 if (matchingAuthorObjects.isEmpty()) {
-                    BaseObject authorObject =
-                        importAuthorInternal(user.getLogin(), user.getEmail(), Collections.singleton(repository), true);
-                    importedUsers.addAll(importAuthorFromGitHub(user, Collections.singletonList(authorObject), true));
+                    // Create new author entry
+                    BaseObject authorObject = importAuthorInternal(
+                        user.getLogin(), user.getEmail(), Collections.singleton(repository), false);
+                    // Fill it with author data from GitHub
+                    importedUsers.addAll(importAuthorFromGitHub(user, Collections.singletonList(authorObject), false));
                 } else {
                     for (BaseObject matchingAuthorObject : matchingAuthorObjects) {
                         XWikiDocument authorDocument = matchingAuthorObject.getOwnerDocument();
@@ -419,6 +471,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         // - B - find other authors having an id matching the author name
         // - C - find other authors having the same name
         // - D - find other authors having the same email
+        // - E - find other authors having a full name matching the id
         try {
             List<String> linkedUsers = new ArrayList<String>();
             do {
@@ -434,35 +487,54 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     String gitEmail = fullAuthorObject.getStringValue("email");
 
                     // Strategy A
-                    List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
-                        ", doc.object(%s) author where author.id = '%s' and author.email <> '%s'",
-                        authorClassReference, gitId, gitEmail));
-                    List<String> results = linkUser(fullAuthorObject, authorObjects);
-                    linkedUsers.addAll(results);
-                    modifiedUsers.addAll(results);
+                    if (!StringUtils.isEmpty(gitId)) {
+                        List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
+                            ", doc.object(%s) author where author.id = '%s' and author.email <> '%s'",
+                            authorClassReference, gitId, gitEmail));
+                        List<String> results = linkUser(fullAuthorObject, authorObjects);
+                        linkedUsers.addAll(results);
+                        modifiedUsers.addAll(results);
+                    }
 
                     // Strategy B
-                    authorObjects = getAuthorObjectsForQuery(String.format(
-                        "where doc.object(%s).id = '%s'", authorClassReference, gitName));
-                    results = linkUser(fullAuthorObject, authorObjects);
-                    linkedUsers.addAll(results);
-                    modifiedUsers.addAll(results);
+                    if (!StringUtils.isEmpty(gitName)) {
+                        List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
+                            "where doc.object(%s).id = '%s'", authorClassReference, gitName));
+                        List<String> results = linkUser(fullAuthorObject, authorObjects);
+                        linkedUsers.addAll(results);
+                        modifiedUsers.addAll(results);
+                    }
 
                     // Strategy C
-                    authorObjects = getAuthorObjectsForQuery(String.format(
-                        ", doc.object(%s) author where author.name = '%s' and author.id <> '%s' and author.email <> '%s'",
-                        this.defaultSerializer.serialize(AUTHOR_CLASS), gitName, gitId, gitEmail));
-                    results = linkUser(fullAuthorObject, authorObjects);
-                    linkedUsers.addAll(results);
-                    modifiedUsers.addAll(results);
+                    if (!StringUtils.isEmpty(gitName)) {
+                        List<BaseObject> authorObjects  = getAuthorObjectsForQuery(String.format(
+                            ", doc.object(%s) author where author.name = '%s' and author.id <> '%s' and "
+                            + "author.email <> '%s'",
+                            authorClassReference, gitName, gitId, gitEmail));
+                        List<String> results = linkUser(fullAuthorObject, authorObjects);
+                        linkedUsers.addAll(results);
+                        modifiedUsers.addAll(results);
+                    }
 
                     // Strategy D
-                    authorObjects = getAuthorObjectsForQuery(String.format(
-                        ", doc.object(%s) author where author.email = '%s' and author.id <> '%s'",
-                        authorClassReference, gitEmail, gitId));
-                    results = linkUser(fullAuthorObject, authorObjects);
-                    linkedUsers.addAll(results);
-                    modifiedUsers.addAll(results);
+                    if (!StringUtils.isEmpty(gitEmail)) {
+                        List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
+                            ", doc.object(%s) author where author.email = '%s' and author.id <> '%s'",
+                            authorClassReference, gitEmail, gitId));
+                        List<String> results = linkUser(fullAuthorObject, authorObjects);
+                        linkedUsers.addAll(results);
+                        modifiedUsers.addAll(results);
+                    }
+
+                    // Strategy E
+                    if (!StringUtils.isEmpty(gitEmail)) {
+                        List<BaseObject> authorObjects = getAuthorObjectsForQuery(String.format(
+                            ", doc.object(%s) author where author.name = '%s' and author.id <> '%s'",
+                            authorClassReference, gitId, gitId));
+                        List<String> results = linkUser(fullAuthorObject, authorObjects);
+                        linkedUsers.addAll(results);
+                        modifiedUsers.addAll(results);
+                    }
                 }
             } while (!linkedUsers.isEmpty());
         } catch (Exception e) {
@@ -557,7 +629,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     repositoryObject.setStringValue("organization", organizationId);
                     repositoryObject.setStringValue("id", repository.getName());
                     repositoryObject.setStringValue("giturl", repository.getGitTransportUrl());
-                    repositoryObject.setStringValue("htmlurl", repository.getUrl());
+                    repositoryObject.setStringValue("htmlurl", repository.getUrl().toExternalForm());
                     // Save modifications
                     xcontext.getWiki().saveDocument(repositoryDocument, "Imported repository from GitHub", true,
                         xcontext);

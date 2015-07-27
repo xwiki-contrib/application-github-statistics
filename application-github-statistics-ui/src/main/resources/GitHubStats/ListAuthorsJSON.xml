@@ -62,7 +62,7 @@
 #foreach($row in $map.get('rows'))
   #set ($avatar = $row.get('avatar'))
   #if ($avatar == "Not defined")
-    #set ($avatarURL = "$xwiki.getSkinFile('noavatar.png')")
+    #set ($avatarURL = "$xwiki.getSkinFile('icons/xwiki/noavatar.png')")
   #else
     #set ($avatarURL = $avatar)
   #end

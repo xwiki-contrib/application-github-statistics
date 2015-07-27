@@ -45,7 +45,9 @@
   <content>{{velocity}}
 #set ($discard = $doc.use('GitHubStats.AuthorClass'))
 #if ("$!doc.getValue('avatar')" != '')
-[[image:url:$doc.getValue('avatar')||width='80']]
+  [[image:url:$doc.getValue('avatar')||width='80']]
+#else
+  [[image:path:$xwiki.getSkinFile('icons/xwiki/noavatar.png')||width='80']]
 #end
 
 ; Id

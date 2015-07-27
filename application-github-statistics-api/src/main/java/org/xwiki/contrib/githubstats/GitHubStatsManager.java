@@ -47,7 +47,8 @@ public interface GitHubStatsManager
     List<String> importAuthor(String authorId, String authorEmail, Collection<GitHubRepository> repositories,
         boolean overwrite) throws GitHubStatsException;
 
-    List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, boolean overwrite) throws GitHubStatsException;
+    List<String> importAuthorFromGitHub(GitHub gitHub, String authorId, String emailAddress, boolean overwrite)
+        throws GitHubStatsException;
 
     List<String> createAuthorFromGitHub(GitHub gitHub, String authorId, String fallbackEmail, boolean overwrite)
         throws GitHubStatsException;
