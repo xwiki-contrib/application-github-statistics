@@ -32,7 +32,6 @@
   <artifactId>application-github-statistics-ui</artifactId>
   <name>GitHub Statistics Application - UI</name>
   <packaging>xar</packaging>
-  <description>GitHub Statistics Application</description>
   <properties>
     <!-- Don't run CLIRR here since there's no Java code. -->
     <xwiki.clirr.skip>true</xwiki.clirr.skip>
