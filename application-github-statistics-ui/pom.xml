@@ -38,6 +38,7 @@
     <xwiki.clirr.skip>true</xwiki.clirr.skip>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>GitHub Statistics Application</xwiki.extension.name>
+    <xwiki.extension.category>application</xwiki.extension.category>
     <!-- Old names of this module used for retro compatibility when resolving dependencies of old extensions -->
     <xwiki.extension.features>application-github-statistics</xwiki.extension.features>
   </properties>
