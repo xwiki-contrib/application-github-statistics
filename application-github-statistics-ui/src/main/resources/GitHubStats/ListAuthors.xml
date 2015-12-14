@@ -43,21 +43,25 @@
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{velocity}}
-#set($columns = ["avatar", "id", "email", "name", "company"])
+#set($columns = ['avatar', 'id', 'email', 'name', 'company'])
 #set($columnsProperties = {
-   "avatar" : { "type" : "none", "link" : "none", "html" : "true", "sortable":false },
-   "id" : { "type" : "text" , "size" : 20, "link" : "view"},
-   "email" : { "type" : "text", "html" : "true" },
-   "name" : { "type" : "text" },
-   "company" : { "type" : "text" }
+   'avatar' : { 'type' : 'none', 'link' : 'none', 'html' : 'true', 'sortable':false },
+   'id' : { 'type' : 'text' , 'size' : 20, 'link' : 'view'},
+   'email' : { 'type' : 'text', 'html' : 'true' },
+   'name' : { 'type' : 'text' },
+   'company' : { 'type' : 'text' }
 })
+## Note that override the default query filters in order to not have the "hidden" filter so that we display
+## hidden documents in the livetable. We need this since the generated documents are hidden (as they are technical
+## documents).
 #set($options = { 
-  "resultPage" : "GitHubStats.ListAuthorsJSON",
-  "className" : "GitHubStats.AuthorClass",
-  "translationPrefix" : "githubstats.author.",
-  "rowCount" : 15
+  'resultPage': 'GitHubStats.ListAuthorsJSON',
+  'className': 'GitHubStats.AuthorClass',
+  'translationPrefix': 'githubstats.author.',
+  'rowCount': 15,
+  'queryFilters': 'currentlanguage'
 })
-#livetable("authors" $columns $columnsProperties $options)
+#livetable('authors' $columns $columnsProperties $options)
 {{/velocity}}
 </content>
 </xwikidoc>

@@ -43,19 +43,23 @@
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{velocity}}
-#set($columns = ["organization", "id", "giturl", "htmlurl"])
+#set($columns = ['organization', 'id', 'giturl', 'htmlurl'])
 #set($columnsProperties = {
-   "organization" : { "type" : "text" },
-   "id" : { "type" : "text", "link" : "view" },
-   "giturl" : { "type" : "text" },
-   "htmlurl" : { "type" : "text" }
+   'organization' : { 'type' : 'text' },
+   'id' : { 'type' : 'text', 'link' : 'view' },
+   'giturl' : { 'type' : 'text' },
+   'htmlurl' : { 'type' : 'text' }
 })
-#set($options = { 
-  "className" : "GitHubStats.RepositoryClass",
-  "translationPrefix" : "githubstats.repository.",
-  "rowCount" : 15
+## Note that override the default query filters in order to not have the "hidden" filter so that we display
+## hidden documents in the livetable. We need this since the generated documents are hidden (as they are technical
+## documents).
+#set($options = {
+  'className': 'GitHubStats.RepositoryClass',
+  'translationPrefix': 'githubstats.repository.',
+  'rowCount': 15,
+  'queryFilters': 'currentlanguage'
 })
-#livetable("repositories" $columns $columnsProperties $options)
+#livetable('repositories' $columns $columnsProperties $options)
 {{/velocity}}
 </content>
 </xwikidoc>

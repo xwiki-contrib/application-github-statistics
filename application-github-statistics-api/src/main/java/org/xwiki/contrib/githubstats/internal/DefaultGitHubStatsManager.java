@@ -172,6 +172,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             if (authorDocument.isNew() || overwrite) {
                 authorDocument.setTitle(String.format("Author [%s]", authorAsString));
                 authorDocument.setParentReference(PARENT);
+                authorDocument.setHidden(true);
                 // If there's an existing AuthorClass xobject then reuse it, otherwise create it
                 authorObject = createAuthorClass(authorDocument);
                 authorObject.setStringValue("id", authorId);
@@ -625,6 +626,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     repositoryDocument.setTitle(String.format("Repository [%s] for Organization [%s]",
                         repository.getName(), organizationId));
                     repositoryDocument.setParentReference(PARENT);
+                    repositoryDocument.setHidden(true);
                     BaseObject repositoryObject = repositoryDocument.getXObject(REPOSITORY_CLASS, true, xcontext);
                     repositoryObject.setStringValue("organization", organizationId);
                     repositoryObject.setStringValue("id", repository.getName());
