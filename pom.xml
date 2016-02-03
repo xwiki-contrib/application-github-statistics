@@ -46,7 +46,7 @@
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-github-statistics.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-github-statistics.git</developerConnection>
-    <url>https://github.com/xwiki-contrib/application-github-statistics</url>
+    <url>https://github.com/xwiki-contrib/application-github-statistics/tree/master</url>
     <tag>HEAD</tag>
   </scm>
   <developers>
