@@ -52,6 +52,194 @@
   <object>
     <name>GitHubStats.CommittersMacro</name>
     <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>9d8b2b0b-1053-4fc4-98c1-3c5ed0c7aa76</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.committer {
+  border: 1px solid @xwiki-border-color;
+  border-radius: @border-radius-base;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  display: block;
+  line-height: @line-height-base;
+  margin-bottom: @line-height-computed;
+  overflow: hidden;
+}
+
+.committer-avatar, .committer-details {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.committer-avatar {
+  border-right: 1px solid @xwiki-border-color;
+}
+
+.committer-details {
+  padding: 0 @thumbnail-caption-padding;
+  width: 100%;
+  pre {
+    margin: 0;
+    word-break: normal;
+    word-wrap: normal;
+    white-space: inherit;
+  }
+}
+
+.committer-avatar {
+  background-color: @xwiki-background-secondary-color;
+  padding: @thumbnail-padding;
+}
+
+.committer-avatar img {
+  border-radius: @border-radius-base;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.committer-count {
+  font-size: 75%;
+  letter-spacing: 1px;
+  line-height: 1;
+  padding: @thumbnail-padding 0 0;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.committer-active, .committer-pending, 
+.committer-retired {
+  &amp;.committer-wall .committer-count {
+    color: @label-color;
+  }
+}
+
+.committer-status(@color) {
+  border-color: tint(@color,30%);
+  .committer-avatar {
+    background-color: tint(@color,30%);
+  }
+}
+
+.committer-active { 
+  .committer-status(@brand-success);
+}
+
+.committer-pending {
+  .committer-status(@brand-warning);
+}
+
+.committer-retired {
+  .committer-status(@brand-danger);
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name>Committers Styling</name>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>currentPage</use>
+    </property>
+  </object>
+  <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>0</number>
     <className>XWiki.WikiMacroClass</className>
     <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <class>
@@ -170,6 +358,7 @@
     </class>
     <property>
       <code>{{velocity}}
+$xwiki.ssx.use('GitHubStats.CommittersMacro')
 ##============================
 ## Get all commits for the specified parameters
 ##============================
@@ -196,13 +385,13 @@
   #if ($isCommitter || (!$isCommitter &amp;&amp; "$!xcontext.macro.params.contributors" == "true"))
     #set ($avatar = $authorData.avatar)
     #if ("$!avatar" == '')
-      #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
+      #set ($avatarImg = "attach:GitHubStats.CommittersMacro@unknown.png")
     #else
-      #set ($avatarDisplay = "(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]")
+      #set ($avatarImg = "${avatar}")
     #end
+    #set ($avatarDisplay = "[[image:${avatarImg}]]")
     #set ($company = $authorData.company)
     #if ("$!company" != '')
-      #set ($companyDisplay = "\\//{{{$company}}}//")
     #else
       #set ($companyDisplay = '')
     #end
@@ -211,31 +400,40 @@
       #set ($count = 0)
     #end
     #if ($count == 0)
-      #set ($backgroundColor = '#F0D1D6')
+      #set ($status = 'retired')
     #else
       #if ($isCommitter)
-        #set ($backgroundColor = '#E1F7ED')
+        #set ($status = 'active')
       #else
-        #set ($backgroundColor = '#F7F2E1')
+        #set ($status = 'pending')
       #end
     #end
-    #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)((({{{${authorName}}}}$!{companyDisplay})))")
+    #set ($nameDisplay = "{{{${authorName}}}}$!{companyDisplay}")
+    #set ($countDisplay = "(% class='committer-count' %)((($count)))(%%)")
     #if ("$!xcontext.macro.params.type" == 'wall')
-      |(((
-        (% style='width:100%' %)
-        |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
-      )))#if ($displayCounter % 4 == 0)
-
-      #end
+      (%class="col-xs-12 col-sm-6 col-md-3"%)(((
+        (% class="committer committer-$status committer-wall""%)(((
+          (%class="committer-avatar"%)((($avatarDisplay$countDisplay)))
+          (%class="committer-details"%)((($nameDisplay)))
+        )))
+      )))
     #else
-      |$avatarDisplay|$nameDisplay|(% style='width:30px' %)$count
+      (%class="col-xs-12"%)(((
+        (% class="committer committer-$status""%)(((
+          (%class="committer-avatar"%)((($avatarDisplay)))
+          (%class="committer-details"%)((($nameDisplay)))
+          (%class="committer-details"%)((($countDisplay)))
+        )))
+      )))
     #end
   #end
 #end
+{{html wiki="true" clean="false"}}
 ##=====================
 ## Display results in a List or Table
 ##=====================
 #set ($displayCounter = 1)
+(%class="row"%)(((
 #foreach ($data in $commits.entrySet())
   #set ($authorName = $data.key)
   #set ($authorData = $data.value)
@@ -246,6 +444,7 @@
     #set ($discard = $authors.remove($contributingAuthor))
   #end
 #end
+(%%)
 ##=================
 ## Display inactive committers
 ##=================
@@ -260,6 +459,7 @@
     #end
   #end
 #end
+{{/html}}
 {{/velocity}}</code>
     </property>
     <property>
