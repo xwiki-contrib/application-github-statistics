@@ -392,6 +392,7 @@ $xwiki.ssx.use('GitHubStats.CommittersMacro')
     #set ($avatarDisplay = "[[image:${avatarImg}]]")
     #set ($company = $authorData.company)
     #if ("$!company" != '')
+      #set ($companyDisplay = "(%class='noitems'%)((({{{${company}}})))(%%)")
     #else
       #set ($companyDisplay = '')
     #end
