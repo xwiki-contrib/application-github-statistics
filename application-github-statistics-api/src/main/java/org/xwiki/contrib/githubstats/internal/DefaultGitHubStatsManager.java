@@ -617,6 +617,12 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
 
         try {
             for (GHRepository repository : gitHub.getOrganization(organizationId).getRepositories().values()) {
+                // If the repo has no commit then don't import it since gitective doesn't work with empty git repos.
+                // TODO: Remove once gitective is fixed and doesn't result in a NPE in this case...
+                if (repository.getSize() == 0) {
+                    continue;
+                }
+
                 XWikiContext xcontext = getXWikiContext();
                 String repositoryAsString = String.format("%s:%s", organizationId, repository.getName());
                 EntityReference repositoryReference = new EntityReference(repositoryAsString, EntityType.DOCUMENT,
