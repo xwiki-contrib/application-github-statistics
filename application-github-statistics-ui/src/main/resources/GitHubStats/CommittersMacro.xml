@@ -236,7 +236,7 @@ rkJggg==
     #end
     #set ($company = $authorData.company)
     #if ("$!company" != '')
-      #set ($companyDisplay = "\\//${company}//")
+      #set ($companyDisplay = "\\//{{{$company}}}//")
     #else
       #set ($companyDisplay = '')
     #end
@@ -253,7 +253,7 @@ rkJggg==
         #set ($backgroundColor = '#F7F2E1')
       #end
     #end
-    #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)(((${authorName}$!companyDisplay)))")
+    #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)((({{{${authorName}}}}$!{companyDisplay})))")
     #if ("$!xcontext.macro.params.type" == 'wall')
       |(((
         (% style='width:100%' %)
