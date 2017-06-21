@@ -36,6 +36,7 @@
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>GitHub Statistics API</xwiki.extension.name>
+    <xwiki.jacoco.instructionRatio>0.13</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
