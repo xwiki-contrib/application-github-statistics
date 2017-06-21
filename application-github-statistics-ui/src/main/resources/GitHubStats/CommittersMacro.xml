@@ -20,75 +20,40 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc>
+<xwikidoc version="1.2" reference="GitHubStats.CommittersMacro" locale="">
   <web>GitHubStats</web>
   <name>CommittersMacro</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>GitHubStats.WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
-  <author>xwiki:XWiki.Admin</author>
-  <customClass/>
-  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1386610098000</creationDate>
+  <parent>GitHubStats.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <date>1386612006000</date>
   <contentUpdateDate>1386611283000</contentUpdateDate>
   <version>1.1</version>
   <title>Committers Macro</title>
-  <defaultTemplate/>
-  <validationScript/>
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
+  <content/>
   <attachment>
     <filename>unknown.png</filename>
-    <filesize>2056</filesize>
     <author>xwiki:XWiki.Admin</author>
-    <date>1382361556000</date>
+    <date>1498040668000</date>
     <version>1.1</version>
     <comment/>
-    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
-bWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp
-bj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6
-eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEz
-NDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo
-dHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw
-dGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv
-IiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS
-ZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD
-cmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNl
-SUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3Vt
-ZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06
-RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMy
-OEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUx
-ODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1w
-bWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P//
-/8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7Sw
-YTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrAS
-JngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtx
-GIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbc
-CXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp
-1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92A
-qzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVx
-CwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3
-Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQ
-MG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h
-5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyD
-yZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8
-SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JF
-f4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1
-psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO4
-1zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf
-6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJ
-A+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWH
-g4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PN
-b+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5E
-rkJggg==
-</content>
+    <content>iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAMAAACZHrEMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTVBNkM2RDU0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTVBNkM2RDY0RjYzMTFFMTgzMjhDMTQwN0NCMDYxRUUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NUE2QzZEMzRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NUE2QzZENDRGNjMxMUUxODMyOEMxNDA3Q0IwNjFFRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvfLyBkAAAAYUExURezs7Nzc3NPT0+Pj48zMzPj4+P///8rKyjC5OGcAAARYSURBVHja7JvJduQgDEUfYsj//3FXOjjtAdATQyV9DixSi5TtW5qQhIyPX7SwYTbMhtkwG2bDbJhFMOI8EF8rff4BvJMfgQkOMZVWhJe3wjhfBvkH5N4EIwpJ5umRD6zaYUgOnrASJngepQcH61D+LhMOD+M6UD6l4+bDCFLvgkyG8WlksbqiYALS2IoyDUZiGl2c5WC1iiyqwnIVfdtxGIaZxsLQKDAhpnkrhiGYqSw6DUgWAF1gr5TrlHAoNODsJeaEykiS8wiQsmnBnB7te1IIdzxZTlbcCXOOL2LeMC9BNz5/lg1Gzne2RsFbxD2r13XAXBwJFWN6JbtOsghExLls5veQ4jmXAmEwBdnKqzKp1CWv+uXxD8cFvxrM5fLUl+yXVd4wG1DRbhQmXC1KbDDgru6EgQlG0lKYmqRBbUmT1VTzKOjWO92AqzYMaq/2gzCO27/BXJpGuzjPDdaTMKUkJsyGKYoGjGCGjaZQXzgOBh0Jo9mCb3tvDUYKghmNMyVxCwPjpyupLG8wMHG6L5XdoqB6EFqSGTBPiTsdxq8RTEE00GHiIsE8f2ZUYcIqwRQMQDQYt8SVykL3Ggxm7wQNPUGDiUyknKSnqMAsNJnCzUMbRtLsVKYldmnDrLRf3YKhhTyZCAMbDN4Kg98EE9swccPQMG4hTGrDpPfCBCPMyqBnhsHPwcSlMMlmMzEt3LXDMMzEfEbGYeYFGpdscQYr3Umt43SYuM6ZYE0h5ukpqEJXk6t5enJWGEkL+iF0eqIm5NO2p6BHDbVUmSYar7uGXsRN2hKEuK1e3k5yKBDq1wt/wyyDyZWIwv8j9h1J25VEtERqZ35jsimOdhDNIknzacpjJkQb7SNOGZ/SnYJpMDbOZvuEUxuQolqvMmV8SkMhm9IfzRkDOIOyWvMKXLv+rOIo4XHDSPIokxPkQcbJhL/wnwM9n4faDaIgTpspYY94zqLJB+JFf4jlaUluzpE9/Lr0srMHOT4sU4NR/LHg9dGu5vC1LYIZR+IPTG+3k8oTxLIR9R8lX2/3daUYkhx1psVyyH6LNSiajZgyzIHxg5tWSmYDYyY1MJhxlUOOlpcBJ2/fGtUEnxvmyZd/z0pr4+rSoyT7mJO41zqR+KPzkkWiG03PmNP110n1S1eY/MXQYTBNmIviaz/H32F8rR3HVIQgyy7UGgs3mKjANO2e9lBf6dLVPnvGcNuDptDu84QILRj0D5reaEoZgw1maAT3kQ/Ay2dSJeLRAYOx4eRGdmKHGR7brm/BZpgJA+3VjcYKw3Scul+CsMFw9V/36yEmGHDFFtmUeo5HW2DYpiDbIXsIh4cBXYN2v2zFwli6BZbe4QWHg4mmtq2tkXnCYWAWvqD3Vc1HCib+bViYO6KdzZ94ZHTH5yERyaHpDS91Hs2ObAsuQ8kBEYd6+2PNb+Scyx2xBEPd9CGY4HMMwZGXylC/eL/JvmE2zIbZMBtmw/wvMH8EGAAJifrfoartVwAAAABJRU5ErkJggg==</content>
+    <filesize>2056</filesize>
   </attachment>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroClass</className>
+    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <class>
       <name>XWiki.WikiMacroClass</name>
       <customClass/>
@@ -100,6 +65,7 @@ rkJggg==
       <validationScript/>
       <code>
         <disabled>0</disabled>
+        <editor>Text</editor>
         <name>code</name>
         <number>9</number>
         <prettyName>Macro code</prettyName>
@@ -109,7 +75,9 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
       </code>
       <contentDescription>
+        <contenttype>PureText</contenttype>
         <disabled>0</disabled>
+        <editor>PureText</editor>
         <name>contentDescription</name>
         <number>8</number>
         <prettyName>Content description (Not applicable for "No content" type)</prettyName>
@@ -144,7 +112,9 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </defaultCategory>
       <description>
+        <contenttype>PureText</contenttype>
         <disabled>0</disabled>
+        <editor>PureText</editor>
         <name>description</name>
         <number>3</number>
         <prettyName>Macro description</prettyName>
@@ -198,10 +168,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </visibility>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>0</number>
-    <className>XWiki.WikiMacroClass</className>
-    <guid>2aff74db-93bd-4b52-ae42-4c7e90ac3ffb</guid>
     <property>
       <code>{{velocity}}
 ##============================
@@ -322,6 +288,10 @@ rkJggg==
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>1</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -370,10 +340,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>1</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>2f56d0ea-62f3-4b08-b041-f756c19894dc</guid>
     <property>
       <defaultValue>true</defaultValue>
     </property>
@@ -388,6 +354,10 @@ rkJggg==
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>2</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -436,10 +406,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>2</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>673226b7-99d4-4e25-9d5a-070f5b13f180</guid>
     <property>
       <defaultValue>0</defaultValue>
     </property>
@@ -454,6 +420,10 @@ rkJggg==
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>3</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -502,10 +472,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>3</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>7842b658-0855-41f6-a084-d3db87a09ed0</guid>
     <property>
       <defaultValue/>
     </property>
@@ -520,6 +486,10 @@ rkJggg==
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>4</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -568,10 +538,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>4</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>661fe711-d74c-45b5-b7f5-a10955dfa059</guid>
     <property>
       <defaultValue>false</defaultValue>
     </property>
@@ -586,6 +552,10 @@ rkJggg==
     </property>
   </object>
   <object>
+    <name>GitHubStats.CommittersMacro</name>
+    <number>5</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <class>
       <name>XWiki.WikiMacroParameterClass</name>
       <customClass/>
@@ -634,10 +604,6 @@ rkJggg==
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
     </class>
-    <name>GitHubStats.CommittersMacro</name>
-    <number>5</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>90504bb4-6b98-4b3d-97e9-ee55e9187414</guid>
     <property>
       <defaultValue>wall</defaultValue>
     </property>
@@ -651,5 +617,4 @@ rkJggg==
       <name>type</name>
     </property>
   </object>
-  <content/>
 </xwikidoc>
