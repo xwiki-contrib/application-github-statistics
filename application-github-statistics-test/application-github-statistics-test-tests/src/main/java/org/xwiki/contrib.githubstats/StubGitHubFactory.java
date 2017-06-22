@@ -120,6 +120,8 @@ public class StubGitHubFactory implements GitHubFactory
         when(repository.getName()).thenReturn("repository" + id);
         when(repository.getGitTransportUrl()).thenReturn("repository" + id + " git URL");
         when(repository.getUrl()).thenReturn(new URL("http://github.com/" + id));
+        // Return a dummy non-zero value to signify it's not an empty repository!
+        when(repository.getSize()).thenReturn(1);
         return repository;
     }
 

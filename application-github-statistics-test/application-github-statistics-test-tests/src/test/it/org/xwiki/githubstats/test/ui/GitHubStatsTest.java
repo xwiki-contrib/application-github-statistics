@@ -120,50 +120,19 @@ public class GitHubStatsTest extends AbstractTest
         livetable = home.getAuthorsLiveTable();
         livetable.clickCell(2, 2);
         authorSheetPage = new AuthorSheetPage();
-        assertEquals("Id\nauthor2\n"
-            + "Email\nauthor1@doe.com\n"
-            + "Name\nauthor1\n"
-            + "Company\nCompany\n"
-            + "Repositories\n"
-            + "organization1 / repository2 (Committer)\n"
-            + "organization1 / repository1 (Committer)\n"
-            + "organization1 / repository6 (Committer)\n"
-            + "organization1 / repository5 (Committer)\n"
-            + "organization1 / repository4 (Committer)\n"
-            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
+        assertAuthorSheetContent(authorSheetPage.getContent(), "author2", "author1", "author1@doe.com");
         importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
         home = new GitHubStatsHomePage();
         livetable = home.getAuthorsLiveTable();
         livetable.clickCell(3, 2);
         authorSheetPage = new AuthorSheetPage();
-        assertEquals("Id\nauthor2\n"
-            + "Email\nauthor2@doe.com\n"
-            + "Name\nauthor1\n"
-            + "Company\nCompany\n"
-            + "Repositories\n"
-            + "organization1 / repository6 (Committer)\n"
-            + "organization1 / repository2 (Committer)\n"
-            + "organization1 / repository1 (Committer)\n"
-            + "organization1 / repository5 (Committer)\n"
-            + "organization1 / repository4 (Committer)\n"
-            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
+        assertAuthorSheetContent(authorSheetPage.getContent(), "author2", "author1", "author2@doe.com");
         importRepositoriesPage.clickBreadcrumbLink("GitHub Repositories & Git Authors");
         home = new GitHubStatsHomePage();
         livetable = home.getAuthorsLiveTable();
         livetable.clickCell(4, 2);
         authorSheetPage = new AuthorSheetPage();
-        assertEquals("Id\nauthor1\n"
-            + "Email\nauthor1@doe.com\n"
-            + "Name\nauthor1\n"
-            + "Company\nCompany\n"
-            + "Repositories\n"
-            + "organization1 / repository2 (Committer)\n"
-            + "organization1 / repository1 (Committer)\n"
-            + "organization1 / repository6 (Committer)\n"
-            + "organization1 / repository5 (Committer)\n"
-            + "organization1 / repository4 (Committer)\n"
-            + "organization1 / repository3 (Committer)", authorSheetPage.getContent());
-
+        assertAuthorSheetContent(authorSheetPage.getContent(), "author1", "author1", "author1@doe.com");
         // Now create a new page using the committers and firstCommits macro to verify they work fine
         ViewPage vp = getUtil().createPage(getTestClassName(), getTestMethodName(),
             "{{committers repositories='organization1/repository1,organization1/repository2,"
@@ -173,13 +142,28 @@ public class GitHubStatsTest extends AbstractTest
             + "{{firstCommits repositories='organization1/repository1,organization1/repository2,"
             + "organization1/repository3,organization1/repository4,organization1/repository5,"
             + "organization1/repository6'/}}", "Macro Tests", "xwiki/2.1");
-        String expectedRegex = "author1\nCompany\n12\n"
-            + "author3\n1\n"
-            + "author1\nCompany\n2\n"
+        String expectedRegex = "12\nauthor1\nCompany\n"
+            + "1\nauthor3\n"
+            + "2\nauthor1\nCompany\n"
             + "author1\nCompany\n.*\n0 years, 0 months, 0 days\n"
-            + "author1\nCompany\n.*\n0 years, 0 months, 0 days\n"
-            + "author3\n.*\n0 years, 0 months, 3 days";
+            + "author3\n.*\n0 years, 0 months, 3 days\n"
+            + "author1\nCompany\n.*\n0 years, 0 months, 0 days";
         assertTrue(Pattern.compile(expectedRegex).matcher(vp.getContent()).matches());
+    }
+
+    private void assertAuthorSheetContent(String content, String authorId, String authorName, String authorEmail)
+    {
+        assertTrue(content.contains("Id\n" + authorId + "\n"
+            + "Email\n" + authorEmail + "\n"
+            + "Name\n" + authorName + "\n"
+            + "Company\nCompany\n"
+            + "Repositories\n"));
+        assertTrue(content.contains("organization1 / repository2 (Committer)"));
+        assertTrue(content.contains("organization1 / repository1 (Committer)"));
+        assertTrue(content.contains("organization1 / repository6 (Committer)"));
+        assertTrue(content.contains("organization1 / repository5 (Committer)"));
+        assertTrue(content.contains("organization1 / repository4 (Committer)"));
+        assertTrue(content.contains("organization1 / repository3 (Committer)"));
     }
 
     /**
