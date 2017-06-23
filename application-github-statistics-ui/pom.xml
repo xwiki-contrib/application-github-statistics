@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>application-github-statistics</artifactId>
-    <version>2.1</version>
+    <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>application-github-statistics-ui</artifactId>
   <name>GitHub Statistics Application - UI</name>
