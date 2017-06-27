@@ -170,6 +170,7 @@
     </class>
     <property>
       <code>{{velocity}}
+$xwiki.ssx.use('GitHubStats.CommittersMacro')
 ##============================
 ## Get all commits for the specified parameters
 ##============================
@@ -186,6 +187,8 @@
 ## Display results
 ##==========
 #set ($joda = $xwiki.jodatime)
+{{html wiki="true" clean="false"}}
+(%class="row"%)(((
 #foreach ($data in $userCommitActivity)
   #set ($firstCommitDate = $data.earliest)
   #set ($author = $services.githubstats.buildAuthor($data.name, $data.email))
@@ -194,27 +197,42 @@
   #if ($isCommitter || (!$isCommitter &amp;&amp; "$!xcontext.macro.params.contributors" == "true"))
     #set ($avatar = $authorData.avatar)
     #if ("$!avatar" == '')
-      #set ($avatarDisplay = "(% style='width:85px' %)[[image:attach:GitHubStats.CommittersMacro@unknown.png||width='80' height='80']]")
+      #set ($avatarReference = "attach:GitHubStats.CommittersMacro@unknown.png")
     #else
-      #set ($avatarDisplay = "(% style='width:85px' %)[[image:${avatar}||width='80' height='80']]")
+      #set ($avatarReference = "${avatar}")
     #end
+    #set ($avatarDisplay = "[[image:${avatarReference}]]")
     #set ($company = $authorData.company)
     #if ("$!company" != '')
-      #set ($companyDisplay = "\\//${company}//")
+      #set ($companyDisplay = "(%class='noitems'%)((({{{${company}}}})))(%%)")
     #else
       #set ($companyDisplay = '')
     #end
     #if ($isCommitter)
-      #set ($backgroundColor = '#E1F7ED')
+      #set ($status = 'active')
     #else
-      #set ($backgroundColor = '#F7F2E1')
+      #set ($status = 'pending')
     #end
     #set ($duration = $joda.getDuration($joda.getDateTime($firstCommitDate), $joda.getDateTime()))
     #set ($period = $duration.toPeriodTo($joda.getDateTime()))
-    #set ($nameDisplay = "(% style=""background-color: $backgroundColor"" %)(((${authorData.name}$!companyDisplay)))")
-    |$avatarDisplay|$nameDisplay|(((${datetool.format('medium', $firstCommitDate)}\\//$period.years years, $period.months months, $period.days days//)))
+    #set ($nameDisplay = "{{{${authorData.name}}}}$!companyDisplay")
+    (%class="col-xs-12"%)(((
+      (% class="committer committer-$status""%)(((
+        (%class="committer-avatar"%)((($avatarDisplay)))
+        (%class="committer-details"%)((($nameDisplay)))
+        (%class="committer-details"%)(((
+          (% class='committer-count' %)(((
+            (%class='noitems'%)(((${datetool.format('medium', $firstCommitDate)})))(%%)
+            ((($period.years years, $period.months months, $period.days days)))
+          )))
+          (%%)
+        )))
+      )))
+    )))
   #end
 #end
+(%%)
+{{/html}}
 {{/velocity}}</code>
     </property>
     <property>

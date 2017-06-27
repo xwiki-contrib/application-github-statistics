@@ -191,11 +191,14 @@
 .committer-count {
   font-size: 75%;
   letter-spacing: 1px;
-  line-height: 1;
   padding: @thumbnail-padding 0 0;
-  text-align: center;
+  text-align: right;
   vertical-align: baseline;
   white-space: nowrap;
+}
+
+.committer-wall .committer-count {
+  text-align: center;
 }
 
 .committer-active, .committer-pending, 
