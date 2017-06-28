@@ -48,6 +48,10 @@
       <name>Vincent Massol</name>
     </developer>
   </developers>
+  <properties>
+    <!-- Version of the Git API module to use -->
+    <gitapi.version>9.6</gitapi.version>
+  </properties>
   <profiles>
     <profile>
       <id>integration-tests</id>
