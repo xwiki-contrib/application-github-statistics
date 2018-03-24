@@ -90,7 +90,13 @@
     #set ($overwrite = ($!request.overwrite == 'overwrite'))
     #if ("$!request.authentication" != "")
       #set ($authTokens = $stringtool.split($request.authentication, ':'))
-      #set ($result = $services.githubstats.importRepositoriesFromGitHub($authTokens[0], $authTokens[1], $request.organization, $overwrite))
+      #if ($authTokens.size() == 2)
+        #set ($result = $services.githubstats.importRepositoriesFromGitHub($authTokens[0], $authTokens[1], $request.organization, $overwrite))
+      #else
+
+        {{error}}Authentication key must be of the form "[user name]:[token]"{{/error}}
+
+      #end
     #else
       #set ($result = $services.githubstats.importRepositoriesFromGitHub($request.organization, $overwrite))
     #end

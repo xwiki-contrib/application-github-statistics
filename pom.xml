@@ -50,7 +50,7 @@
   </developers>
   <properties>
     <!-- Version of the Git API module to use -->
-    <gitapi.version>9.6</gitapi.version>
+    <gitapi.version>9.7</gitapi.version>
   </properties>
   <profiles>
     <profile>
