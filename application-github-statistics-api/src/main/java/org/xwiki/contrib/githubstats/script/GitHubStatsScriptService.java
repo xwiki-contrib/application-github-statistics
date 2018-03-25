@@ -70,6 +70,7 @@ public class GitHubStatsScriptService implements ScriptService
 
     public Map<Author, Set<GitHubRepository>> findAllAuthors()
     {
+        setError(null);
         try {
             return this.manager.findAllAuthors();
         } catch (Exception e) {
@@ -82,6 +83,7 @@ public class GitHubStatsScriptService implements ScriptService
         boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAuthor(authorId, authorEmail, repositories, overwrite);
@@ -97,6 +99,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importAllAuthorsFromGitHub(boolean overwrite) throws GitHubStatsException
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAllAuthorsFromGitHub(this.gitHubFactory.createGitHub(), overwrite);
@@ -113,6 +116,7 @@ public class GitHubStatsScriptService implements ScriptService
         throws GitHubStatsException
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAllAuthorsFromGitHub(
@@ -129,6 +133,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importAuthorFromGitHub(String authorId, String emailAddress, boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAuthorFromGitHub(
@@ -146,6 +151,7 @@ public class GitHubStatsScriptService implements ScriptService
         String emailAddress, boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAuthorFromGitHub(
@@ -162,6 +168,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> createAuthorFromGitHub(String authorId, String fallbackEmail, boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.createAuthorFromGitHub(this.gitHubFactory.createGitHub(), authorId, fallbackEmail,
@@ -179,6 +186,7 @@ public class GitHubStatsScriptService implements ScriptService
         String fallbackEmail, boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.createAuthorFromGitHub(
@@ -204,6 +212,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importAllCommittersFromGitHub()
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAllCommittersFromGitHub(this.gitHubFactory.createGitHub());
@@ -220,6 +229,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importAllCommittersFromGitHub(String gitHubLogin, String gitHubAuthToken)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAllCommittersFromGitHub(
@@ -237,6 +247,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importCommittersFromGitHub(GitHubRepository repository)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importCommittersFromGitHub(this.gitHubFactory.createGitHub(), repository);
@@ -253,6 +264,7 @@ public class GitHubStatsScriptService implements ScriptService
         GitHubRepository repository)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importCommittersFromGitHub(
@@ -269,6 +281,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> linkAuthors()
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.linkAuthors();
@@ -284,6 +297,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importAllAuthors(boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importAllAuthors(overwrite);
@@ -299,6 +313,7 @@ public class GitHubStatsScriptService implements ScriptService
 
     public Map<Author, Map<String, ?>> getAuthorsForRepositories(String repositoriesAsString)
     {
+        setError(null);
         try {
             Collection<GitHubRepository> repositories =
                 this.manager.getRepositoryURLs(StringUtils.split(repositoriesAsString, ",")).keySet();
@@ -312,6 +327,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> importRepositoriesFromGitHub(String organizationId, boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importRepositoriesFromGitHub(this.gitHubFactory.createGitHub(), organizationId,
@@ -329,6 +345,7 @@ public class GitHubStatsScriptService implements ScriptService
         boolean overwrite)
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.importRepositoriesFromGitHub(
@@ -345,6 +362,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> deleteRepositories()
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.deleteRepositories();
@@ -360,6 +378,7 @@ public class GitHubStatsScriptService implements ScriptService
     public List<String> deleteAuthors()
     {
         List<String> result = null;
+        setError(null);
         if (hasPermission()) {
             try {
                 result = this.manager.deleteAuthors();
@@ -374,6 +393,7 @@ public class GitHubStatsScriptService implements ScriptService
 
     public List<Repository> getRepositories(String repositoriesAsString)
     {
+        setError(null);
         try {
             return this.manager.getRepositories(
                 this.manager.getRepositoryURLs(StringUtils.split(repositoriesAsString, ",")));
@@ -396,6 +416,7 @@ public class GitHubStatsScriptService implements ScriptService
 
     public GHRateLimit getRateLimit(String gitHubLogin, String gitHubAuthToken)
     {
+        setError(null);
         try {
             GitHub gitHub = this.gitHubFactory.createGitHub(gitHubLogin, gitHubAuthToken);
             return gitHub.getRateLimit();

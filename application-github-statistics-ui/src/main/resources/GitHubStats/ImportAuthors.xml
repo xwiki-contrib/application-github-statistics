@@ -109,13 +109,20 @@
 &lt;/form&gt;
 {{/html}}
 
+## Remove once we depend on XWiki 9.11.4+ (see https://jira.xwiki.org/browse/XWIKI-15142)
+#macro(displayExceptionCustom $title $exception)
+<div class="xwikirenderingerror" title="Click to get more details about the error" style="cursor: pointer;">
+  $title
+</div>
+<div class="xwikirenderingerrordescription hidden">
+  <pre>$escapetool.xml($exceptiontool.getStackTrace($exception))</pre>
+</div>
+#end
 #macro(printResults $result)
   #if (!$result)
-    {{error}}
-      An error occurred:
 
-      $services.githubstats.lastError
-  {{/error}}
+    {{html}}#displayExceptionCustom("An error occurred, click to get more information", $services.githubstats.lastError){{/html}}
+
   #elseif (!$result.isEmpty())
     {{info}}
     The following author entries were updated:

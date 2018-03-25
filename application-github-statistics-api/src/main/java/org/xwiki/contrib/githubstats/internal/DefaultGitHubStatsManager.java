@@ -158,8 +158,8 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         return importedUsers;
     }
 
-    private BaseObject importAuthorInternal(String authorId, String authorEmail, Collection<GitHubRepository> repositories,
-        boolean overwrite) throws GitHubStatsException
+    private BaseObject importAuthorInternal(String authorId, String authorEmail,
+        Collection<GitHubRepository> repositories, boolean overwrite) throws GitHubStatsException
     {
         BaseObject authorObject = null;
 
@@ -429,6 +429,10 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                         List<BaseObject> baseObjects = authorDocument.getXObjects(AUTHOR_REPOSITORY_CLASS);
                         if (baseObjects != null) {
                             for (BaseObject baseObject : baseObjects) {
+                                // XObjects can be null since there can be holes, just ignore
+                                if (baseObject == null) {
+                                    continue;
+                                }
                                 if (repository.getOrganizationId().equals(baseObject.getStringValue("organizationId"))
                                     && repository.getRepositoryId().equals(baseObject.getStringValue("repositoryId")))
                                 {
@@ -574,8 +578,14 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     name = id;
                 }
                 authorData.put("name", name);
-                authorData.put("avatar", authorObject.getStringValue("avatar"));
-                authorData.put("company", authorObject.getStringValue("company"));
+                String avatar = authorObject.getStringValue("avatar");
+                if (avatar != null) {
+                    authorData.put("avatar", avatar);
+                }
+                String company = authorObject.getStringValue("company");
+                if (company != null) {
+                    authorData.put("company", company);
+                }
                 authorData.put("committer", isCommitter(authorObject, repositories));
                 authors.put(author, authorData);
             }
@@ -595,6 +605,10 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             authorObject.getOwnerDocument().getXObjects(AUTHOR_REPOSITORY_CLASS);
         if (authorRepoObjects != null) {
             for (BaseObject authorRepoObject : authorRepoObjects) {
+                // XObjects can be null since there can be holes, just ignore
+                if (authorRepoObject == null) {
+                    continue;
+                }
                 boolean committer = authorRepoObject.getIntValue("committer") == 1;
                 if (committer) {
                     String organizationId = authorRepoObject.getStringValue("organizationId");
@@ -740,6 +754,10 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public Map<String, Map<String, Object>> aggregateCommitsPerAuthor(UserCommitActivity[] userCommitActivity,
         Map<Author, Map<String, Object>> authors)
     {
+        if (authors == null) {
+            return Collections.emptyMap();
+        }
+
         Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
         Map<String, Set<Author>> authorsByName = extractAuthorsByName(authors);
@@ -824,6 +842,10 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
 
     private Map<String, Set<Author>> extractAuthorsByName(Map<Author, Map<String, Object>> authors)
     {
+        if (authors == null) {
+            return Collections.emptyMap();
+        }
+
         Map<String, Set<Author>> authorsByName = new HashMap<String, Set<Author>>();
         for (Map.Entry<Author, Map<String, Object>> entry : authors.entrySet()) {
             Author author = entry.getKey();
@@ -842,6 +864,10 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
 
     private Map<String, Set<Author>> extractAuthorsByEmail(Map<Author, Map<String, Object>> authors)
     {
+        if (authors == null) {
+            return Collections.emptyMap();
+        }
+
         Map<String, Set<Author>> authorsByEmail = new HashMap<String, Set<Author>>();
         for (Map.Entry<Author, Map<String, Object>> entry : authors.entrySet()) {
             Author author = entry.getKey();
@@ -925,6 +951,9 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         List<BaseObject> repoObjects = authorObject.getOwnerDocument().getXObjects(AUTHOR_REPOSITORY_CLASS);
         if (repoObjects != null) {
             for (BaseObject repoObject : repoObjects) {
+                if (repoObject == null) {
+                    continue;
+                }
                 String organizationId = repoObject.getStringValue("organizationId");
                 String repositoryId = repoObject.getStringValue("repositoryId");
                 repos.put(new GitHubRepository(organizationId, repositoryId), repoObject);

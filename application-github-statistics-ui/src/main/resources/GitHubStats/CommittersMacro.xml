@@ -362,6 +362,15 @@
     <property>
       <code>{{velocity}}
 $xwiki.ssx.use('GitHubStats.CommittersMacro')
+## Remove once we depend on XWiki 9.11.4+ (see https://jira.xwiki.org/browse/XWIKI-15142)
+#macro(displayExceptionCustom $title $exception)
+<div class="xwikirenderingerror" title="Click to get more details about the error" style="cursor: pointer;">
+  $title
+</div>
+<div class="xwikirenderingerrordescription hidden">
+  <pre>$escapetool.xml($exceptiontool.getStackTrace($exception))</pre>
+</div>
+#end
 ##============================
 ## Get all commits for the specified parameters
 ##============================
@@ -376,6 +385,11 @@ $xwiki.ssx.use('GitHubStats.CommittersMacro')
 ## Get all imported users and their aliases in the wiki
 ##================================
 #set ($authors = $services.githubstats.getAuthorsForRepositories($xcontext.macro.params.repositories))
+#if ("$!services.githubstats.lastError" != "")
+
+  {{html}}#displayExceptionCustom("Failed to get authors for repositories", $services.githubstats.lastError){{/html}}
+  #break
+#end
 ##==============================
 ## Aggregate commits taking into account aliases
 ##==============================
