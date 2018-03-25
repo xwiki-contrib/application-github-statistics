@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -122,7 +121,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public Map<Author, Set<GitHubRepository>> findAllAuthors() throws GitHubStatsException
     {
         // For each repository found, find all authors that have ever contributed code.
-        Map<Author, Set<GitHubRepository>> authors = new HashMap<Author, Set<GitHubRepository>>();
+        Map<Author, Set<GitHubRepository>> authors = new HashMap<>();
         for (Map.Entry<GitHubRepository, String> entry : getAllRepositoryURLs().entrySet()) {
             try {
                 Repository repository = getRepository(entry.getValue(), entry.getKey());
@@ -130,7 +129,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
                     Author author = new Author(personIdent.getName(), personIdent.getEmailAddress());
                     Set<GitHubRepository> reposForAuthor = authors.get(author);
                     if (reposForAuthor == null) {
-                        reposForAuthor = new HashSet<GitHubRepository>();
+                        reposForAuthor = new HashSet<>();
                         authors.put(author, reposForAuthor);
                     }
                     reposForAuthor.add(
@@ -149,7 +148,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public List<String> importAuthor(String authorId, String authorEmail, Collection<GitHubRepository> repositories,
         boolean overwrite) throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        List<String> importedUsers = new ArrayList<>();
         BaseObject authorObject = importAuthorInternal(authorId, authorEmail, repositories, overwrite);
         if (authorObject != null) {
             String authorAsString = String.format("%s <%s>", authorId, authorEmail);
@@ -195,7 +194,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> importAllAuthors(boolean overwrite) throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        List<String> importedUsers = new ArrayList<>();
         Map<Author, Set<GitHubRepository>> authors = findAllAuthors();
         for (Map.Entry<Author, Set<GitHubRepository>> entry : authors.entrySet()) {
             Author author = entry.getKey();
@@ -209,7 +208,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> importAllAuthorsFromGitHub(GitHub gitHub, boolean overwrite) throws GitHubStatsException
     {
-        List<String> updatedUsers = new ArrayList<String>();
+        List<String> updatedUsers = new ArrayList<>();
 
         // Find all authors already imported so that for each of them we look for more data on GitHub.
         try {
@@ -243,7 +242,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     private List<String> importAuthorFromGitHub(GHUser user, List<BaseObject> authorToUpdateObjects,
         boolean overwrite) throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        List<String> importedUsers = new ArrayList<>();
         try {
             XWikiContext xcontext = getXWikiContext();
             for (BaseObject authorToUpdateObject : authorToUpdateObjects) {
@@ -362,7 +361,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public List<String> createAuthorFromGitHub(GitHub gitHub, String authorId, String fallbackEmail, boolean overwrite)
         throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        List<String> importedUsers = new ArrayList<>();
 
         // Create the page if it doesn't already exist.
         try {
@@ -385,7 +384,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> importAllCommittersFromGitHub(GitHub gitHub) throws GitHubStatsException
     {
-        Set<String> importedUsers = new LinkedHashSet<String>();
+        Set<String> importedUsers = new LinkedHashSet<>();
 
         // Find all Git repositories defined in the current wiki.
         Map<GitHubRepository, String> repositories = getAllRepositoryURLs();
@@ -393,14 +392,14 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             importedUsers.addAll(importCommittersFromGitHub(gitHub, entry.getKey()));
         }
 
-        return new ArrayList<String>(importedUsers);
+        return new ArrayList<>(importedUsers);
     }
 
     @Override
     public List<String> importCommittersFromGitHub(GitHub gitHub, GitHubRepository repository)
         throws GitHubStatsException
     {
-        List<String> importedUsers = new ArrayList<String>();
+        List<String> importedUsers = new ArrayList<>();
 
         // Find all collaborators for the specified repository
         XWikiContext xcontext = getXWikiContext();
@@ -468,7 +467,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<String> linkAuthors() throws GitHubStatsException
     {
-        Set<String> modifiedUsers = new LinkedHashSet<String>();
+        Set<String> modifiedUsers = new LinkedHashSet<>();
 
         // For each author that has its user avatar field set look for similar authors and fill mutually missing fields
         // using the following strategies:
@@ -478,7 +477,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         // - D - find other authors having the same email
         // - E - find other authors having a full name matching the id
         try {
-            List<String> linkedUsers = new ArrayList<String>();
+            List<String> linkedUsers = new ArrayList<>();
             do {
                 linkedUsers.clear();
                 String authorClassReference = this.defaultSerializer.serialize(AUTHOR_CLASS);
@@ -546,18 +545,18 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             throw new GitHubStatsException("Failed to link authors", e);
         }
 
-        return new ArrayList<String>(modifiedUsers);
+        return new ArrayList<>(modifiedUsers);
     }
 
     @Override
     public Map<Author, Map<String, ?>> getAuthorsForRepositories(Collection<GitHubRepository> repositories)
         throws GitHubStatsException
     {
-        Map<Author, Map<String, ?>> authors = new HashMap<Author, Map<String, ?>>();
+        Map<Author, Map<String, ?>> authors = new HashMap<>();
 
         try {
             // Find all authors for the passed repositories
-            List<String> whereConditions = new ArrayList<String>();
+            List<String> whereConditions = new ArrayList<>();
             String authorRepositoryClassReference = this.defaultSerializer.serialize(AUTHOR_REPOSITORY_CLASS);
             for (GitHubRepository repository : repositories) {
                 whereConditions.add(String.format(
@@ -572,7 +571,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             for (BaseObject authorObject : authorObjects) {
                 String id = authorObject.getStringValue("id");
                 Author author = new Author(id, authorObject.getStringValue("email"));
-                Map<String, Object> authorData = new HashMap<String, Object>();
+                Map<String, Object> authorData = new HashMap<>();
                 String name = authorObject.getStringValue("name");
                 if (StringUtils.isEmpty(name)) {
                     name = id;
@@ -627,7 +626,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public List<String> importRepositoriesFromGitHub(GitHub gitHub, String organizationId, boolean overwrite)
         throws GitHubStatsException
     {
-        List<String> importedRepositories = new ArrayList<String>();
+        List<String> importedRepositories = new ArrayList<>();
 
         try {
             for (GHRepository repository : gitHub.getOrganization(organizationId).getRepositories().values()) {
@@ -682,7 +681,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public Map<GitHubRepository, String> getRepositoryURLs(String... repositoriesAsStrings)
         throws GitHubStatsException
     {
-        Map<GitHubRepository, String> result = new HashMap<GitHubRepository, String>();
+        Map<GitHubRepository, String> result = new HashMap<>();
         Map<GitHubRepository, String> allRepos = getAllRepositoryURLs();
         // For each defined repo, verify it matches the passed string. If it doesn't remove it from the list!
         for (Map.Entry<GitHubRepository, String> repoEntry : allRepos.entrySet()) {
@@ -714,7 +713,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         }
 
         // For each repository found, find all authors that have ever contributed code.
-        Map<GitHubRepository, String> repositories = new HashMap<GitHubRepository, String>();
+        Map<GitHubRepository, String> repositories = new HashMap<>();
         for (Object[] repoData : results) {
             String organizationId = (String) repoData[0];
             String repositoryId = (String) repoData[1];
@@ -729,7 +728,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     public Map<GitHubRepository, String> getRepositoryURLs(List<GitHubRepository> repositories)
         throws GitHubStatsException
     {
-        Map<GitHubRepository, String> result = new HashMap<GitHubRepository, String>();
+        Map<GitHubRepository, String> result = new HashMap<>();
         Map<GitHubRepository, String> repos = getAllRepositoryURLs();
         for (Map.Entry<GitHubRepository, String> repoEntry : repos.entrySet()) {
             GitHubRepository gitHubRepository = repoEntry.getKey();
@@ -743,7 +742,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     @Override
     public List<Repository> getRepositories(Map<GitHubRepository, String> repositories)
     {
-        List<Repository> result = new ArrayList<Repository>();
+        List<Repository> result = new ArrayList<>();
         for (Map.Entry<GitHubRepository, String> repoEntry : repositories.entrySet()) {
             result.add(getRepository(repoEntry.getValue(), repoEntry.getKey()));
         }
@@ -758,7 +757,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             return Collections.emptyMap();
         }
 
-        Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+        Map<String, Map<String, Object>> result = new HashMap<>();
 
         Map<String, Set<Author>> authorsByName = extractAuthorsByName(authors);
         for (UserCommitActivity userCommit : userCommitActivity) {
@@ -775,7 +774,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             // Create a result entry if none exist for the name already
             Map<String, Object> authorResult = result.get(authorName);
             if (authorResult == null) {
-                authorResult = new HashMap<String, Object>();
+                authorResult = new HashMap<>();
                 result.put(authorName, authorResult);
                 // Add all the authors with the same name as duplicates
                 Set<Author> contributingAuthors = authorsByName.get(authorName);
@@ -822,17 +821,14 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
         }
 
         // Sort Map
-        List<Map.Entry<String, Map<String, Object>>> list =
-            new ArrayList<Map.Entry<String, Map<String, Object>>>(result.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String, Map<String, Object>>>() {
-            public int compare(Map.Entry<String, Map<String, Object>> e1, Map.Entry<String, Map<String, Object>> e2) {
-                // Highest count first!
-                Integer count1 = (Integer) e1.getValue().get("count");
-                Integer count2 = (Integer) e2.getValue().get("count");
-                return count2.compareTo(count1);
-            }
+        List<Map.Entry<String, Map<String, Object>>> list = new ArrayList<>(result.entrySet());
+        Collections.sort(list, (e1, e2) -> {
+            // Highest count first!
+            Integer count1 = (Integer) e1.getValue().get("count");
+            Integer count2 = (Integer) e2.getValue().get("count");
+            return count2.compareTo(count1);
         });
-        Map<String, Map<String, Object>> sortedResult = new LinkedHashMap<String, Map<String, Object>>();
+        Map<String, Map<String, Object>> sortedResult = new LinkedHashMap<>();
         for (Map.Entry<String, Map<String, Object>> entry : list) {
             sortedResult.put(entry.getKey(), entry.getValue());
         }
@@ -846,14 +842,14 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             return Collections.emptyMap();
         }
 
-        Map<String, Set<Author>> authorsByName = new HashMap<String, Set<Author>>();
+        Map<String, Set<Author>> authorsByName = new HashMap<>();
         for (Map.Entry<Author, Map<String, Object>> entry : authors.entrySet()) {
             Author author = entry.getKey();
             Map<String, Object> authorData = entry.getValue();
             String name = (String) authorData.get("name");
             Set<Author> authorByName = authorsByName.get(name);
             if (authorByName == null) {
-                authorByName = new HashSet<Author>();
+                authorByName = new HashSet<>();
                 authorsByName.put(name, authorByName);
             }
             authorByName.add(author);
@@ -868,13 +864,12 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
             return Collections.emptyMap();
         }
 
-        Map<String, Set<Author>> authorsByEmail = new HashMap<String, Set<Author>>();
+        Map<String, Set<Author>> authorsByEmail = new HashMap<>();
         for (Map.Entry<Author, Map<String, Object>> entry : authors.entrySet()) {
             Author author = entry.getKey();
-            Map<String, Object> authorData = entry.getValue();
             Set<Author> authorByEmail = authorsByEmail.get(author.getEmail());
             if (authorByEmail == null) {
-                authorByEmail = new HashSet<Author>();
+                authorByEmail = new HashSet<>();
                 authorsByEmail.put(author.getEmail(), authorByEmail);
             }
             authorByEmail.add(author);
@@ -886,7 +881,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     private List<String> deleteItems(EntityReference xclassReference, String exceptionMessage)
         throws GitHubStatsException
     {
-        List<String> deletedItems = new ArrayList<String>();
+        List<String> deletedItems = new ArrayList<>();
         try {
             Query query = this.queryManager.createQuery(
                 String.format("select distinct doc.space, doc.name from Document doc, doc.object(%s) as author",
@@ -910,7 +905,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
     private List<String> linkUser(BaseObject fullAuthorObject, List<BaseObject> authorObjects)
         throws XWikiException
     {
-        List<String> linkedUsers = new ArrayList<String>();
+        List<String> linkedUsers = new ArrayList<>();
 
         XWikiContext xcontext = getXWikiContext();
         for (BaseObject authorObject : authorObjects) {
@@ -947,7 +942,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
 
     private Map<GitHubRepository, BaseObject> getAuthorRepositories(BaseObject authorObject)
     {
-        Map<GitHubRepository, BaseObject> repos = new HashMap<GitHubRepository, BaseObject>();
+        Map<GitHubRepository, BaseObject> repos = new HashMap<>();
         List<BaseObject> repoObjects = authorObject.getOwnerDocument().getXObjects(AUTHOR_REPOSITORY_CLASS);
         if (repoObjects != null) {
             for (BaseObject repoObject : repoObjects) {
@@ -978,7 +973,7 @@ public class DefaultGitHubStatsManager implements GitHubStatsManager
 
     private List<BaseObject> getAuthorObjectsForQuery(String xwqlWhere) throws QueryException, XWikiException
     {
-        List<BaseObject> objects = new ArrayList<BaseObject>();
+        List<BaseObject> objects = new ArrayList<>();
         Query query = this.queryManager.createQuery(String.format(
             "select distinct doc.space, doc.name from Document doc %s", xwqlWhere), Query.XWQL);
         List<Object[]> results = query.execute();
