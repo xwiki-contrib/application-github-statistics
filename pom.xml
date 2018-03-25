@@ -28,7 +28,7 @@
     <version>8.4-8</version>
   </parent>
   <artifactId>application-github-statistics</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.1</version>
   <name>GitHub Statistics Application - Parent POM</name>
   <packaging>pom</packaging>
   <description>Provides Committer Statistics for repositories defined on GitHub</description>
@@ -40,7 +40,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/application-github-statistics.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-github-statistics.git</developerConnection>
     <url>https://github.com/xwiki-contrib/application-github-statistics/tree/master</url>
-    <tag>HEAD</tag>
+    <tag>application-github-statistics-2.2.1</tag>
   </scm>
   <developers>
     <developer>
