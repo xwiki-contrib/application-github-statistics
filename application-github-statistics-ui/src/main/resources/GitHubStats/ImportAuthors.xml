@@ -111,12 +111,12 @@
 
 ## Remove once we depend on XWiki 9.11.4+ (see https://jira.xwiki.org/browse/XWIKI-15142)
 #macro(displayExceptionCustom $title $exception)
-<div class="xwikirenderingerror" title="Click to get more details about the error" style="cursor: pointer;">
+&lt;div class="xwikirenderingerror" title="Click to get more details about the error" style="cursor: pointer;"&gt;
   $title
-</div>
-<div class="xwikirenderingerrordescription hidden">
-  <pre>$escapetool.xml($exceptiontool.getStackTrace($exception))</pre>
-</div>
+&lt;/div&gt;
+&lt;div class="xwikirenderingerrordescription hidden"&gt;
+  &lt;pre&gt;$escapetool.xml($exceptiontool.getStackTrace($exception))&lt;/pre&gt;
+&lt;/div&gt;
 #end
 #macro(printResults $result)
   #if (!$result)
